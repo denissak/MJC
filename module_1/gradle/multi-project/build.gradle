@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+allprojects {
+    group 'by.epam.module1.gradle'
+    version '1.0-SNAPSHOT'
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}

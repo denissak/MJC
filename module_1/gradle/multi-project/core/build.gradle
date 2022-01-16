@@ -1,0 +1,7 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation group: 'by.epam.module1.gradle', name: 'utils', version: '1.3.5'
+}
