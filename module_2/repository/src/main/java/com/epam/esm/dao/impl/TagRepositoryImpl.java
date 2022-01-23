@@ -5,11 +5,20 @@ import com.epam.esm.mapper.TagRowMapper;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class TagRepositoryImpl implements TagRepository {
+
+    private static final String GET_TAG_BY_NAME = "SELECT * FROM tag WHERE name = ?";
+    private static final String GET_TAG_BY_ID = "SELECT * FROM tag WHERE id = ?";
+    private static final String GET_ALL_TAGS = "SELECT * FROM tag";
+    private static final String SAVE_TAG = "INSERT INTO tag (name) VALUES (?)";
+    private static final String DELETE_TAG = "DELETE FROM tag WHERE id = ?";
 
     private JdbcTemplate jdbcTemplate;
     private TagRowMapper tagRowMapper;
@@ -21,27 +30,43 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Tag create(Tag model) {
-        return null;
+    public Tag create(Tag tag) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement preparedStatement = con.prepareStatement(SAVE_TAG, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, tag.getName());
+            return preparedStatement;
+        }, keyHolder);
+        tag.setId(Objects.requireNonNull(keyHolder.getKey()).longValue()); //TODO
+        return tag;
     }
 
     @Override
     public Optional<Tag> readById(Long id) {
-        return Optional.empty();
+        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID, tagRowMapper, id);
+        if (tagList.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(tagList.get(0));
     }
 
     @Override
     public Optional<Tag> readByName(String name) {
-        return Optional.empty();
+        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, tagRowMapper, name);
+        if (tagList.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(tagList.get(0));
     }
 
     @Override
     public List<Tag> readAll() {
-        return null;
+        return jdbcTemplate.query(GET_ALL_TAGS, tagRowMapper);
     }
 
     @Override
     public Integer delete(Long id) {
-        return null;
+        return jdbcTemplate.update(DELETE_TAG, id);
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
@@ -18,6 +17,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
     private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
     private static final String GET_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name = ?";
+    private static final String GET_ALL_CERTIFICATES = "SELECT * FROM gift_certificate";
+    private static final String GET_CERTIFICATE_BY_TAG_ID = "SELECT * FROM gift_certificate INNER JOIN " +
+            "gift_certificate_m2m_tag gcm2mt ON id = gift_certificate_id WHERE tag_id = ?";
     private static final String SAVE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, price, duration," +
             " create_date, last_update_date) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
@@ -27,8 +29,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             "gift_certificate_id = ? AND tag_id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
-    private static final String GET_CERTIFICATE_BY_TAG_ID = "SELECT * FROM gift_certificate INNER JOIN " +
-            "gift_certificate_m2m_tag gcm2mt ON id = gift_certificate_id WHERE tag_id = ?";
 
     private JdbcTemplate jdbcTemplate;
     private CertificateRowMapper certificateRowMapper;
@@ -77,8 +77,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
     @Override
     public List<Certificate> readAll() {
-        return null;
+        return jdbcTemplate.query(GET_ALL_CERTIFICATES, certificateRowMapper);
     }
+
 
     @Override
     public Integer delete(Long id) {
