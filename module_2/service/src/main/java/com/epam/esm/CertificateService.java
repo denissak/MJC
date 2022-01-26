@@ -13,4 +13,5 @@ public interface CertificateService {
     List<CertificateDto> readAll ();
 
     CertificateDto update (Long certificateId, CertificateDto certificateDto);
+
 }

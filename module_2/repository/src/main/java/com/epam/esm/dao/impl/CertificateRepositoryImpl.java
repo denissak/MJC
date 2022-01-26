@@ -27,6 +27,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
     private static final String REMOVE_TAG = "DELETE FROM gift_certificate_m2m_tag WHERE " +
             "gift_certificate_id = ? AND tag_id = ?";
+    private static final String REMOVE_ALL_TAGS = "DELETE FROM gift_certificate_m2m_tag WHERE gift_certificate_id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 

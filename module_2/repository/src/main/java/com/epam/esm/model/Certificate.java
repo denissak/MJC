@@ -20,4 +20,5 @@ public class Certificate {
     private Integer duration;
     private LocalDateTime lastUpdateDate;
     private LocalDateTime createDate;
+    //TODO TAGS??
 }
