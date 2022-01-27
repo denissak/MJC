@@ -7,14 +7,16 @@ import java.util.List;
 
 public interface CertificateService {
 
-    CertificateDto create (CertificateDto certificateDto);
+    CertificateDto create(CertificateDto certificateDto);
 
-    CertificateDto readById (Long certificateId);
+    CertificateDto readById(Long certificateId);
 
-    List<CertificateDto> readAll ();
+    List<CertificateDto> readAll();
 
-    CertificateDto update (Long certificateId, CertificateDto certificateDto);
+    CertificateDto update(Long certificateId, CertificateDto certificateDto);
 
-    List<CertificateDto> readCertificateWithDifferentParams (String tagValue, String query, String sort, boolean ascending);
+    List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending);
+
+    void delete(Long certificateId);
 
 }

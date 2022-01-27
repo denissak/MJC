@@ -79,6 +79,11 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateDto;
     }
 
+    @Override
+    public void delete(Long certificateId) {
+        certificateRepository.delete(certificateId);
+    }
+
     private void addTagsToBase(Certificate certificate) {
         List<Tag> tagList = certificate.getTags();
         if (tagList != null) {

@@ -1,4 +1,6 @@
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    implementation project(':service')
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'org.springframework:spring-webmvc:5.3.13'
+    implementation 'org.springframework:spring-web:5.3.13'
 }
