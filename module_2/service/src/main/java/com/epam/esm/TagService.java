@@ -12,5 +12,5 @@ public interface TagService {
 
     List<TagDto> readAll ();
 
-    int delete (Long tagId);
+    void delete (Long tagId);
 }

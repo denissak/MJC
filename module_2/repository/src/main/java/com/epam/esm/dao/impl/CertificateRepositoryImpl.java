@@ -2,14 +2,19 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.mapper.CertificateRowMapper;
+import com.epam.esm.mapper.TagRowMapper;
 import com.epam.esm.model.Certificate;
+import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,8 +23,8 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
     private static final String GET_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name = ?";
     private static final String GET_ALL_CERTIFICATES = "SELECT * FROM gift_certificate";
-    private static final String GET_CERTIFICATE_BY_TAG_ID = "SELECT * FROM gift_certificate INNER JOIN " +
-            "gift_certificate_m2m_tag gcm2mt ON id = gift_certificate_id WHERE tag_id = ?";
+    private static final String GET_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT id, name FROM tag t JOIN gift_certificate_m2m_tag m2m " +
+            "ON t.id=m2m.tag_id WHERE gift_certificate_id = ?";
     private static final String SAVE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, price, duration," +
             " create_date, last_update_date) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
@@ -33,11 +38,13 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
     private JdbcTemplate jdbcTemplate;
     private CertificateRowMapper certificateRowMapper;
+    private TagRowMapper tagRowMapper;
 
     @Autowired
-    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, CertificateRowMapper certificateRowMapper) {
+    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, CertificateRowMapper certificateRowMapper, TagRowMapper tagRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.certificateRowMapper = certificateRowMapper;
+        this.tagRowMapper = tagRowMapper;
     }
 
     @Override
@@ -56,6 +63,21 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         }, keyHolder);
         certificate.setId(Objects.requireNonNull(keyHolder.getKey()).longValue()); //TODO
         return certificate;
+    }
+
+    @Override
+    public void addTag(long tagId, long certificateId) {
+        jdbcTemplate.update(ADD_TAG, certificateId, certificateRowMapper);
+    }
+
+    @Override
+    public void removeTag(long tagId, long certificateId) {
+        jdbcTemplate.update(REMOVE_TAG, certificateId, certificateRowMapper);
+    }
+
+    @Override
+    public List<Tag> readCertificateTags(long certificateId) {
+        return jdbcTemplate.query(GET_ALL_TAGS_BY_CERTIFICATE_ID, tagRowMapper, certificateId);
     }
 
     @Override
@@ -81,6 +103,18 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return jdbcTemplate.query(GET_ALL_CERTIFICATES, certificateRowMapper);
     }
 
+    @Override
+    public List<Certificate> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending) {
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
+        SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate).withProcedureName("procedure").returningResultSet("certificates", certificateRowMapper);
+        Map out = call.execute(new MapSqlParameterSource()
+                .addValue("tagValue", tagValue)
+                .addValue("query", query)
+                .addValue("sortBy", sort)
+                .addValue("ascending", ascending));
+        List certificates = (List) out.get("certificates");
+        return certificates;
+    }
 
     @Override
     public Integer delete(Long id) {
@@ -99,18 +133,4 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return Optional.of(certificate);
     }
 
-    @Override
-    public void addTag(Long tagId, Long certificateId) {
-        jdbcTemplate.update(ADD_TAG, tagId, certificateId);
-    }
-
-    @Override
-    public void removeTag(Long tagId, Long certificateId) {
-        jdbcTemplate.update(REMOVE_TAG, tagId, certificateId);
-    }
-
-    @Override
-    public List<Certificate> readByTagId(Long tagId) {
-        return jdbcTemplate.query(GET_CERTIFICATE_BY_TAG_ID, certificateRowMapper, tagId);
-    }
 }

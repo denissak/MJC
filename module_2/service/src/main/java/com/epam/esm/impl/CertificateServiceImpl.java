@@ -4,7 +4,6 @@ import com.epam.esm.CertificateService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.CertificateDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
@@ -31,45 +30,67 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateDto create(CertificateDto certificateDto) {
-        LocalDateTime now = LocalDateTime.now();
-        certificateDto.setCreateDate(now);
-        certificateDto.setLastUpdateDate(now);
+        certificateDto.setCreateDate(LocalDateTime.now());
+        certificateDto.setLastUpdateDate(LocalDateTime.now());
         Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
-
-
-        return null;
+        createdCertificate.setTags(certificateDto.getTags());
+        addTagsToBase(createdCertificate);
+        return certificateMapper.convertToCertificateDto(createdCertificate);
     }
 
     @Override
     public CertificateDto readById(Long certificateId) {
         Optional<Certificate> certificate = certificateRepository.readById(certificateId);
-        CertificateDto certificateDto = certificateMapper.convertToCertificateDto(certificate.get());
-        certificateDto.setTags((List<TagDto>) readById(certificateId));
-        return certificateDto; //TODO
+        certificate.ifPresent(actualCertificate -> actualCertificate.setTags(certificateRepository.readCertificateTags(certificateId)));
+        return certificateMapper.convertToCertificateDto(certificate.orElseThrow()); //TODO CUSTOM EX
     }
 
     @Override
     public List<CertificateDto> readAll() {
-        return null;
+        List<Certificate> certificates = certificateRepository.readAll();
+        List<CertificateDto> certificateDtoList = new ArrayList<>(certificates.size());
+        for (Certificate certificate : certificates) {
+            certificate.setTags(certificateRepository.readCertificateTags(certificate.getId()));
+            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificate));
+        }
+        return certificateDtoList;
+    }
+
+    @Override
+    public List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending) {
+        List<Certificate> certificates = certificateRepository.readCertificateWithDifferentParams(tagValue, query, sort, ascending);
+        List<CertificateDto> certificateDtoList = new ArrayList<>(certificates.size());
+        for (Certificate certificate : certificates) {
+            certificate.setTags(certificateRepository.readCertificateTags(certificate.getId()));
+            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificate));
+        }
+        return certificateDtoList;
     }
 
     @Override
     public CertificateDto update(Long certificateId, CertificateDto certificateDto) {
-        return null;
+        certificateDto.setId(certificateId);
+        certificateDto.setLastUpdateDate(LocalDateTime.now());
+        Certificate certificate = certificateMapper.convertToCertificate(certificateDto);
+        List<Tag> requestTags = certificate.getTags();
+        List<Tag> createdTags = tagRepository.readAll();
+        saveNewTags(requestTags, createdTags);
+        certificateRepository.update(certificateMapper.convertToCertificate(certificateDto));
+        return certificateDto;
     }
 
-    private void addTagsToBase(CertificateDto certificateDto) {
-        List<TagDto> tagDtos = certificateDto.getTags();
-        if (tagDtos != null) {
-            for (TagDto tagDto : tagDtos) {
-                Optional<Tag> existedTag = tagRepository.readByName(tagDto.getName());
-                Long tagId = existedTag.map(Tag::getId).orElseGet(() -> tagRepository.create(tagMapper.convertToTag(tagDto)).getId());
-                certificateRepository.addTag(tagId, certificateDto.getId());
+    private void addTagsToBase(Certificate certificate) {
+        List<Tag> tagList = certificate.getTags();
+        if (tagList != null) {
+            for (Tag tag : tagList) {
+                Optional<Tag> existedTag = tagRepository.readByName(tag.getName());
+                Long tagId = existedTag.map(Tag::getId).orElseGet(() -> tagRepository.create(tag).getId());
+                certificateRepository.addTag(tagId, certificate.getId());
             }
         }
     }
 
-/*    private void saveNewTags(List<Tag> requestTags, List<Tag> createdTags) {
+    private void saveNewTags(List<Tag> requestTags, List<Tag> createdTags) {
         if (requestTags == null) {
             return;
         }
@@ -85,5 +106,5 @@ public class CertificateServiceImpl implements CertificateService {
                 tagRepository.create(requestTag);
             }
         }
-    }*/
+    }
 }

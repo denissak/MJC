@@ -5,6 +5,8 @@ import com.epam.esm.model.Certificate;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface CertificateMapper {
 
@@ -12,5 +14,7 @@ public interface CertificateMapper {
 
     CertificateDto convertToCertificateDto (Certificate certificate);
 
+
     Certificate convertToCertificate (CertificateDto certificateDto);
+
 }

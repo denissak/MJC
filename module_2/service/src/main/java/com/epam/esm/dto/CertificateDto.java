@@ -1,5 +1,6 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.model.Tag;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,5 +19,5 @@ public class CertificateDto {
     private Integer duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private List<TagDto> tags;
+    private List<Tag> tags;
 }

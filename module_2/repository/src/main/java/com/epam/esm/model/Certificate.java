@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +21,5 @@ public class Certificate {
     private Integer duration;
     private LocalDateTime lastUpdateDate;
     private LocalDateTime createDate;
-    //TODO TAGS??
+    private List<Tag> tags;
 }

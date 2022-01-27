@@ -1,6 +1,7 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.TagService;
+import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.mapper.TagMapper;
@@ -14,24 +15,26 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
 
     TagRepository tagRepository;
+    CertificateRepository certificateRepository;
     TagMapper tagMapper;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper) {
+    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
+        this.certificateRepository = certificateRepository;
     }
 
     @Override
     public TagDto create(TagDto tagDto) {
-        Tag createTag = tagRepository.create(tagMapper.convertToTag(tagDto));
-        return tagMapper.convertToTagDto(createTag); //TODO convert twice ???
+        Optional<Tag> tagExist = tagRepository.readById(tagDto.getId());
+        return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
     }
 
     @Override
     public TagDto readById(Long tagId) {
         Optional<Tag> tag = tagRepository.readById(tagId);
-        if (tag.isEmpty()){
+        if (tag.isEmpty()) {
             throw new RuntimeException(); //TODO custom ex
         }
         return tagMapper.convertToTagDto(tag.get());
@@ -41,14 +44,14 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> readAll() {
         List<Tag> tagList = tagRepository.readAll();
         List<TagDto> tagDtoList = new ArrayList<>(tagList.size());
-        for (Tag tag : tagList){
+        for (Tag tag : tagList) {
             tagDtoList.add(tagMapper.convertToTagDto(tag));
         }
         return tagDtoList;
     }
 
     @Override
-    public int delete(Long tagId) {
-        return 0;
+    public void delete(Long tagId) {
+        certificateRepository.delete(tagId);
     }
 }
