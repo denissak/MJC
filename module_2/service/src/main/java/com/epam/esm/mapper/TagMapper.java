@@ -1,14 +1,12 @@
 package com.epam.esm.mapper;
 
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Component
 @Mapper
 public interface TagMapper {
 

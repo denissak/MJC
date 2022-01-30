@@ -17,7 +17,7 @@ public class CertificateDto {
     private String description;
     private BigDecimal price;
     private Integer duration;
-    private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
+    private LocalDateTime createDate;
     private List<Tag> tags;
 }

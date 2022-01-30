@@ -9,10 +9,13 @@ import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+
+@Service
 public class CertificateServiceImpl implements CertificateService {
 
     CertificateRepository certificateRepository;
@@ -20,7 +23,7 @@ public class CertificateServiceImpl implements CertificateService {
     CertificateMapper certificateMapper;
     TagMapper tagMapper;
 
-    @Autowired
+ @Autowired
     public CertificateServiceImpl(CertificateRepository certificateRepository, TagRepository tagRepository, CertificateMapper certificateMapper, TagMapper tagMapper) {
         this.certificateRepository = certificateRepository;
         this.tagRepository = tagRepository;

@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Repository
 public class TagRepositoryImpl implements TagRepository {
 
     private static final String GET_TAG_BY_NAME = "SELECT * FROM tag WHERE name = ?";

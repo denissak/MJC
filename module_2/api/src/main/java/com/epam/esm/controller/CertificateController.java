@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/rest")
 public class CertificateController {
 
     private CertificateService certificateService;
@@ -55,4 +56,9 @@ public class CertificateController {
     public void deleteCertificate(@PathVariable long id) {
         certificateService.delete(id);
     }
+
+    /*@GetMapping("/search")
+    public List<CertificateDto> readCertificateWithParams() {
+        return null;
+    }*/
 }

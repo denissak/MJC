@@ -7,18 +7,21 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TagServiceImpl implements TagService {
 
     TagRepository tagRepository;
     CertificateRepository certificateRepository;
-    TagMapper tagMapper;
 
-    @Autowired
+    private TagMapper tagMapper;
+
+   @Autowired
     public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;

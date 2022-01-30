@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+@Repository
 public class CertificateRepositoryImpl implements CertificateRepository {
 
     private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
