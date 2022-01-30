@@ -42,7 +42,7 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto readById(Long certificateId) {
         Optional<Certificate> certificate = certificateRepository.readById(certificateId);
         certificate.ifPresent(actualCertificate -> actualCertificate.setTags(certificateRepository.readCertificateTags(certificateId)));
-        return certificateMapper.convertToCertificateDto(certificate.orElseThrow()); //TODO CUSTOM EX
+        return certificateMapper.convertToCertificateDto(certificate.orElseThrow(null)); //TODO CUSTOM EX
     }
 
     @Override

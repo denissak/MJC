@@ -1,3 +1,8 @@
+plugins{
+    id 'war'
+    id "com.bmuschko.tomcat" version "2.2.4"
+}
+
 allprojects {
     apply plugin: 'java-library'
 
@@ -6,6 +11,9 @@ allprojects {
     }
 
     dependencies {
+        // https://mvnrepository.com/artifact/com.bmuschko/gradle-tomcat-plugin
+        implementation 'com.bmuschko:gradle-tomcat-plugin:2.2.4'
+  //      compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
         compileOnly 'org.projectlombok:lombok:1.18.22'
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'org.springframework:spring-core:5.3.15'
@@ -15,7 +23,19 @@ allprojects {
         testImplementation 'org.springframework:spring-test:5.3.15'
     }
 
+    tomcat {
+        httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
+        ajpProtocol  = 'org.apache.coyote.ajp.AjpNio2Protocol'
+    }
     test {
         useJUnitPlatform()
     }
+
+    task deployTomcat(type:Copy){
+        from(war.archiveFile.get())
+        into("E:\\JAVA\\apache-tomcat-10.0.16\\webapps")
+    }
+
+    deployTomcat.dependsOn war
+    assemble.dependsOn deployTomcat
 }
