@@ -1,13 +1,13 @@
 create or replace function procedure(tagValue varchar(45), query varchar(45),
                              sortBy varchar(20), ascending boolean)
-    RETURNS void
-as
-$$
+                             returns procedure()
+    LANGUAGE 'plpgsql'
+as $$
 
 begin
 
     BEGIN
-        IF (tagValue IS NOT NULL AND query IS NOT NULL ) THEN
+/*        IF (tagValue IS NOT NULL AND query IS NOT NULL ) THEN*/
             SELECT * from gift_certificate gc
                               JOIN gift_certificate_m2m_tag m2m on gc.id = m2m.gift_certificate_id
                               JOIN tag on m2m.tag_id = tag.id
@@ -18,7 +18,7 @@ begin
                 CASE WHEN sortBy= 'name' AND ascending IS TRUE THEN gc.name END,
                 CASE WHEN sortBy= 'date' AND ascending IS TRUE THEN gc.last_update_date END,
                 CASE WHEN sortBy= 'date' AND ascending IS FALSE THEN gc.last_update_date END DESC;
-        ELSEIF (tagValue IS NOT NULL) THEN
+       /* ELSEIF (tagValue IS NOT NULL) THEN
             SELECT * from gift_certificate gc
                               JOIN gift_certificate_m2m_tag m2m on gc.id = m2m.gift_certificate_id
                               JOIN tag on m2m.tag_id = tag.id
@@ -39,9 +39,8 @@ begin
                 CASE WHEN sortBy= 'name' AND ascending IS TRUE THEN gc.name END,
                 CASE WHEN sortBy= 'date' AND ascending IS TRUE THEN gc.last_update_date END,
                 CASE WHEN sortBy= 'date' AND ascending IS FALSE THEN gc.last_update_date END DESC;
-        end if;
+        end if;*/
     END;
 
 end;
 $$
-    LANGUAGE 'plpgsql';

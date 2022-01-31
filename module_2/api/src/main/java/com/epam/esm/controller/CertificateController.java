@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.CertificateService;
 import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/certificate")
 public class CertificateController {
 
     private CertificateService certificateService;
@@ -21,8 +22,9 @@ public class CertificateController {
     }
 
     @GetMapping
-    public List<CertificateDto> readAllCertificates() {
-        return certificateService.readAll();
+    public ResponseEntity<?> readAllCertificates() {
+        List<CertificateDto> certificateDtoList = certificateService.readAll();
+        return ResponseEntity.ok(certificateDtoList);
     }
 
     @GetMapping("/{id}")

@@ -12,23 +12,4 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("com.epam.esm")
 public class WebConfig  {
 
-/*    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return new Class[0];
-*//*        return null;*//*
-    }
-
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[] { WebConfig.class };
-//        return new Class[0];
-    }
-
-    @Override
-    protected String[] getServletMappings() {
-        return new String[] {"/"};
-//        return new String[0];
-    }*/
-
-
 }

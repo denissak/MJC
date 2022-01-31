@@ -19,7 +19,7 @@ public class TagServiceImpl implements TagService {
     TagRepository tagRepository;
     CertificateRepository certificateRepository;
 
-    private TagMapper tagMapper;
+    TagMapper tagMapper;
 
    @Autowired
     public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {

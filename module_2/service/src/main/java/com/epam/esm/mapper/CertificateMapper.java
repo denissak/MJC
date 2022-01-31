@@ -7,8 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-@Component
-@Mapper/*(uses = {TagMapper.class})*/
+
+@Mapper(componentModel = "spring")
 public interface CertificateMapper {
 
     CertificateMapper INSTANCE = Mappers.getMapper(CertificateMapper.class);
