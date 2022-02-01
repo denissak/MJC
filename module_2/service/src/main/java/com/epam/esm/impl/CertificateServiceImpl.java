@@ -8,12 +8,12 @@ import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
+import com.epam.esm.validation.CertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-
 
 @Service
 public class CertificateServiceImpl implements CertificateService {
@@ -33,6 +33,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateDto create(CertificateDto certificateDto) {
+        CertificateValidator.validate(certificateDto);
         certificateDto.setCreateDate(LocalDateTime.now());
         certificateDto.setLastUpdateDate(LocalDateTime.now());
         Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
@@ -60,8 +61,8 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending) {
-        List<Certificate> certificates = certificateRepository.readCertificateWithDifferentParams(tagValue, query, sort, ascending);
+    public List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
+        List<Certificate> certificates = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificates.size());
         for (Certificate certificate : certificates) {
             certificate.setTags(certificateRepository.readCertificateTags(certificate.getId()));

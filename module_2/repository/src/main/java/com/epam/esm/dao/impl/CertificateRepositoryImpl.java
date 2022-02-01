@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.CertificateRepository;
+import com.epam.esm.dao.Search;
 import com.epam.esm.mapper.CertificateRowMapper;
 import com.epam.esm.mapper.TagRowMapper;
 import com.epam.esm.model.Certificate;
@@ -40,14 +41,16 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             "VALUES (?, ?)";
 
     private JdbcTemplate jdbcTemplate;
+    private Search search;
     private CertificateRowMapper certificateRowMapper;
     private TagRowMapper tagRowMapper;
 
     @Autowired
-    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, CertificateRowMapper certificateRowMapper, TagRowMapper tagRowMapper) {
+    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, Search search, CertificateRowMapper certificateRowMapper, TagRowMapper tagRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.certificateRowMapper = certificateRowMapper;
         this.tagRowMapper = tagRowMapper;
+        this.search = search;
     }
 
     @Override
@@ -107,16 +110,8 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public List<Certificate> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending) {
-        jdbcTemplate.setResultsMapCaseInsensitive(true);
-        SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate).withProcedureName("procedure").returningResultSet("certificates", certificateRowMapper);
-        Map out = call.execute(new MapSqlParameterSource()
-                .addValue("tagValue", tagValue)
-                .addValue("query", query)
-                .addValue("sortBy", sort)
-                .addValue("ascending", ascending));
-        List certificates = (List) out.get("certificates");
-        return certificates;
+    public List<Certificate> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
+        return jdbcTemplate.query(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), certificateRowMapper);
     }
 
     @Override

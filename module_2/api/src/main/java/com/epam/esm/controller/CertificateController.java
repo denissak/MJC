@@ -25,6 +25,7 @@ public class CertificateController {
     public ResponseEntity<?> readAllCertificates() {
         List<CertificateDto> certificateDtoList = certificateService.readAll();
         return ResponseEntity.ok(certificateDtoList);
+/*       return ResponseEntity.status(404).body();*/
     }
 
     @GetMapping("/{id}")
@@ -34,11 +35,12 @@ public class CertificateController {
     }
 
     @GetMapping("/search")
-    public List<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String tagValue,
-                                                          @RequestParam(required = false) String query,
-                                                          @RequestParam(required = false) String sort,
-                                                          @RequestParam(required = false) boolean ascending) {
-        return certificateService.readCertificateWithDifferentParams(tagValue, query, sort, ascending);
+    public ResponseEntity<?> readCertificateWithParams(@RequestParam(required = false) String tagValue,
+                                                          @RequestParam(required = false) String name,
+                                                          @RequestParam(required = false) String description,
+                                                          @RequestParam(required = false) String sortBy,
+                                                          @RequestParam(required = false) String sortOrder) {
+        return ResponseEntity.ok(certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder));
     }
 
     @PostMapping
@@ -59,8 +61,4 @@ public class CertificateController {
         certificateService.delete(id);
     }
 
-    /*@GetMapping("/search")
-    public List<CertificateDto> readCertificateWithParams() {
-        return null;
-    }*/
 }

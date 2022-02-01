@@ -1,6 +1,5 @@
 plugins{
     id 'war'
-//    id "com.bmuschko.tomcat" version "2.2.4"
 }
 
 allprojects {
@@ -12,31 +11,18 @@ allprojects {
 
     dependencies {
         implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "2.13.0"
-        // https://mvnrepository.com/artifact/com.bmuschko/gradle-tomcat-plugin
-        //      compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
         compileOnly 'org.projectlombok:lombok:1.18.22'
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'org.springframework:spring-core:5.3.15'
         implementation 'org.springframework:spring-context:5.3.15'
-        testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
         testImplementation 'org.mockito:mockito-junit-jupiter:4.2.0'
+        testImplementation 'org.mockito:mockito-core:4.2.0'
         testImplementation 'org.springframework:spring-test:5.3.15'
     }
 
-    /*tomcat {
-        httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
-        ajpProtocol  = 'org.apache.coyote.ajp.AjpNio2Protocol'
-    }*/
     test {
         useJUnitPlatform()
     }
 
-/*    task deployTomcat(type:Copy){
-        from(war.archiveFile.get())
-        into("E:\\JAVA\\apache-tomcat-8.5.75\\webapps")
-    }
-
-    deployTomcat.dependsOn war
-    assemble.dependsOn deployTomcat
-}*/
 }

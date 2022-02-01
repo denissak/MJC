@@ -6,6 +6,7 @@ import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Tag;
+import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto create(TagDto tagDto) {
+        TagValidator.validate(tagDto);
         Optional<Tag> tagExist = tagRepository.readById(tagDto.getId());
         return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
     }

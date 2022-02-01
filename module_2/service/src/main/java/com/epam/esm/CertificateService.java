@@ -16,7 +16,7 @@ public interface CertificateService {
 
     CertificateDto update(Long certificateId, CertificateDto certificateDto);
 
-    List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String query, String sort, boolean ascending);
+    List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder);
 
     void delete(Long certificateId);
 

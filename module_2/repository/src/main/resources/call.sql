@@ -1,1 +1,0 @@
-select procedure(null,  null, null, null);

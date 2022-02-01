@@ -24,7 +24,8 @@ CREATE TABLE gift_certificate_m2m_tag
 
 INSERT INTO gift_certificate (id, name, description, price, duration, create_date, last_update_date)
 VALUES (1, 'cert1', 'nice', 5, 90, now(), now()),
-       (2, 'cert2', 'bad', 7, 90, now(), now());
+       (2, 'cert2', 'bad', 7, 90, now(), now()),
+       (3, 'cert3', 'bad', 8, 90, now(), now());
 
 INSERT INTO tag (id, name)
 VALUES (1, 'tag1'),
