@@ -67,14 +67,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             preparedStatement.setTimestamp(6, Timestamp.valueOf(certificate.getLastUpdateDate()));
             return preparedStatement;
         }, keyHolder);
-        certificate.setId(Objects.requireNonNull(keyHolder.getKey()).longValue()); //TODO
+        Long id = (Long) keyHolder.getKeyList().get(0).get("id");
+        certificate.setId(id);
         return certificate;
     }
 
-    @Override
-    public void addTag(long tagId, long certificateId) {
-        jdbcTemplate.update(ADD_TAG, certificateId, certificateRowMapper);
-    }
 
     @Override
     public void removeTag(long tagId, long certificateId) {
@@ -105,6 +102,17 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
+    public boolean certificateExistsByName(String certificateName) {
+        return false;
+    }
+
+    @Override
+    public void addTag(long tagId, long certificateId) {
+        jdbcTemplate.update(ADD_TAG, tagId, certificateId/*, certificateRowMapper*/);
+    }
+
+
+    @Override
     public List<Certificate> readAll() {
         return jdbcTemplate.query(GET_ALL_CERTIFICATES, certificateRowMapper);
     }
@@ -120,15 +128,16 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public Optional<Certificate> update(Certificate certificate) {
+    public void update(long id, Certificate certificate) {
         jdbcTemplate.update(UPDATE_CERTIFICATE,
                 certificate.getName(),
                 certificate.getDescription(),
                 certificate.getPrice(),
                 certificate.getDuration(),
                 certificate.getCreateDate(),
-                certificate.getLastUpdateDate());
-        return Optional.of(certificate);
+                certificate.getLastUpdateDate(),
+                id);
+//        return Optional.of(certificate);
     }
 
 }

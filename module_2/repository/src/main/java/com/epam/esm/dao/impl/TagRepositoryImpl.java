@@ -41,7 +41,8 @@ public class TagRepositoryImpl implements TagRepository {
             preparedStatement.setString(1, tag.getName());
             return preparedStatement;
         }, keyHolder);
-        tag.setId(Objects.requireNonNull(keyHolder.getKey()).longValue()); //TODO
+        Long id = (Long) keyHolder.getKeyList().get(0).get("id");
+        tag.setId(id);
         return tag;
     }
 

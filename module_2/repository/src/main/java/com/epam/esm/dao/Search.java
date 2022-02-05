@@ -20,6 +20,7 @@ public class Search {
     private static final String QUOTATION = "'";
     private static final String LIKE = "LIKE ";
     private static final String VALUE = "%s";
+    private static final String WHERE = "WHERE ";
 
     public String buildSearchCertificate (String tagName, String name, String description, String sortBy, String sortOrder){
         StringBuilder query = new StringBuilder();
@@ -27,25 +28,16 @@ public class Search {
 
         if (!tagName.equals("")) {
             query.append(String.format(TAG_CONDITION, tagName));
+        } else {
+            query.append(WHERE);
+        }
+        if ((!tagName.equals("") && !name.equals("")) ||  (!tagName.equals("") && !description.equals(""))) {
+            query.append(AND);
         }
         if (!name.equals("")) {
-            query.append(AND);
-            query.append(SEARCH_BY_NAME);
-            query.append(LIKE);
-            query.append(QUOTATION);
-            query.append(PROCENT);
-            query.append(String.format(VALUE, name));
-            query.append(PROCENT);
-            query.append(QUOTATION);
+            buildSearchByParam(query, SEARCH_BY_NAME, name);
         } else if (!description.equals("")) {
-            query.append(AND);
-            query.append(SEARCH_BY_DESCRIPTION);
-            query.append(LIKE);
-            query.append(QUOTATION);
-            query.append(PROCENT);
-            query.append(String.format(VALUE, description));
-            query.append(PROCENT);
-            query.append(QUOTATION);
+            buildSearchByParam(query, SEARCH_BY_DESCRIPTION, description);
         }
         if (!(sortBy.equals("") && sortOrder.equals(" "))){
             if (sortBy.equals("name") && sortOrder.equals("asc")){
@@ -59,5 +51,17 @@ public class Search {
             }
         }
         return query.toString();
+    }
+
+
+    private void buildSearchByParam(StringBuilder query, String sql, String param) {
+        query.append(sql);
+        query.append(LIKE);
+        query.append(QUOTATION);
+        query.append(PROCENT);
+        query.append(String.format(VALUE, param));
+        query.append(PROCENT);
+        query.append(QUOTATION);
+//        return query;
     }
 }

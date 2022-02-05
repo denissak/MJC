@@ -1,7 +1,7 @@
 package com.epam.esm.validation;
 
 import com.epam.esm.dto.CertificateDto;
-import com.epam.esm.exception.ParameterException;
+import com.epam.esm.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,34 +15,34 @@ public class CertificateValidator {
     private static final int MAX_DURATION = 366;
     private static final int MIN_DURATION = 1;
 
-    public static void validate(CertificateDto certificateDto) throws ParameterException {
+    public static void validate(CertificateDto certificateDto) throws ValidationException {
         validateName(certificateDto.getName());
         validateDescription(certificateDto.getDescription());
         validatePrice(certificateDto.getPrice());
         validateDuration(certificateDto.getDuration());
     }
 
-    private static void validateName(String name) throws ParameterException {
+    private static void validateName(String name) throws ValidationException {
         if (name == null || name.length() < MIN_LENGTH_NAME || name.length() > MAX_LENGTH_NAME) {
-            throw new ParameterException("Incorrect certificate name");
+            throw new ValidationException("Incorrect certificate name");
         }
     }
 
-    private static void validateDescription(String description) throws ParameterException {
+    private static void validateDescription(String description) throws ValidationException {
         if (description == null || description.length() > MAX_LENGTH_DESCRIPTION) {
-            throw new ParameterException("Incorrect certificate description");
+            throw new ValidationException("Incorrect certificate description");
         }
     }
 
-    private static void validatePrice(BigDecimal price) throws ParameterException {
-        if (price.compareTo(BigDecimal.ZERO) > 0) {
-            throw new ParameterException("Incorrect certificate price");
+    private static void validatePrice(BigDecimal price) throws ValidationException {
+        if (price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("Incorrect price");
         }
     }
 
-    private static void validateDuration(int duration) throws ParameterException {
+    private static void validateDuration(int duration) throws ValidationException {
         if (duration < MIN_DURATION || duration > MAX_DURATION) {
-            throw new ParameterException("Incorrect certificate duration");
+            throw new ValidationException("Incorrect certificate duration");
         }
     }
 }

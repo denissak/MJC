@@ -20,6 +20,7 @@ public class CertificateRowMapper implements RowMapper<Certificate> {
                 .duration(rs.getInt(5))
                 .createDate(rs.getTimestamp(6).toLocalDateTime())
                 .lastUpdateDate(rs.getTimestamp(7).toLocalDateTime())
+//                .tags(rs.getLong())
                 .build();
     }
 }

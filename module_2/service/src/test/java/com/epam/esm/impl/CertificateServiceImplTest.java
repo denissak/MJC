@@ -5,22 +5,25 @@ import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
-import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Arrays.asList;
 
 @ExtendWith(MockitoExtension.class)
 public class CertificateServiceImplTest {
@@ -46,7 +49,7 @@ public class CertificateServiceImplTest {
     public static void init() {
         certificateMapper = CertificateMapper.INSTANCE;
         tagMapper = TagMapper.INSTANCE;
-        localDateTime = localDateTime.now();
+        localDateTime = LocalDateTime.now();
     }
 
     @BeforeEach
@@ -70,7 +73,7 @@ public class CertificateServiceImplTest {
                 .id(CERTIFICATE_ID_1)
                 .name("Some sertificate")
                 .description("test certificate")
-                .price(new BigDecimal("8.00"))
+                .price(new BigDecimal("8"))
                 .createDate(localDateTime)
                 .lastUpdateDate(localDateTime)
                 .duration(90)
@@ -81,14 +84,44 @@ public class CertificateServiceImplTest {
                 .id(CERTIFICATE_ID_1)
                 .name("Some sertificate")
                 .description("test certificate")
-                .price(new BigDecimal("8.00"))
+                .price(new BigDecimal("8"))
                 .createDate(localDateTime)
                 .lastUpdateDate(localDateTime)
                 .duration(90)
-                .tags(List.of(tag))
+                .tags(List.of(tagDto))
                 .build();
+    }
+
+    @Test
+    void testCreate() {
+
+        CertificateDto expected = certificateDto;
+        expected.setTags(asList(tagDto));
+
+        Mockito.when(certificateRepository.create(Mockito.any())).thenReturn(certificate);
+        Mockito.when(tagRepository.create(Mockito.any())).thenReturn(tag);
+        Mockito.when(tagRepository.readByName(Mockito.any())).thenReturn(Optional.ofNullable(null));
+
+        CertificateDto actual = certificateServiceImpl.create(expected);
+
+        Assertions.assertEquals(expected, actual);
+
+        Mockito.verify(certificateRepository.create(Mockito.any()));
 
 
     }
 
+    @Test
+    void readException() {
+            Assertions.assertThrows(NotFoundException.class, () -> certificateServiceImpl.readById(CERTIFICATE_ID_1));
+    }
+
+
+    @Test
+    void testDelete() {
+        Mockito.when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
+        certificateServiceImpl.delete(CERTIFICATE_ID_1);
+
+        Mockito.verify(certificateRepository).delete(CERTIFICATE_ID_1);
+    }
 }

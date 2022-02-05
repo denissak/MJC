@@ -4,7 +4,10 @@ import com.epam.esm.TagService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.TagMapper;
+import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,10 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto create(TagDto tagDto) {
+        Optional<Tag> tag = tagRepository.readByName(tagDto.getName());
+        if (tag.isPresent()){
+            throw (DuplicateException)DuplicateException.tagExists();
+        }
         TagValidator.validate(tagDto);
         Optional<Tag> tagExist = tagRepository.readById(tagDto.getId());
         return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
@@ -39,10 +46,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto readById(Long tagId) {
         Optional<Tag> tag = tagRepository.readById(tagId);
-        if (tag.isEmpty()) {
-            throw new RuntimeException(); //TODO custom ex
-        }
-        return tagMapper.convertToTagDto(tag.get());
+                return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));
     }
 
     @Override

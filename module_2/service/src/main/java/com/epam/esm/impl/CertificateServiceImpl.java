@@ -4,6 +4,8 @@ import com.epam.esm.CertificateService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
@@ -11,9 +13,13 @@ import com.epam.esm.model.Tag;
 import com.epam.esm.validation.CertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CertificateServiceImpl implements CertificateService {
@@ -23,7 +29,7 @@ public class CertificateServiceImpl implements CertificateService {
     CertificateMapper certificateMapper;
     TagMapper tagMapper;
 
- @Autowired
+    @Autowired
     public CertificateServiceImpl(CertificateRepository certificateRepository, TagRepository tagRepository, CertificateMapper certificateMapper, TagMapper tagMapper) {
         this.certificateRepository = certificateRepository;
         this.tagRepository = tagRepository;
@@ -32,12 +38,18 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto create(CertificateDto certificateDto) {
+        Optional<Certificate> certificate = certificateRepository.readByName(certificateDto.getName());
+        if (certificate.isPresent()){
+            throw DuplicateException.certificateExists().get();
+        }
         CertificateValidator.validate(certificateDto);
         certificateDto.setCreateDate(LocalDateTime.now());
         certificateDto.setLastUpdateDate(LocalDateTime.now());
         Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
-        createdCertificate.setTags(certificateDto.getTags());
+        List<Tag> tags = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+        createdCertificate.setTags(tags);
         addTagsToBase(createdCertificate);
         return certificateMapper.convertToCertificateDto(createdCertificate);
     }
@@ -46,7 +58,7 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto readById(Long certificateId) {
         Optional<Certificate> certificate = certificateRepository.readById(certificateId);
         certificate.ifPresent(actualCertificate -> actualCertificate.setTags(certificateRepository.readCertificateTags(certificateId)));
-        return certificateMapper.convertToCertificateDto(certificate.orElseThrow(null)); //TODO CUSTOM EX
+        return certificateMapper.convertToCertificateDto(certificate.orElseThrow(NotFoundException.notFoundWithCertificateId(certificateId)));
     }
 
     @Override
@@ -72,15 +84,19 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public CertificateDto update(Long certificateId, CertificateDto certificateDto) {
-        certificateDto.setId(certificateId);
-        certificateDto.setLastUpdateDate(LocalDateTime.now());
-        Certificate certificate = certificateMapper.convertToCertificate(certificateDto);
-        List<Tag> requestTags = certificate.getTags();
-        List<Tag> createdTags = tagRepository.readAll();
-        saveNewTags(requestTags, createdTags);
-        certificateRepository.update(certificateMapper.convertToCertificate(certificateDto));
-        return certificateDto;
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    public CertificateDto update(long id, CertificateDto certificateDto) {
+        CertificateValidator.validate(certificateDto);
+        CertificateDto currentCertificateDto = checkFields(certificateDto);
+        currentCertificateDto.setLastUpdateDate(LocalDateTime.now());
+        List<Tag> requestTags = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+        Set<Tag> createdTagsSet = new HashSet<>(tagRepository.readAll());
+        List<Tag> responseTags = saveNewTags(requestTags, createdTagsSet);
+        Certificate certificate = certificateMapper.convertToCertificate(currentCertificateDto);
+        certificateRepository.update(id, certificate);
+        certificate.setTags(responseTags);
+        addTagsToBase(certificate);
+        return currentCertificateDto;
     }
 
     @Override
@@ -99,21 +115,36 @@ public class CertificateServiceImpl implements CertificateService {
         }
     }
 
-    private void saveNewTags(List<Tag> requestTags, List<Tag> createdTags) {
-        if (requestTags == null) {
-            return;
-        }
+    private List<Tag> saveNewTags(List<Tag> requestTags, Set<Tag> createdTags) {
+        List<Tag> responseTags = new ArrayList<>();
         for (Tag requestTag : requestTags) {
-            boolean isExist = false;
-            for (Tag createdTag : createdTags) {
-                if (Objects.equals(requestTag.getName(), createdTag.getName())) {
-                    isExist = true;
-                    break;
-                }
-            }
-            if (!isExist) {
-                tagRepository.create(requestTag);
+            if (!createdTags.contains(requestTag)) {
+                responseTags.add(tagRepository.create(requestTag));
             }
         }
+        return responseTags;
+    }
+
+    private CertificateDto checkFields(CertificateDto certificateDto) {
+        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())
+                .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));
+
+        if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) && certificateDto.getName() != null) {
+            certificateInBase.setName(certificateDto.getName());
+        }
+        if (!Objects.equals(certificateDto.getDescription(), certificateInBase.getDescription()) && certificateDto.getDescription() != null) {
+            certificateInBase.setDescription(certificateDto.getDescription());
+        }
+        if (!Objects.equals(certificateDto.getDuration(), certificateInBase.getDuration()) && certificateDto.getDuration() != null) {
+            certificateInBase.setDuration(certificateDto.getDuration());
+        }
+        if (!Objects.equals(certificateDto.getPrice(), certificateInBase.getPrice()) && certificateDto.getPrice() != null) {
+            certificateInBase.setPrice(certificateDto.getPrice());
+        }
+        if (!Objects.equals(certificateDto.getTags(), certificateInBase.getTags()) && certificateDto.getTags() != null) {
+            certificateInBase.setTags(certificateDto.getTags());
+        }
+        certificateInBase.setLastUpdateDate(certificateDto.getCreateDate());
+        return certificateInBase;
     }
 }

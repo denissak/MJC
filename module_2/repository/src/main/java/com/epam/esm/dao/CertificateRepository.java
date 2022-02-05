@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CertificateRepository extends AbstractRepository<Certificate>{
 
-    Optional<Certificate> update (Certificate certificate);
+    void update (long id, Certificate certificate);
 
     void addTag (long tagId, long certificateId);
 
@@ -17,4 +17,6 @@ public interface CertificateRepository extends AbstractRepository<Certificate>{
     List<Certificate> readCertificateWithDifferentParams (String tagValue, String name, String description, String sortBy, String sortOrder);
 
     List<Tag> readCertificateTags (long certificateId);
+
+    boolean certificateExistsByName(String certificateName);
 }
