@@ -41,7 +41,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto create(CertificateDto certificateDto) {
         Optional<Certificate> certificate = certificateRepository.readByName(certificateDto.getName());
-        if (certificate.isPresent()){
+        if (certificate.isPresent()) {
             throw DuplicateException.certificateExists().get();
         }
         CertificateValidator.validate(certificateDto);
@@ -101,6 +101,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public void delete(Long certificateId) {
+        readById(certificateId);
         certificateRepository.delete(certificateId);
     }
 

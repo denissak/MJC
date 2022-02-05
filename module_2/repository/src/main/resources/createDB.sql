@@ -23,8 +23,16 @@ CREATE TABLE gift_certificate_m2m_tag
 (
     gift_certificate_id BIGINT NOT NULL,
     tag_id              BIGINT NOT NULL,
-    PRIMARY KEY (gift_certificate_id, tag_id)
-);
+    PRIMARY KEY (gift_certificate_id, tag_id),
+        FOREIGN KEY (gift_certificate_id)
+        REFERENCES gift_certificate (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+        FOREIGN KEY (tag_id)
+            REFERENCES tag (id)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION)
+;
 
 INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date)
 VALUES ('cert1', 'nice', 5, 90, now(), now()),

@@ -18,5 +18,4 @@ public interface CertificateRepository extends AbstractRepository<Certificate>{
 
     List<Tag> readCertificateTags (long certificateId);
 
-    boolean certificateExistsByName(String certificateName);
 }

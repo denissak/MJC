@@ -25,7 +25,7 @@ public class TagServiceImpl implements TagService {
 
     TagMapper tagMapper;
 
-   @Autowired
+    @Autowired
     public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
@@ -35,8 +35,8 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto create(TagDto tagDto) {
         Optional<Tag> tag = tagRepository.readByName(tagDto.getName());
-        if (tag.isPresent()){
-            throw (DuplicateException)DuplicateException.tagExists();
+        if (tag.isPresent()) {
+            throw (DuplicateException) DuplicateException.tagExists();
         }
         TagValidator.validate(tagDto);
         Optional<Tag> tagExist = tagRepository.readById(tagDto.getId());
@@ -46,7 +46,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto readById(Long tagId) {
         Optional<Tag> tag = tagRepository.readById(tagId);
-                return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));
+        return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));
     }
 
     @Override
@@ -61,6 +61,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void delete(Long tagId) {
+        readById(tagId);
         tagRepository.delete(tagId);
     }
 }

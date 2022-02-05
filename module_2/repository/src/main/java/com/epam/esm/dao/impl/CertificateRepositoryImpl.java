@@ -8,8 +8,6 @@ import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -17,8 +15,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -36,7 +32,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
     private static final String REMOVE_TAG = "DELETE FROM gift_certificate_m2m_tag WHERE " +
             "gift_certificate_id = ? AND tag_id = ?";
-    private static final String REMOVE_ALL_TAGS = "DELETE FROM gift_certificate_m2m_tag WHERE gift_certificate_id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 
@@ -102,15 +97,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public boolean certificateExistsByName(String certificateName) {
-        return false;
-    }
-
-    @Override
     public void addTag(long tagId, long certificateId) {
-        jdbcTemplate.update(ADD_TAG, tagId, certificateId/*, certificateRowMapper*/);
+        jdbcTemplate.update(ADD_TAG, tagId, certificateId);
     }
-
 
     @Override
     public List<Certificate> readAll() {
@@ -137,7 +126,5 @@ public class CertificateRepositoryImpl implements CertificateRepository {
                 certificate.getCreateDate(),
                 certificate.getLastUpdateDate(),
                 id);
-//        return Optional.of(certificate);
     }
-
 }
