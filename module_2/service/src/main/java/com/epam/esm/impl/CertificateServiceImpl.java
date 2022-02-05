@@ -10,6 +10,7 @@ import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
+import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.CertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,15 @@ public class CertificateServiceImpl implements CertificateService {
     TagRepository tagRepository;
     CertificateMapper certificateMapper;
     TagMapper tagMapper;
+    DateTimeWrapper dateTimeWrapper;
 
     @Autowired
-    public CertificateServiceImpl(CertificateRepository certificateRepository, TagRepository tagRepository, CertificateMapper certificateMapper, TagMapper tagMapper) {
+    public CertificateServiceImpl(CertificateRepository certificateRepository, TagRepository tagRepository, CertificateMapper certificateMapper, TagMapper tagMapper, DateTimeWrapper dateTimeWrapper) {
         this.certificateRepository = certificateRepository;
         this.tagRepository = tagRepository;
         this.certificateMapper = certificateMapper;
         this.tagMapper = tagMapper;
+        this.dateTimeWrapper = dateTimeWrapper;
     }
 
     @Override
@@ -45,8 +48,9 @@ public class CertificateServiceImpl implements CertificateService {
             throw DuplicateException.certificateExists().get();
         }
         CertificateValidator.validate(certificateDto);
-        certificateDto.setCreateDate(LocalDateTime.now());
-        certificateDto.setLastUpdateDate(LocalDateTime.now());
+        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+        certificateDto.setCreateDate(now);
+        certificateDto.setLastUpdateDate(now);
         Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
         List<Tag> tags = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
         createdCertificate.setTags(tags);
@@ -88,7 +92,8 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto update(long id, CertificateDto certificateDto) {
         CertificateValidator.validate(certificateDto);
         CertificateDto currentCertificateDto = checkFields(certificateDto);
-        currentCertificateDto.setLastUpdateDate(LocalDateTime.now());
+        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+        currentCertificateDto.setLastUpdateDate(now);
         List<Tag> requestTags = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
         Set<Tag> createdTagsSet = new HashSet<>(tagRepository.readAll());
         List<Tag> responseTags = saveNewTags(requestTags, createdTagsSet);
@@ -105,7 +110,7 @@ public class CertificateServiceImpl implements CertificateService {
         certificateRepository.delete(certificateId);
     }
 
-    private void addTagsToBase(Certificate certificate) {
+    public void addTagsToBase(Certificate certificate) {
         List<Tag> tagList = certificate.getTags();
         if (tagList != null) {
             for (Tag tag : tagList) {

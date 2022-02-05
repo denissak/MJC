@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+/*import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;*/
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJdbcRepositories("com.epam.esm")
+/*@EnableJdbcRepositories("com.epam.esm")*/
 public class ApplicationConfiguration {
 
     public static final String HIKARI_CONFIG_FILE_PATH = "/hikaricp.properties";

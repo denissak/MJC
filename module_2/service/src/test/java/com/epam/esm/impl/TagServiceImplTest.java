@@ -17,6 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 
 public class TagServiceImplTest {
@@ -24,9 +27,7 @@ public class TagServiceImplTest {
     private TagRepository tagRepository;
     private CertificateRepository certificateRepository;
     private static TagService tagServiceImpl;
-
     private static final Long TAG_ID_1 = 1L;
-    private static final Long INVALID_ID = -1L;
 
     private Tag tag;
     private TagDto tagDto;
@@ -83,9 +84,10 @@ public class TagServiceImplTest {
     }
 
     @Test
-    void testDelete() {
-        Mockito.when(tagRepository.delete(TAG_ID_1)).thenReturn(1);
+    void testDeleteCertificate() {
+        when(tagRepository.readById(TAG_ID_1)).thenReturn(Optional.of(tag));
+        when(tagRepository.delete(TAG_ID_1)).thenReturn(1);
         tagServiceImpl.delete(TAG_ID_1);
-        Mockito.verify(tagRepository).delete(TAG_ID_1);
+        verify(tagRepository).delete(TAG_ID_1);
     }
 }

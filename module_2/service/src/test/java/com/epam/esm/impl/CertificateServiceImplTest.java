@@ -10,12 +10,11 @@ import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
-import org.junit.jupiter.api.Assertions;
+import com.epam.esm.util.DateTimeWrapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -23,7 +22,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CertificateServiceImplTest {
@@ -36,9 +36,9 @@ public class CertificateServiceImplTest {
     private Tag tag;
     private TagDto tagDto;
 
-
     private CertificateRepository certificateRepository;
     private TagRepository tagRepository;
+    private DateTimeWrapper dateTimeWrapper;
     private static CertificateMapper certificateMapper;
     private static TagMapper tagMapper;
     private static LocalDateTime localDateTime;
@@ -54,10 +54,11 @@ public class CertificateServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        certificateRepository = Mockito.mock(CertificateRepository.class);
-        tagRepository = Mockito.mock(TagRepository.class);
+        certificateRepository = mock(CertificateRepository.class);
+        tagRepository = mock(TagRepository.class);
+        dateTimeWrapper = mock(DateTimeWrapper.class);
 
-        certificateServiceImpl = new CertificateServiceImpl(certificateRepository, tagRepository, certificateMapper, tagMapper);
+        certificateServiceImpl = new CertificateServiceImpl(certificateRepository, tagRepository, certificateMapper, tagMapper, dateTimeWrapper );
 
         tag = Tag.builder()
                 .id(TAG_ID_1)
@@ -94,34 +95,53 @@ public class CertificateServiceImplTest {
 
     @Test
     void testCreate() {
-
         CertificateDto expected = certificateDto;
-        expected.setTags(asList(tagDto));
-
-        Mockito.when(certificateRepository.create(Mockito.any())).thenReturn(certificate);
-        Mockito.when(tagRepository.create(Mockito.any())).thenReturn(tag);
-        Mockito.when(tagRepository.readByName(Mockito.any())).thenReturn(Optional.ofNullable(null));
-
+        expected.setTags(List.of(tagDto));
+        when(certificateRepository.create(any())).thenReturn(certificate);
+        when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
+        when(tagRepository.create(any())).thenReturn(tag);
+        when(tagRepository.readByName(any())).thenReturn(Optional.empty());
         CertificateDto actual = certificateServiceImpl.create(expected);
-
-        Assertions.assertEquals(expected, actual);
-
-        Mockito.verify(certificateRepository.create(Mockito.any()));
-
-
+        assertEquals(expected, actual);
+        verify(certificateRepository).create(any());
+        verify(dateTimeWrapper).wrapDateTime();
     }
 
     @Test
-    void readException() {
-            Assertions.assertThrows(NotFoundException.class, () -> certificateServiceImpl.readById(CERTIFICATE_ID_1));
+    void testReadAllCertificates() {
+        List<Certificate> certificates = List.of(certificate);
+        certificateDto.setTags(List.of(tagDto));
+        List<CertificateDto> expected = List.of(certificateDto);
+        when(certificateRepository.readAll()).thenReturn(certificates);
+        when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificate.getTags());
+        List<CertificateDto> actual = certificateServiceImpl.readAll();
+        assertEquals(expected, actual);
+        verify(certificateRepository).readAll();
+        verify(certificateRepository).readCertificateTags(anyLong());
     }
 
+    @Test
+    void testReadByIdWithInvalidId() {
+        assertThrows(NotFoundException.class, () -> certificateServiceImpl.readById(INVALID_ID));
+    }
 
     @Test
-    void testDelete() {
-        Mockito.when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
+    void testReadCertificateById() {
+        when(certificateRepository.readById(anyLong())).thenReturn(Optional.of(certificate));
+        certificateServiceImpl.readById(certificate.getId());
+        verify(certificateRepository).readCertificateTags(certificate.getId());
+    }
+
+    @Test
+    void testUpdateNotFoundException() {
+        assertThrows(NotFoundException.class, () -> certificateServiceImpl.update(CERTIFICATE_ID_1, certificateDto));
+    }
+
+    @Test
+    void testDeleteCertificate() {
+        when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(Optional.of(certificate));
+        when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
         certificateServiceImpl.delete(CERTIFICATE_ID_1);
-
-        Mockito.verify(certificateRepository).delete(CERTIFICATE_ID_1);
+        verify(certificateRepository).delete(CERTIFICATE_ID_1);
     }
 }

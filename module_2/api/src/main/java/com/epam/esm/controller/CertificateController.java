@@ -20,16 +20,6 @@ public class CertificateController {
         this.certificateService = certificateService;
     }
 
-/*    @GetMapping(value = "/test", produces = APPLICATION_JSON_VALUE)
-    public  ResponseEntity<?> testDefaultControllerAdvice(@RequestParam(required = false, defaultValue = "true") boolean exception)
-            throws ParameterException {
-        if (exception) {
-            throw ParameterException.notFoundWithCertificateId(55L).get();
-        }
-        return ResponseEntity.ok(HttpStatus.OK);
-    }*/
-
-
     @GetMapping
     public ResponseEntity<?> readAllCertificates() {
         List<CertificateDto> certificateDtoList = certificateService.readAll();
@@ -51,14 +41,7 @@ public class CertificateController {
         return ResponseEntity.ok(certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder));
     }
 
-/*    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public CertificateDto createCertificate(@RequestBody CertificateDto certificateDto) {
-        return certificateService.create(certificateDto);
-    }*/
-
     @PostMapping
-//    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> createCertificate(@RequestBody CertificateDto certificateDto) {
         certificateService.create(certificateDto);
         return ResponseEntity.status(HttpStatus.OK).build();

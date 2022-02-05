@@ -1,5 +1,6 @@
 plugins{
     id 'war'
+    id 'jacoco'
 }
 
 allprojects {
@@ -19,13 +20,12 @@ allprojects {
         testImplementation 'org.mockito:mockito-junit-jupiter:4.2.0'
         testImplementation 'org.mockito:mockito-core:4.2.0'
         testImplementation 'org.springframework:spring-test:5.3.15'
-        implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-        implementation('javax.activation:activation:1.1')
-        implementation('org.glassfish.jaxb:jaxb-runtime:2.3.0')
     }
 
     test {
         useJUnitPlatform()
     }
 
+    test.finalizedBy jacocoTestReport
+    jacocoTestReport.dependsOn test
 }
