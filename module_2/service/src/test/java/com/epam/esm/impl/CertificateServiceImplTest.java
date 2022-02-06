@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -31,13 +32,17 @@ public class CertificateServiceImplTest {
     private static final Long CERTIFICATE_ID_1 = 1L;
     private static final Long TAG_ID_1 = 1L;
     private static final Long INVALID_ID = -1L;
+    private static final String ANY_STRING = "";
     private Certificate certificate;
     private CertificateDto certificateDto;
     private Tag tag;
     private TagDto tagDto;
 
+    @Mock
     private CertificateRepository certificateRepository;
+    @Mock
     private TagRepository tagRepository;
+    @Mock
     private DateTimeWrapper dateTimeWrapper;
     private static CertificateMapper certificateMapper;
     private static TagMapper tagMapper;
@@ -54,10 +59,6 @@ public class CertificateServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        certificateRepository = mock(CertificateRepository.class);
-        tagRepository = mock(TagRepository.class);
-        dateTimeWrapper = mock(DateTimeWrapper.class);
-
         certificateServiceImpl = new CertificateServiceImpl(certificateRepository, tagRepository, certificateMapper, tagMapper, dateTimeWrapper );
 
         tag = Tag.builder()
@@ -72,7 +73,7 @@ public class CertificateServiceImplTest {
 
         certificate = Certificate.builder()
                 .id(CERTIFICATE_ID_1)
-                .name("Some sertificate")
+                .name("Some certificate")
                 .description("test certificate")
                 .price(new BigDecimal("8"))
                 .createDate(localDateTime)
@@ -83,7 +84,7 @@ public class CertificateServiceImplTest {
 
         certificateDto = CertificateDto.builder()
                 .id(CERTIFICATE_ID_1)
-                .name("Some sertificate")
+                .name("Some certificate")
                 .description("test certificate")
                 .price(new BigDecimal("8"))
                 .createDate(localDateTime)
@@ -105,6 +106,8 @@ public class CertificateServiceImplTest {
         assertEquals(expected, actual);
         verify(certificateRepository).create(any());
         verify(dateTimeWrapper).wrapDateTime();
+        verify(tagRepository).create(any());
+        verify(tagRepository).readByName(any());
     }
 
     @Test
@@ -143,5 +146,34 @@ public class CertificateServiceImplTest {
         when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
         certificateServiceImpl.delete(CERTIFICATE_ID_1);
         verify(certificateRepository).delete(CERTIFICATE_ID_1);
+    }
+
+    @Test
+    void readCertificateWithDifferentParams() {
+        List<Certificate> certificates = List.of(certificate);
+        certificateDto.setTags(List.of(tagDto));
+        List<CertificateDto> expected = List.of(certificateDto);
+        when(certificateRepository.readCertificateWithDifferentParams(anyString(),anyString(),anyString(),anyString(),anyString())).thenReturn(certificates);
+        when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificate.getTags());
+        List<CertificateDto> actual = certificateServiceImpl.readCertificateWithDifferentParams(ANY_STRING, ANY_STRING, ANY_STRING, ANY_STRING, ANY_STRING);
+        assertEquals(expected, actual);
+        verify(certificateRepository).readCertificateWithDifferentParams(anyString(),anyString(),anyString(),anyString(),anyString());
+    }
+
+    @Test
+    void update() {
+        CertificateDto expected = certificateDto;
+        expected.setTags(List.of(tagDto));
+        certificateRepository.update(anyLong(), any());
+        when(certificateRepository.readById(anyLong())).thenReturn(Optional.of(certificate));
+        when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
+        when(tagRepository.readByName(any())).thenReturn(Optional.empty());
+        when(tagRepository.create(any())).thenReturn(tag);
+        when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(Optional.of(certificate));
+        tagRepository.readById(TAG_ID_1);
+        CertificateDto actual = certificateServiceImpl.update(CERTIFICATE_ID_1, expected);
+        assertEquals(expected, actual);
+        verify(certificateRepository).update(CERTIFICATE_ID_1, certificate);
+        verify(dateTimeWrapper).wrapDateTime();
     }
 }

@@ -30,8 +30,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
             "duration = ?, create_date = ?, last_update_date = ? WHERE id = ?";
     private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
-    private static final String REMOVE_TAG = "DELETE FROM gift_certificate_m2m_tag WHERE " +
-            "gift_certificate_id = ? AND tag_id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 
@@ -65,12 +63,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         Long id = (Long) keyHolder.getKeyList().get(0).get("id");
         certificate.setId(id);
         return certificate;
-    }
-
-
-    @Override
-    public void removeTag(long tagId, long certificateId) {
-        jdbcTemplate.update(REMOVE_TAG, certificateId, certificateRowMapper);
     }
 
     @Override

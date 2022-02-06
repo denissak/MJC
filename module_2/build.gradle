@@ -1,6 +1,5 @@
 plugins{
     id 'war'
-    id 'jacoco'
 }
 
 allprojects {
@@ -20,12 +19,10 @@ allprojects {
         testImplementation 'org.mockito:mockito-junit-jupiter:4.2.0'
         testImplementation 'org.mockito:mockito-core:4.2.0'
         testImplementation 'org.springframework:spring-test:5.3.15'
+        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "2.13.0"
     }
 
     test {
         useJUnitPlatform()
     }
-
-    test.finalizedBy jacocoTestReport
-    jacocoTestReport.dependsOn test
 }

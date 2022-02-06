@@ -1,6 +1,7 @@
 package com.epam.esm;
 
 import com.epam.esm.dto.TagDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

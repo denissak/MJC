@@ -12,8 +12,6 @@ public interface CertificateRepository extends AbstractRepository<Certificate>{
 
     void addTag (long tagId, long certificateId);
 
-    void removeTag (long tagId, long certificateId);
-
     List<Certificate> readCertificateWithDifferentParams (String tagValue, String name, String description, String sortBy, String sortOrder);
 
     List<Tag> readCertificateTags (long certificateId);
