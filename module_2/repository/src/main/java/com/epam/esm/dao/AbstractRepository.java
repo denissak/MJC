@@ -3,6 +3,12 @@ package com.epam.esm.dao;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *
+ * Contains common methods for working with all entities during the interaction
+ * with database.
+ *
+ */
 public interface AbstractRepository <T>{
 
     T create (T model);
