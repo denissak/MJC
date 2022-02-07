@@ -11,5 +11,4 @@ public enum StatusError {
 
     @JsonValue
     private final int errorCode;
-
 }

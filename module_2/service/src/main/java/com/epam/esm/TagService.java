@@ -1,17 +1,41 @@
 package com.epam.esm;
 
 import com.epam.esm.dto.TagDto;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Contains methods for working mostly with {@code TagDto} entity.
+ */
 public interface TagService {
 
-    TagDto create (TagDto tagDto);
+    /**
+     * Creates and saves the passed tag.
+     *
+     * @param tagDto the tag to be saved
+     * @return saved tag
+     */
+    TagDto create(TagDto tagDto);
 
-    TagDto readById (Long tagId);
+    /**
+     * Reads tag with passed id.
+     *
+     * @param tagId id of tag to be read
+     * @return tag with passed id
+     */
+    TagDto readById(Long tagId);
 
-    List<TagDto> readAll ();
+    /**
+     * Reads all tags.
+     *
+     * @return all tags.
+     */
+    List<TagDto> readAll();
 
-    void delete (Long tagId);
+    /**
+     * Deletes tag with passed id.
+     *
+     * @param tagId the id of tag to be deleted
+     */
+    void delete(Long tagId);
 }

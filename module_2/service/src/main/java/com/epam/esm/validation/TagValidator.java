@@ -3,7 +3,6 @@ package com.epam.esm.validation;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.ValidationException;
 
-
 public class TagValidator {
 
     private static final int MAX_LENGTH_NAME = 20;

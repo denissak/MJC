@@ -12,7 +12,7 @@ public class NotFoundException extends RuntimeException {
     }
 
     public static Supplier<NotFoundException> notFoundCertificate() {
-        String message = String.format("Сertificate not found");
+        String message = "Сertificate not found";
         return () -> new NotFoundException(message);
     }
 
@@ -22,7 +22,7 @@ public class NotFoundException extends RuntimeException {
     }
 
     public static Supplier<NotFoundException> notFoundTag() {
-        String message = String.format("Tag not found");
+        String message = "Tag not found";
         return () -> new NotFoundException(message);
     }
 

@@ -16,14 +16,13 @@ public class DefaultAdvice {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleException(NotFoundException e) {
-        ResponseError response = new ResponseError(e.getMessage(),StatusError.ENTITY_NOT_FOUND);
+        ResponseError response = new ResponseError(e.getMessage(), StatusError.ENTITY_NOT_FOUND);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<?> handleException(ValidationException e) {
-        ResponseError response = new ResponseError(e.getMessage(),StatusError.ENTITY_VALIDATION);
+        ResponseError response = new ResponseError(e.getMessage(), StatusError.ENTITY_VALIDATION);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
 }

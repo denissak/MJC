@@ -40,6 +40,12 @@ public class CertificateServiceImpl implements CertificateService {
         this.dateTimeWrapper = dateTimeWrapper;
     }
 
+    /**
+     * Creates and saves the passed certificate.
+     *
+     * @param certificateDto the certificate to be saved
+     * @return saved certificate
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto create(CertificateDto certificateDto) {
@@ -58,6 +64,12 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateMapper.convertToCertificateDto(createdCertificate);
     }
 
+    /**
+     * Reads certificate with passed id.
+     *
+     * @param certificateId the id of certificate to be read
+     * @return certificate with passed id
+     */
     @Override
     public CertificateDto readById(Long certificateId) {
         Optional<Certificate> certificate = certificateRepository.readById(certificateId);
@@ -65,6 +77,11 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateMapper.convertToCertificateDto(certificate.orElseThrow(NotFoundException.notFoundWithCertificateId(certificateId)));
     }
 
+    /**
+     * Reads all certificates.
+     *
+     * @return all certificates
+     */
     @Override
     public List<CertificateDto> readAll() {
         List<Certificate> certificates = certificateRepository.readAll();
@@ -76,6 +93,16 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateDtoList;
     }
 
+    /**
+     * Search by specified certificate values
+     *
+     * @param tagValue    tag name
+     * @param name        whole or partial certificate name
+     * @param description whole or partial certificate description
+     * @param sortBy      Sort target field (name or date)
+     * @param sortOrder   Sort type (asc or desc)
+     * @return all certificates from search terms
+     */
     @Override
     public List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
         List<Certificate> certificates = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
@@ -87,6 +114,13 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateDtoList;
     }
 
+    /**
+     * Updates certificate fields with passed id
+     *
+     * @param id             certificate id which needs to be updated
+     * @param certificateDto certificate entity which contains fields with new
+     *                       values to be set
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto update(long id, CertificateDto certificateDto) {
@@ -104,12 +138,25 @@ public class CertificateServiceImpl implements CertificateService {
         return currentCertificateDto;
     }
 
+    /**
+     * Deletes certificate with passed id.
+     *
+     * @param certificateId the id of certificate to be deleted
+     */
     @Override
     public void delete(Long certificateId) {
         readById(certificateId);
         certificateRepository.delete(certificateId);
     }
 
+    /**
+     * Check tags are existing. Add new tags in database and attach them
+     * on certificate.
+     *
+     * @param certificate certificate which need read all tags,
+     *                    create all new tags in database and attach
+     *                    them on certificate
+     */
     public void addTagsToBase(Certificate certificate) {
         List<Tag> tagList = certificate.getTags();
         if (tagList != null) {
@@ -121,6 +168,13 @@ public class CertificateServiceImpl implements CertificateService {
         }
     }
 
+    /**
+     * Add new tags in database
+     *
+     * @param requestTags tags in request
+     * @param createdTags tags in dataBase
+     * @return all tags in certificate
+     */
     private List<Tag> saveNewTags(List<Tag> requestTags, Set<Tag> createdTags) {
         List<Tag> responseTags = new ArrayList<>();
         for (Tag requestTag : requestTags) {
@@ -131,6 +185,11 @@ public class CertificateServiceImpl implements CertificateService {
         return responseTags;
     }
 
+    /**
+     * Check modified fields before update certificate
+     *
+     * @param certificateDto certificate which need to check
+     */
     private CertificateDto checkFields(CertificateDto certificateDto) {
         CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())
                 .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));

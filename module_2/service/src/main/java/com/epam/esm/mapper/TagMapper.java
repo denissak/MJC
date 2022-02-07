@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = "spring")
 public interface TagMapper {
-
     TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 
-    TagDto convertToTagDto (Tag tag);
+    TagDto convertToTagDto(Tag tag);
 
-    Tag convertToTag (TagDto tagDto);
-
+    Tag convertToTag(TagDto tagDto);
 }

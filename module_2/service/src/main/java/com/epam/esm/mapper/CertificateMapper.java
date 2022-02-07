@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = "spring")
 public interface CertificateMapper {
-
     CertificateMapper INSTANCE = Mappers.getMapper(CertificateMapper.class);
 
-    CertificateDto convertToCertificateDto (Certificate certificate);
+    CertificateDto convertToCertificateDto(Certificate certificate);
 
-    Certificate convertToCertificate (CertificateDto certificateDto);
-
+    Certificate convertToCertificate(CertificateDto certificateDto);
 }

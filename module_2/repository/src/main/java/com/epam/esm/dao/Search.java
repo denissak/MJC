@@ -2,6 +2,9 @@ package com.epam.esm.dao;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * Contains methods for SQL search certificate by different parameters.
+ */
 @Component
 public class Search {
 
@@ -22,7 +25,18 @@ public class Search {
     private static final String VALUE = "%s";
     private static final String WHERE = "WHERE ";
 
-    public String buildSearchCertificate (String tagName, String name, String description, String sortBy, String sortOrder){
+    /**
+     * Search by specified certificate values
+     *
+     * @param tagName    tag name
+     * @param name        whole or partial certificate name
+     * @param description whole or partial certificate description
+     * @param sortBy      Sort target field (name or date)
+     * @param sortOrder   Sort type (asc or desc)
+     *
+     * @return all certificates from search terms
+     */
+    public String buildSearchCertificate(String tagName, String name, String description, String sortBy, String sortOrder) {
         StringBuilder query = new StringBuilder();
         query.append(SELECT);
 
@@ -31,7 +45,7 @@ public class Search {
         } else {
             query.append(WHERE);
         }
-        if ((!tagName.equals("") && !name.equals("")) ||  (!tagName.equals("") && !description.equals(""))) {
+        if ((!tagName.equals("") && !name.equals("")) || (!tagName.equals("") && !description.equals(""))) {
             query.append(AND);
         }
         if (!name.equals("")) {
@@ -39,20 +53,19 @@ public class Search {
         } else if (!description.equals("")) {
             buildSearchByParam(query, SEARCH_BY_DESCRIPTION, description);
         }
-        if (!(sortBy.equals("") && sortOrder.equals(" "))){
-            if (sortBy.equals("name") && sortOrder.equals("asc")){
+        if (!(sortBy.equals("") && sortOrder.equals(" "))) {
+            if (sortBy.equals("name") && sortOrder.equals("asc")) {
                 query.append(SORT_BY_NAME_ASC);
-            } else if (sortBy.equals("name") && sortOrder.equals("desc")){
+            } else if (sortBy.equals("name") && sortOrder.equals("desc")) {
                 query.append(SORT_BY_NAME_DESC);
-            } else if (sortBy.equals("date") && sortOrder.equals("asc")){
+            } else if (sortBy.equals("date") && sortOrder.equals("asc")) {
                 query.append(SORT_BY_DATE_ASC);
-            } else if (sortBy.equals("date") && sortOrder.equals("desc")){
+            } else if (sortBy.equals("date") && sortOrder.equals("desc")) {
                 query.append(SORT_BY_DATE_DESC);
             }
         }
         return query.toString();
     }
-
 
     private void buildSearchByParam(StringBuilder query, String sql, String param) {
         query.append(sql);
@@ -62,6 +75,5 @@ public class Search {
         query.append(String.format(VALUE, param));
         query.append(PROCENT);
         query.append(QUOTATION);
-//        return query;
     }
 }

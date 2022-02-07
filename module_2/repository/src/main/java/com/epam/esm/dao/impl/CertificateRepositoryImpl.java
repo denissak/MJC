@@ -17,6 +17,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contains methods implementation for working mostly with
+ * {@code Certificate} entity.
+ */
 @Repository
 public class CertificateRepositoryImpl implements CertificateRepository {
 
@@ -46,10 +50,15 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         this.search = search;
     }
 
+    /**
+     * Saves the passed certificate.
+     *
+     * @param certificate the certificate to be saved
+     * @return saved certificate
+     */
     @Override
     public Certificate create(Certificate certificate) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
         jdbcTemplate.update(con -> {
             PreparedStatement preparedStatement = con.prepareStatement(SAVE_CERTIFICATE, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, certificate.getName());
@@ -65,11 +74,23 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return certificate;
     }
 
+    /**
+     * Reads certificate tags with passed id.
+     *
+     * @param certificateId the id of certificate to be read
+     * @return will return the tags belonging to the certificate
+     */
     @Override
     public List<Tag> readCertificateTags(long certificateId) {
         return jdbcTemplate.query(GET_ALL_TAGS_BY_CERTIFICATE_ID, tagRowMapper, certificateId);
     }
 
+    /**
+     * Reads certificate with passed id.
+     *
+     * @param id the id of certificate to be read
+     * @return certificate with passed id
+     */
     @Override
     public Optional<Certificate> readById(Long id) {
         List<Certificate> certificateList = jdbcTemplate.query(GET_CERTIFICATE_BY_ID, certificateRowMapper, id);
@@ -79,6 +100,12 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return Optional.ofNullable(certificateList.get(0));
     }
 
+    /**
+     * Reads certificate with passed name.
+     *
+     * @param name the id of certificate to be read
+     * @return certificate with passed name
+     */
     @Override
     public Optional<Certificate> readByName(String name) {
         List<Certificate> certificateList = jdbcTemplate.query(GET_CERTIFICATE_BY_NAME, certificateRowMapper, name);
@@ -88,26 +115,61 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return Optional.ofNullable(certificateList.get(0));
     }
 
+    /**
+     * Attach tags to the certificate
+     *
+     * @param tagId         tag id which needs to set in m2m table
+     * @param certificateId certificate id which need to set in m2m table
+     */
     @Override
     public void addTag(long tagId, long certificateId) {
         jdbcTemplate.update(ADD_TAG, tagId, certificateId);
     }
 
+    /**
+     * Reads all certificates.
+     *
+     * @return all certificates
+     */
     @Override
     public List<Certificate> readAll() {
         return jdbcTemplate.query(GET_ALL_CERTIFICATES, certificateRowMapper);
     }
 
+    /**
+     * Search by specified certificate values
+     *
+     * @param tagValue    tag name
+     * @param name        whole or partial certificate name
+     * @param description whole or partial certificate description
+     * @param sortBy      Sort target field (name or date)
+     * @param sortOrder   Sort type (asc or desc)
+     *
+     * @return all certificates from search terms
+     */
     @Override
     public List<Certificate> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
         return jdbcTemplate.query(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), certificateRowMapper);
     }
 
+    /**
+     * Deletes certificate with passed id.
+     *
+     * @param id the id of entity to be deleted
+     * @return the number of deleted entities
+     */
     @Override
     public Integer delete(Long id) {
         return jdbcTemplate.update(DELETE_CERTIFICATE, id);
     }
 
+    /**
+     * Updates certificate fields with passed id
+     *
+     * @param id          certificate id which needs to be updated
+     * @param certificate certificate entity which contains fields with new
+     *                    values to be set
+     */
     @Override
     public void update(long id, Certificate certificate) {
         jdbcTemplate.update(UPDATE_CERTIFICATE,

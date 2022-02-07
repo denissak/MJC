@@ -13,6 +13,10 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contains methods implementation for working mostly with {@code Tag}
+ * entity.
+ */
 @Repository
 public class TagRepositoryImpl implements TagRepository {
 
@@ -21,7 +25,6 @@ public class TagRepositoryImpl implements TagRepository {
     private static final String GET_ALL_TAGS = "SELECT * FROM tag";
     private static final String SAVE_TAG = "INSERT INTO tag (name) VALUES (?)";
     private static final String DELETE_TAG = "DELETE FROM tag WHERE id = ?";
-
     private JdbcTemplate jdbcTemplate;
     private TagRowMapper tagRowMapper;
 
@@ -31,6 +34,12 @@ public class TagRepositoryImpl implements TagRepository {
         this.tagRowMapper = tagRowMapper;
     }
 
+    /**
+     * Saves the passed tag.
+     *
+     * @param tag the tag to be saved
+     * @return saved tag
+     */
     @Override
     public Tag create(Tag tag) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -45,6 +54,12 @@ public class TagRepositoryImpl implements TagRepository {
         return tag;
     }
 
+    /**
+     * Reads tag with passed id.
+     *
+     * @param id the id of tag to be read
+     * @return tag with passed id
+     */
     @Override
     public Optional<Tag> readById(Long id) {
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID, tagRowMapper, id);
@@ -54,6 +69,12 @@ public class TagRepositoryImpl implements TagRepository {
         return Optional.ofNullable(tagList.get(0));
     }
 
+    /**
+     * Reads tag with passed name.
+     *
+     * @param name the name of entity to be read
+     * @return tag with passed name
+     */
     @Override
     public Optional<Tag> readByName(String name) {
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, tagRowMapper, name);
@@ -63,11 +84,22 @@ public class TagRepositoryImpl implements TagRepository {
         return Optional.ofNullable(tagList.get(0));
     }
 
+    /**
+     * Reads all tags.
+     *
+     * @return all tags
+     */
     @Override
     public List<Tag> readAll() {
         return jdbcTemplate.query(GET_ALL_TAGS, tagRowMapper);
     }
 
+    /**
+     * Deletes tag with passed id.
+     *
+     * @param id the id of tag to be deleted
+     * @return the number of deleted tags
+     */
     @Override
     public Integer delete(Long id) {
         return jdbcTemplate.update(DELETE_TAG, id);
