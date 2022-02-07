@@ -45,6 +45,8 @@ public interface CertificateRepository extends AbstractRepository<Certificate>{
      * Search all tags
      *
      * @param certificateId certificate id with all tags
+     *
+     * @return All tags by certificate
      */
     List<Tag> readCertificateTags (long certificateId);
 }

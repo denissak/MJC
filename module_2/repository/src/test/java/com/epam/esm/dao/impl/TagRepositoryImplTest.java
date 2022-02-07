@@ -6,7 +6,6 @@ import com.epam.esm.model.Tag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringJUnitConfig(ApplicationConfigurationTest.class)
-    @SqlGroup({@Sql(scripts = "/dropTables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
+@SqlGroup({@Sql(scripts = "/dropTables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
         @Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
         @Sql(scripts = "/data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)})
 public class TagRepositoryImplTest {
@@ -90,4 +89,3 @@ public class TagRepositoryImplTest {
         Assertions.assertEquals(1, actual);
     }
 }
-

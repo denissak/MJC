@@ -4,28 +4,3 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.3.1'
     testImplementation 'com.h2database:h2:1.4.200'
 }
-println System.getProperty("env")
-/*def prodProfiles='prod'
-def devProfiles='dev'
-def testProfiles='test'
-def propertyDrivenProfiles;
-
-if (project.hasProperty('prod')) {
-    propertyDrivenProfiles = prodProfiles
-    System.setProperty('spring.profiles.active', propertyDrivenProfiles) *//*= [
-            'spring.profiles.active': propertyDrivenProfiles
-    ]*//*
-    println systemProperties
-} else if (project.hasProperty('dev')) {
-    propertyDrivenProfiles = devProfiles
-} else {
-    propertyDrivenProfiles = testProfiles
-}
-println project.property('hikaricp')
-println 'Using profile: "' + propertyDrivenProfiles + '" for ' + project.getName()*/
-/*
-
-isProd = System.properties['env'] == 'prod'
-isDev = System.properties['env'] == 'dev'
-*/
-

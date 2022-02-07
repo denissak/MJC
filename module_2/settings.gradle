@@ -2,4 +2,3 @@ rootProject.name = 'module_2'
 include 'repository'
 include 'service'
 include 'api'
-
