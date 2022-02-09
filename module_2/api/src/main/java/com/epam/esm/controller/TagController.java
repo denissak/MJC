@@ -31,9 +31,8 @@ public class TagController {
      * @return tag with passed id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> readTag(@PathVariable long id) {
-        TagDto tagDto = tagService.readById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(tagDto);
+    public TagDto readTagById(@PathVariable long id) {
+        return tagService.readById(id);
     }
 
     /**
@@ -42,7 +41,6 @@ public class TagController {
      * @return all tags
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<TagDto> readsAllTags() {
         return tagService.readAll();
     }
@@ -54,7 +52,6 @@ public class TagController {
      * @return saved tag
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public TagDto createTag(@RequestBody TagDto tagDto) {
         return tagService.create(tagDto);
     }
@@ -65,7 +62,6 @@ public class TagController {
      * @param id the id of tag to be deleted
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
     }

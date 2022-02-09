@@ -29,9 +29,9 @@ public class CertificateController {
      * @return all certificates
      */
     @GetMapping
-    public ResponseEntity<?> readAllCertificates() {
-        List<CertificateDto> certificateDtoList = certificateService.readAll();
-        return ResponseEntity.ok(certificateDtoList);
+    @ResponseStatus(HttpStatus.OK)
+    public List<CertificateDto> readAllCertificates() {
+        return certificateService.readAll();
     }
 
     /**
@@ -41,9 +41,9 @@ public class CertificateController {
      * @return certificate with passed id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> readCertificate(@PathVariable long id) {
-        CertificateDto certificateDto = certificateService.readById(id);
-        return ResponseEntity.ok(certificateDto);
+    @ResponseStatus(HttpStatus.OK)
+    public CertificateDto readCertificate(@PathVariable long id) {
+        return certificateService.readById(id);
     }
 
     /**
@@ -57,12 +57,13 @@ public class CertificateController {
      * @return all certificates from search terms
      */
     @GetMapping("/search")
-    public ResponseEntity<?> readCertificateWithParams(@RequestParam(required = false) String tagValue,
+    @ResponseStatus(HttpStatus.OK)
+    public List<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String tagValue,
                                                        @RequestParam(required = false) String name,
                                                        @RequestParam(required = false) String description,
                                                        @RequestParam(required = false) String sortBy,
                                                        @RequestParam(required = false) String sortOrder) {
-        return ResponseEntity.ok(certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder));
+        return certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
     }
 
     /**
@@ -71,9 +72,9 @@ public class CertificateController {
      * @param certificateDto the certificate to be saved
      */
     @PostMapping
-    public ResponseEntity<?> createCertificate(@RequestBody CertificateDto certificateDto) {
-        certificateService.create(certificateDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public CertificateDto createCertificate(@RequestBody CertificateDto certificateDto) {
+        return certificateService.create(certificateDto);
     }
 
     /**
@@ -83,9 +84,9 @@ public class CertificateController {
      * @param certificateDto the certificate to be saved
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCertificate(@PathVariable long id, @RequestBody CertificateDto certificateDto) {
-        certificateService.update(id, certificateDto);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.OK)
+    public CertificateDto updateCertificate(@PathVariable long id, @RequestBody CertificateDto certificateDto) {
+        return certificateService.update(id, certificateDto);
     }
 
     /**

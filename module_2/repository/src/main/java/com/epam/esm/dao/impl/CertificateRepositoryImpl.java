@@ -63,7 +63,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             PreparedStatement preparedStatement = con.prepareStatement(SAVE_CERTIFICATE, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, certificate.getName());
             preparedStatement.setString(2, certificate.getDescription());
-            preparedStatement.setBigDecimal(3, certificate.getPrice());
+            preparedStatement.setDouble(3, certificate.getPrice());
             preparedStatement.setInt(4, certificate.getDuration());
             preparedStatement.setTimestamp(5, Timestamp.valueOf(certificate.getCreateDate()));
             preparedStatement.setTimestamp(6, Timestamp.valueOf(certificate.getLastUpdateDate()));

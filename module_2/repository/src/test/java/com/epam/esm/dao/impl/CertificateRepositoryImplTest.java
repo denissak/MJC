@@ -45,7 +45,7 @@ public class CertificateRepositoryImplTest {
                 .id(CERTIFICATE_ID_1)
                 .name("cert1")
                 .description("nice")
-                .price(new BigDecimal("5"))
+                .price(5.0)
                 .createDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .lastUpdateDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .duration(90)
@@ -55,7 +55,7 @@ public class CertificateRepositoryImplTest {
                 .id(CERTIFICATE_ID_2)
                 .name("cert2")
                 .description("bad")
-                .price(new BigDecimal("7"))
+                .price(7.0)
                 .createDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .lastUpdateDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .duration(90)
@@ -65,7 +65,7 @@ public class CertificateRepositoryImplTest {
                 .id(CERTIFICATE_ID_3)
                 .name("cert3")
                 .description("bad")
-                .price(new BigDecimal("8"))
+                .price(8.0)
                 .createDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .lastUpdateDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .duration(90)
@@ -75,7 +75,7 @@ public class CertificateRepositoryImplTest {
                 .id(CERTIFICATE_ID_4)
                 .name("cert4")
                 .description("nice")
-                .price(new BigDecimal("50"))
+                .price(50.0)
                 .createDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .lastUpdateDate(LocalDateTime.parse("2022-02-06T00:39:00"))
                 .duration(90)
@@ -145,7 +145,7 @@ public class CertificateRepositoryImplTest {
         certificate.setId(CERTIFICATE_ID_3);
         certificate.setName("cert5");
         certificate.setDescription("wow!");
-        certificate.setPrice(new BigDecimal("100.00"));
+        certificate.setPrice(50.0);
         certificate.setDuration(90);
         certificate.setCreateDate(LocalDateTime.parse("2021-12-14T11:45:11"));
         certificate.setLastUpdateDate(LocalDateTime.parse("2021-12-14T11:45:11"));

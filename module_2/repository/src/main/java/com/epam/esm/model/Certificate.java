@@ -17,7 +17,7 @@ public class Certificate {
     private Long id;
     private String name;
     private String description;
-    private BigDecimal price;
+    private Double price;
     private Integer duration;
     private LocalDateTime lastUpdateDate;
     private LocalDateTime createDate;

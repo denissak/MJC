@@ -58,9 +58,7 @@ public class CertificateServiceImpl implements CertificateService {
         certificateDto.setCreateDate(now);
         certificateDto.setLastUpdateDate(now);
         Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
-        List<Tag> tags = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-        createdCertificate.setTags(tags);
-        addTagsToBase(createdCertificate);
+        addTagsToDataBase(createdCertificate);
         return certificateMapper.convertToCertificateDto(createdCertificate);
     }
 
@@ -134,7 +132,7 @@ public class CertificateServiceImpl implements CertificateService {
         Certificate certificate = certificateMapper.convertToCertificate(currentCertificateDto);
         certificateRepository.update(id, certificate);
         certificate.setTags(responseTags);
-        addTagsToBase(certificate);
+        addTagsToDataBase(certificate);
         return currentCertificateDto;
     }
 
@@ -157,7 +155,7 @@ public class CertificateServiceImpl implements CertificateService {
      *                    create all new tags in database and attach
      *                    them on certificate
      */
-    public void addTagsToBase(Certificate certificate) {
+    public void addTagsToDataBase(Certificate certificate) {
         List<Tag> tagList = certificate.getTags();
         if (tagList != null) {
             for (Tag tag : tagList) {
