@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.impl.CertificateServiceImplTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2022-02-08T08:31:33" hostname="DESKTOP-CE4U664" time="0.922">
+  <properties/>
+  <testcase name="update()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.892"/>
+  <testcase name="testReadByIdWithInvalidId()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.004"/>
+  <testcase name="testDeleteCertificate()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.003"/>
+  <testcase name="testReadCertificateById()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.003"/>
+  <testcase name="testUpdateNotFoundException()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.002"/>
+  <testcase name="testReadAllCertificates()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.003"/>
+  <testcase name="testCreate()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.005"/>
+  <testcase name="readCertificateWithDifferentParams()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

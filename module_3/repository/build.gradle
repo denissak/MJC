@@ -1,0 +1,14 @@
+dependencies {
+//    compileOnly 'org.hibernate:hibernate-jpamodelgen'
+    // https://mvnrepository.com/artifact/org.springframework/spring-orm
+    implementation 'org.springframework:spring-orm:3.0.6.RELEASE'
+
+    implementation 'org.hibernate:hibernate-jpamodelgen'
+    implementation 'com.vladmihalcea:hibernate-types-52:2.12.1'
+ //   implementation 'org.hibernate:hibernate-core:6.0.0.CR1'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.27.Final'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.springframework:spring-jdbc:5.3.15'
+    implementation 'org.postgresql:postgresql'
+    testImplementation 'com.h2database:h2:1.4.200'
+}

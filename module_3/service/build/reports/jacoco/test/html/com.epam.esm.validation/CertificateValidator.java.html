@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CertificateValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.validation</a> &gt; <span class="el_source">CertificateValidator.java</span></div><h1>CertificateValidator.java</h1><pre class="source lang-java linenums">package com.epam.esm.validation;
+
+import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.exception.ValidationException;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+
+@Component
+<span class="nc" id="L10">public class CertificateValidator {</span>
+
+    private static final int MAX_LENGTH_NAME = 40;
+    private static final int MIN_LENGTH_NAME = 1;
+    private static final int MAX_LENGTH_DESCRIPTION = 50;
+    private static final int MAX_DURATION = 366;
+    private static final int MIN_DURATION = 1;
+
+    public static void validate(CertificateDto certificateDto) throws ValidationException {
+<span class="fc" id="L19">        validateName(certificateDto.getName());</span>
+<span class="fc" id="L20">        validateDescription(certificateDto.getDescription());</span>
+<span class="fc" id="L21">        validatePrice(certificateDto.getPrice());</span>
+<span class="fc" id="L22">        validateDuration(certificateDto.getDuration());</span>
+<span class="fc" id="L23">    }</span>
+
+    private static void validateName(String name) throws ValidationException {
+<span class="pc bpc" id="L26" title="3 of 6 branches missed.">        if (name == null || name.length() &lt; MIN_LENGTH_NAME || name.length() &gt; MAX_LENGTH_NAME) {</span>
+<span class="nc" id="L27">            throw new ValidationException(&quot;Incorrect certificate name&quot;);</span>
+        }
+<span class="fc" id="L29">    }</span>
+
+    private static void validateDescription(String description) throws ValidationException {
+<span class="pc bpc" id="L32" title="2 of 4 branches missed.">        if (description == null || description.length() &gt; MAX_LENGTH_DESCRIPTION) {</span>
+<span class="nc" id="L33">            throw new ValidationException(&quot;Incorrect certificate description&quot;);</span>
+        }
+<span class="fc" id="L35">    }</span>
+
+    private static void validatePrice(BigDecimal price) throws ValidationException {
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (price.compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="nc" id="L39">            throw new ValidationException(&quot;Incorrect price&quot;);</span>
+        }
+<span class="fc" id="L41">    }</span>
+
+    private static void validateDuration(int duration) throws ValidationException {
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (duration &lt; MIN_DURATION || duration &gt; MAX_DURATION) {</span>
+<span class="nc" id="L45">            throw new ValidationException(&quot;Incorrect certificate duration&quot;);</span>
+        }
+<span class="fc" id="L47">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.dao.impl.CertificateRepositoryImplTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2022-02-08T08:31:31" hostname="DESKTOP-CE4U664" time="0.223">
+  <properties/>
+  <testcase name="addTag()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.086"/>
+  <testcase name="create()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.036"/>
+  <testcase name="delete()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.018"/>
+  <testcase name="readByName()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.015"/>
+  <testcase name="readById()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.014"/>
+  <testcase name="update()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.018"/>
+  <testcase name="readAll()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.015"/>
+  <testcase name="readCertificateTags()" classname="com.epam.esm.dao.impl.CertificateRepositoryImplTest" time="0.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>
