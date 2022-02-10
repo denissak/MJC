@@ -28,9 +28,6 @@ public class ApplicationConfiguration {
         this.environment = environment;
     }
 
-    public static final String HIKARI_CONFIG_FILE_PATH = "/hikaricp.properties";
-
-
     @Bean
     public NamedParameterJdbcOperations operations() {
         return new NamedParameterJdbcTemplate(dataSource());
