@@ -1,0 +1,14 @@
+plugins {
+    id 'jacoco'
+}
+
+dependencies {
+
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+    implementation project(':repository')
+    implementation 'org.springframework:spring-tx:5.3.15'
+}
+
+test.finalizedBy jacocoTestReport
+jacocoTestReport.dependsOn test
