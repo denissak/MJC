@@ -3,7 +3,7 @@ VALUES ('cert1', 'nice', 5, 90, '2022-02-06T00:39:00', '2022-02-06T00:39:00'),
        ('cert2', 'bad', 7, 90, '2022-02-06T00:39:00','2022-02-06T00:39:00'),
        ('cert3', 'bad', 8, 90, '2022-02-06T00:39:00', '2022-02-06T00:39:00');
 
-INSERT INTO tagEntity (name)
+INSERT INTO tag (name)
 VALUES ('tag1'),
        ('tag2'),
        ('tag3');

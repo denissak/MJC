@@ -15,7 +15,7 @@ CREATE TABLE gift_certificate
     last_update_date TIMESTAMP
 );
 
-CREATE TABLE tagEntity
+CREATE TABLE tag
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(40) NOT NULL

@@ -1,6 +1,5 @@
 package com.epam.esm.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;

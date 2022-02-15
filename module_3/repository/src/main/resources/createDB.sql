@@ -2,7 +2,24 @@ DROP TABLE gift_certificate_m2m_tag;
 DROP TABLE tag;
 DROP TABLE gift_certificate;
 
+CREATE TABLE users
+(
+    id    BIGSERIAL PRIMARY KEY,
+    login VARCHAR(40) NOT NULL
+);
 
+DROP TABLE orders;
+CREATE TABLE orders
+(
+    id             BIGSERIAL PRIMARY KEY,
+    name           VARCHAR(40) NOT NULL,
+    cost           NUMERIC     NOT NULL,
+    date           TIMESTAMP   NOT NULL,
+    user_id        BIGINT      NOT NULL,
+    certificate_id BIGINT      NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
+    FOREIGN KEY (certificate_id) REFERENCES users (id) ON DELETE SET NULL
+);
 
 CREATE TABLE gift_certificate
 (
@@ -15,7 +32,7 @@ CREATE TABLE gift_certificate
     last_update_date TIMESTAMP
 );
 
-CREATE TABLE tagEntity
+CREATE TABLE tag
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(40) NOT NULL
@@ -26,14 +43,15 @@ CREATE TABLE gift_certificate_m2m_tag
     gift_certificate_id BIGINT NOT NULL,
     tag_id              BIGINT NOT NULL,
     PRIMARY KEY (gift_certificate_id, tag_id),
-        FOREIGN KEY (gift_certificate_id)
+    FOREIGN KEY (gift_certificate_id)
         REFERENCES gift_certificate (id)
         ON DELETE CASCADE
         ON UPDATE NO ACTION,
-        FOREIGN KEY (tag_id)
-            REFERENCES tag (id)
-            ON DELETE CASCADE
-            ON UPDATE NO ACTION)
+    FOREIGN KEY (tag_id)
+        REFERENCES tag (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+)
 ;
 
 INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date)

@@ -29,7 +29,7 @@ CREATE TABLE gift_certificate_m2m_tag
             ON UPDATE NO ACTION,
     CONSTRAINT tag_fk
         FOREIGN KEY (tag_id)
-            REFERENCES tagEntity (id)
+            REFERENCES tag (id)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 );
