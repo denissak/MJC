@@ -49,8 +49,8 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto create(CertificateDto certificateDto) {
-        Optional<CertificateEntity> certificate = certificateRepository.readByName(certificateDto.getName());
-        if (certificate.isPresent()) {
+        CertificateEntity certificate = certificateRepository.readByName(certificateDto.getName());
+        if (certificate != null) {
             throw DuplicateException.certificateExists().get();
         }
         CertificateValidator.validate(certificateDto);
@@ -73,7 +73,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public CertificateDto readById(Long certificateId) {
         Optional<CertificateEntity> certificate = certificateRepository.readById(certificateId);
-        certificate.ifPresent(actualCertificate -> actualCertificate.setTagEntities(certificateRepository.readCertificateTags(certificateId)));
+//        certificate.ifPresent(actualCertificate -> actualCertificate.setTagEntities(certificateRepository.readCertificateTags(certificateId)));
         return certificateMapper.convertToCertificateDto(certificate.orElseThrow(NotFoundException.notFoundWithCertificateId(certificateId)));
     }
 
@@ -87,10 +87,16 @@ public class CertificateServiceImpl implements CertificateService {
         List<CertificateEntity> certificateEntities = certificateRepository.readAll();
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
             certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
         }
         return certificateDtoList;
+//        List<CertificateEntity> certificateEntities = certificateRepository.readAll();
+//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
+//        for (CertificateEntity certificateEntity : certificateEntities) {
+//            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
+//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
+//        }
+//        return certificateDtoList;
     }
 
     /**
@@ -108,7 +114,7 @@ public class CertificateServiceImpl implements CertificateService {
         List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
+//            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
             certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
         }
         return certificateDtoList;
@@ -154,15 +160,20 @@ public class CertificateServiceImpl implements CertificateService {
      * on certificate.
      *
      * @param certificateEntity certificate which need read all tagEntities,
-     *                    create all new tagEntities in database and attach
-     *                    them on certificate
+     *                          create all new tagEntities in database and attach
+     *                          them on certificate
      */
     public void addTagsToBase(CertificateEntity certificateEntity) {
         List<TagEntity> tagEntityList = certificateEntity.getTagEntities();
         if (tagEntityList != null) {
             for (TagEntity tagEntity : tagEntityList) {
-                Optional<TagEntity> existedTag = tagRepository.readByName(tagEntity.getName());
-                Long tagId = existedTag.map(TagEntity::getId).orElseGet(() -> tagRepository.create(tagEntity).getId());
+                TagEntity existedTag = tagRepository.readByName(tagEntity.getName());
+                Long tagId;
+                if (existedTag == null) {
+                    tagId = tagRepository.create(tagEntity).getId();
+                } else {
+                    tagId = existedTag.getId();
+                }
                 certificateRepository.addTag(tagId, certificateEntity.getId());
             }
         }

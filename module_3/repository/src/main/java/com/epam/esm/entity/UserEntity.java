@@ -20,6 +20,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private List<OrderEntity> orders;
 }

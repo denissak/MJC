@@ -33,7 +33,7 @@ public interface AbstractRepository<T> {
      * @param name the name of entity to be read
      * @return entity with passed name
      */
-    Optional<T> readByName(String name);
+    T readByName(String name);
 
     /**
      * Reads all entities according to passed parameters.

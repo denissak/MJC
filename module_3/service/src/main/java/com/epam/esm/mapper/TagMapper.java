@@ -13,5 +13,6 @@ public interface TagMapper {
 
     TagDto convertToTagDto(TagEntity tagEntity);
 
+
     TagEntity convertToTag(TagDto tagDto);
 }

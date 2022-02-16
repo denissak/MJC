@@ -72,7 +72,7 @@ public class TagEntityRepositoryImplTest {
 
     @Test
     void readByName() {
-        Optional<TagEntity> actual = tagRepository.readByName(TAG_NAME);
+        TagEntity actual = tagRepository.readByName(TAG_NAME);
         Assertions.assertEquals(Optional.of(tagEntity2), actual);
     }
 

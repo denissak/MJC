@@ -79,13 +79,17 @@ public class TagRepositoryImpl implements TagRepository {
      * @return tag with passed name
      */
     @Override
-    public Optional<TagEntity> readByName(String name) {
+    public TagEntity readByName(String name) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
         Root<TagEntity> tagEntity = criteria.from(TagEntity.class);
         criteria.select(tagEntity)
                 .where(cb.equal(tagEntity.get("name"), name));
-        return Optional.ofNullable(entityManager.createQuery(criteria).getResultList().get(0));
+        List<TagEntity> resultList = entityManager.createQuery(criteria).getResultList();
+        if (resultList.size() > 0){
+            return resultList.get(0);
+        }else
+        return null;
     }
 
     /**

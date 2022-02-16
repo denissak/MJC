@@ -101,7 +101,7 @@ public class CertificateEntityServiceImplTest {
         when(certificateRepository.create(any())).thenReturn(certificateEntity);
         when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
         when(tagRepository.create(any())).thenReturn(tagEntity);
-        when(tagRepository.readByName(any())).thenReturn(Optional.empty());
+        when(tagRepository.readByName(any())).thenReturn(null);
         CertificateDto actual = certificateServiceImpl.create(expected);
         assertEquals(expected, actual);
         verify(certificateRepository).create(any());
@@ -143,7 +143,7 @@ public class CertificateEntityServiceImplTest {
     @Test
     void testDeleteCertificate() {
         when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(Optional.of(certificateEntity));
-        when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
+//        when(certificateRepository.delete(CERTIFICATE_ID_1)).thenReturn(1);
         certificateServiceImpl.delete(CERTIFICATE_ID_1);
         verify(certificateRepository).delete(CERTIFICATE_ID_1);
     }
@@ -167,7 +167,7 @@ public class CertificateEntityServiceImplTest {
         certificateRepository.update(anyLong(), any());
         when(certificateRepository.readById(anyLong())).thenReturn(Optional.of(certificateEntity));
         when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
-        when(tagRepository.readByName(any())).thenReturn(Optional.empty());
+        when(tagRepository.readByName(any())).thenReturn(null);
         when(tagRepository.create(any())).thenReturn(tagEntity);
         when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(Optional.of(certificateEntity));
         tagRepository.readById(TAG_ID_1);

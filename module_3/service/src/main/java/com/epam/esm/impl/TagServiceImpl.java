@@ -42,14 +42,15 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto create(TagDto tagDto) {
-        Optional<TagEntity> tag = tagRepository.readByName(tagDto.getName());
-        if (tag.isPresent()) {
-            throw (DuplicateException) DuplicateException.tagExists();
+        TagEntity tag = tagRepository.readByName(tagDto.getName());
+        if (tag != null) {
+            throw DuplicateException.tagExists().get();
         }
         TagValidator.validate(tagDto);
-        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
-        tagRepository.create(tagMapper.convertToTag(tagDto));
-        return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
+//        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
+        TagEntity tagEntity = tagRepository.create(tagMapper.convertToTag(tagDto));
+        return tagMapper.convertToTagDto(tagEntity);
+//        return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
     }
 
     /**

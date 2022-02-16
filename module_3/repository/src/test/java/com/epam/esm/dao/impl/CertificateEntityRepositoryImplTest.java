@@ -114,7 +114,7 @@ public class CertificateEntityRepositoryImplTest {
 
     @Test
     void readByName() {
-        Optional<CertificateEntity> actual = certificateRepository.readByName(CERTIFICATE_NAME);
+        CertificateEntity actual = certificateRepository.readByName(CERTIFICATE_NAME);
         Assertions.assertEquals(Optional.of(certificateEntity1), actual);
     }
 

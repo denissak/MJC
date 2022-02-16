@@ -79,12 +79,12 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return will return the tagEntities belonging to the certificate
      */
     @Override
-    public List<TagEntity> readCertificateTags(long certificateId) {
+    public List<TagEntity> readCertificateTags(long certificateId) {//TODO
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
         Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
         var certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
-        criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id),certificateId));
+        criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id), certificateId));
 
 
 
@@ -121,13 +121,17 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return certificate with passed name
      */
     @Override
-    public Optional<CertificateEntity> readByName(String name) {
+    public CertificateEntity readByName(String name) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         criteria.select(certificateEntityRoot)
                 .where(cb.equal(certificateEntityRoot.get("name"), name));
-        return Optional.ofNullable(entityManager.createQuery(criteria).getResultList().get(0));
+        List<CertificateEntity> certificateEntityList = entityManager.createQuery(criteria).getResultList();
+        if (certificateEntityList.size() > 0) {
+            return certificateEntityList.get(0);
+        } else
+            return null;
     }
 
     /**
@@ -195,9 +199,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      *                          values to be set
      */
     @Override
-    public void update(long id, CertificateEntity certificateEntity) {
-        CertificateEntity certificate = entityManager.find(CertificateEntity.class, id);
-        entityManager.merge(certificate);
+    public void update(long id, CertificateEntity certificateEntity) { //TODO UPDATE WITH NEW TAG CRASH
+        // CertificateEntity certificate = entityManager.find(CertificateEntity.class, id);
+        entityManager.merge(certificateEntity);
 /*        jdbcTemplate.update(UPDATE_CERTIFICATE,
                 certificateEntity.getName(),
                 certificateEntity.getDescription(),
