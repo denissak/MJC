@@ -1,6 +1,8 @@
 DROP TABLE gift_certificate_m2m_tag;
 DROP TABLE tag;
 DROP TABLE gift_certificate;
+DROP TABLE orders;
+DROP TABLE order_certificate_m2m;
 
 CREATE TABLE users
 (
@@ -51,8 +53,23 @@ CREATE TABLE gift_certificate_m2m_tag
         REFERENCES tag (id)
         ON DELETE CASCADE
         ON UPDATE NO ACTION
-)
-;
+);
+
+
+CREATE TABLE order_certificate_m2m
+(
+    id BIGSERIAL PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    certificate_id BIGINT NOT NULL,
+        FOREIGN KEY (order_id)
+        REFERENCES orders (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (certificate_id)
+        REFERENCES gift_certificate (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);
 
 INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date)
 VALUES ('cert1', 'nice', 5, 90, now(), now()),

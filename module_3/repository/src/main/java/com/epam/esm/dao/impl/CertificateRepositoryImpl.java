@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Contains methods implementation for working mostly with
@@ -78,7 +77,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
         Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
-        var certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
+        Join<TagEntity, CertificateEntity> certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
         criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id), certificateId));
 
 

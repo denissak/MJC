@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "name")
-@ToString(exclude = "tagEntities")
+@ToString(exclude = {"tagEntities","orderCertificateEntityList"})
 @Builder
 @Entity
 @Table(name = "gift_certificate")
@@ -33,4 +33,6 @@ public class CertificateEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<TagEntity> tagEntities;
+    @OneToMany(mappedBy = "certificateEntity")
+    private List<OrderCertificateEntity> orderCertificateEntityList;
 }

@@ -2,9 +2,6 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.entity.TagEntity;
-import com.epam.esm.mapper.TagRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +11,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Contains methods implementation for working mostly with {@code Tag}
@@ -25,21 +21,6 @@ public class TagRepositoryImpl implements TagRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-//    private static final String GET_TAG_BY_NAME = "SELECT * FROM tag WHERE name = ?";
-//    private static final String GET_TAG_BY_ID = "SELECT * FROM tag WHERE id = %s";
-//    private static final String GET_ALL_TAGS = "SELECT * FROM tag";
-//    private static final String SAVE_TAG = "INSERT INTO tag (name) VALUES (?)";
-//    private static final String DELETE_TAG = "DELETE FROM tag WHERE id = ?";
-//    private JdbcTemplate jdbcTemplate;
-//    private TagRowMapper tagRowMapper;
-//
-//
-//    @Autowired
-//    public TagRepositoryImpl(JdbcTemplate jdbcTemplate, TagRowMapper tagRowMapper) {
-//        this.jdbcTemplate = jdbcTemplate;
-//        this.tagRowMapper = tagRowMapper;
-//    }
 
     /**
      * Saves the passed tag.
@@ -113,7 +94,6 @@ public class TagRepositoryImpl implements TagRepository {
      * Deletes tag with passed id.
      *
      * @param id the id of tag to be deleted
-     * @return the number of deleted tagEntities
      */
     @Override
     public void delete(Long id) {
