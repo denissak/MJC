@@ -25,7 +25,7 @@ public interface AbstractRepository<T> {
      * @param id the id of entity to be read
      * @return entity with passed id
      */
-    Optional<T> readById(Long id);
+    T readById(Long id);
 
     /**
      * Reads entity with passed name.

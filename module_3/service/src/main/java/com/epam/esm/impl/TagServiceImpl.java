@@ -61,8 +61,11 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto readById(Long tagId) {
-        Optional<TagEntity> tag = tagRepository.readById(tagId);
-        return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));
+        TagEntity tag = tagRepository.readById(tagId);
+        if (tag == null){
+            throw NotFoundException.notFoundWithTagId(tagId).get();
+        }
+        return tagMapper.convertToTagDto(tag);
     }
 
     /**

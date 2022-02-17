@@ -11,16 +11,11 @@ import com.epam.esm.mapper.TagRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.*;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,16 +29,16 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
-    private static final String GET_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name = ?";
-    private static final String GET_ALL_CERTIFICATES = "SELECT * FROM gift_certificate";
-    private static final String GET_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT id, name FROM tag t JOIN gift_certificate_m2m_tag m2m " +
-            "ON t.id=m2m.tag_id WHERE gift_certificate_id = :certificate_id";
-    private static final String SAVE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, price, duration," +
-            " create_date, last_update_date) VALUES (?,?,?,?,?,?)";
-    private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
-            "duration = ?, create_date = ?, last_update_date = ? WHERE id = ?";
-    private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
+//    private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
+//    private static final String GET_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name = ?";
+//    private static final String GET_ALL_CERTIFICATES = "SELECT * FROM gift_certificate";
+//    private static final String GET_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT id, name FROM tag t JOIN gift_certificate_m2m_tag m2m " +
+//            "ON t.id=m2m.tag_id WHERE gift_certificate_id = :certificate_id";
+//    private static final String SAVE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, price, duration," +
+//            " create_date, last_update_date) VALUES (?,?,?,?,?,?)";
+//    private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
+//            "duration = ?, create_date = ?, last_update_date = ? WHERE id = ?";
+//    private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 
@@ -105,13 +100,17 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return certificate with passed id
      */
     @Override
-    public Optional<CertificateEntity> readById(Long id) {
+    public CertificateEntity readById(Long id) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         criteria.select(certificateEntityRoot)
                 .where(cb.equal(certificateEntityRoot.get("id"), id));
-        return Optional.ofNullable(entityManager.createQuery(criteria).getResultList().get(0));
+        List<CertificateEntity> certificateEntityList = entityManager.createQuery(criteria).getResultList();
+        if (certificateEntityList.size() > 0) {
+            return certificateEntityList.get(0);
+        } else
+            return null;
     }
 
     /**
@@ -178,7 +177,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * Deletes certificate with passed id.
      *
      * @param id the id of entity to be deleted
-     * @return the number of deleted entities
      */
     @Override
     public void delete(Long id) {

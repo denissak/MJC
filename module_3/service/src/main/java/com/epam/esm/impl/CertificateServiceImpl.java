@@ -72,9 +72,12 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public CertificateDto readById(Long certificateId) {
-        Optional<CertificateEntity> certificate = certificateRepository.readById(certificateId);
+       CertificateEntity certificate = certificateRepository.readById(certificateId);
+        if (certificate == null){
+            throw NotFoundException.notFoundWithCertificateId(certificateId).get();
+        }
 //        certificate.ifPresent(actualCertificate -> actualCertificate.setTagEntities(certificateRepository.readCertificateTags(certificateId)));
-        return certificateMapper.convertToCertificateDto(certificate.orElseThrow(NotFoundException.notFoundWithCertificateId(certificateId)));
+        return certificateMapper.convertToCertificateDto(certificate);
     }
 
     /**
@@ -202,8 +205,12 @@ public class CertificateServiceImpl implements CertificateService {
      * @param certificateDto certificate which need to check
      */
     private CertificateDto checkFields(CertificateDto certificateDto) {
-        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())
-                .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));
+        CertificateDto certificateInBase =certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId()));
+        if (certificateInBase == null){
+            throw NotFoundException.notFoundWithCertificateId(certificateDto.getId()).get();
+        }
+//        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())
+//                .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));
 
         if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) && certificateDto.getName() != null) {
             certificateInBase.setName(certificateDto.getName());
