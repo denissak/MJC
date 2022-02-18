@@ -14,6 +14,11 @@ public class DuplicateException extends RuntimeException {
         return () -> new DuplicateException(message);
     }
 
+    public static Supplier<DuplicateException> userExists() {
+        String message = "User already exists";
+        return () -> new DuplicateException(message);
+    }
+
     public DuplicateException(String message) {
         super(message);
     }

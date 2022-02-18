@@ -26,6 +26,16 @@ public class NotFoundException extends RuntimeException {
         return () -> new NotFoundException(message);
     }
 
+    public static Supplier<NotFoundException> notFoundWithUserId(long id) {
+        String message = String.format("There is no user with id = %s", id);
+        return () -> new NotFoundException(message, id);
+    }
+
+    public static Supplier<NotFoundException> notFoundUser() {
+        String message = "User not found";
+        return () -> new NotFoundException(message);
+    }
+
     public NotFoundException(String message) {
         super(message);
     }

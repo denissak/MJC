@@ -87,3 +87,9 @@ VALUES (1, 1),
        (1, 2),
        (1, 3),
        (2, 1);
+
+INSERT INTO users (login)
+VALUES ('user1'),
+       ('user2'),
+       ('user3'),
+       ('user4');
