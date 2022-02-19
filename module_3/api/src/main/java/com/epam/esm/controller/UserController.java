@@ -22,16 +22,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> readUserById(@PathVariable long id) {
-        UserDto userDto = userService.readById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto readById(@PathVariable long id) {
+        return userService.readById(id);
     }
 
-    @GetMapping("/{login}")
-    public ResponseEntity<UserDto> readUserByName(@PathVariable String login) {
-        UserDto userDto = userService.readByLogin(login);
-        return ResponseEntity.status(HttpStatus.OK).body(userDto);
-    }
+/*    @GetMapping("/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto readByName(@PathVariable String login) {
+        return userService.readByLogin(login);
+    }*/
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

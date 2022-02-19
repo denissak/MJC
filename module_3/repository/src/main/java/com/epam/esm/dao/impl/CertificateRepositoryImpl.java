@@ -66,31 +66,31 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return certificateEntity;
     }
 
-    /**
-     * Reads certificate tagEntities with passed id.
-     *
-     * @param certificateId the id of certificate to be read
-     * @return will return the tagEntities belonging to the certificate
-     */
-    @Override
-    public List<TagEntity> readCertificateTags(long certificateId) {//TODO
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
-        Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
-        Join<TagEntity, CertificateEntity> certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
-        criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id), certificateId));
-
-
-
-/*        var resultList = entityManager.createQuery("SELECT t.id, t.name FROM TagEntity t join fetch CertificateEntity c on c.id= :certId", TagEntity.class)
-                .setParameter("certId",certificateId)
-                .getResultList();*/
-/*        var resultList= entityManager.createQuery(GET_ALL_TAGS_BY_CERTIFICATE_ID, TagEntity.class)
-                .setParameter("certificate_id",certificateId)
-                .getResultList();*/
-//        return resultList;
-        return entityManager.createQuery(criteria).getResultList();
-    }
+//    /**
+//     * Reads certificate tagEntities with passed id.
+//     *
+//     * @param certificateId the id of certificate to be read
+//     * @return will return the tagEntities belonging to the certificate
+//     */
+//    @Override
+//    public List<TagEntity> readCertificateTags(long certificateId) {//TODO
+//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
+//        Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
+//        Join<TagEntity, CertificateEntity> certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
+//        criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id), certificateId));
+//
+//
+//
+///*        var resultList = entityManager.createQuery("SELECT t.id, t.name FROM TagEntity t join fetch CertificateEntity c on c.id= :certId", TagEntity.class)
+//                .setParameter("certId",certificateId)
+//                .getResultList();*/
+///*        var resultList= entityManager.createQuery(GET_ALL_TAGS_BY_CERTIFICATE_ID, TagEntity.class)
+//                .setParameter("certificate_id",certificateId)
+//                .getResultList();*/
+////        return resultList;
+//        return entityManager.createQuery(criteria).getResultList();
+//    }
 
     /**
      * Reads certificate with passed id.

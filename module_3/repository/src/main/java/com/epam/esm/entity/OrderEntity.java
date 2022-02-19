@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "orderCertificateEntityList")
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"certificateEntity", "userEntity"})
 @Builder
 @Entity
 @Table(name = "orders")
@@ -20,9 +21,16 @@ public class OrderEntity {
     private Long id;
     private Double cost;
     private LocalDateTime date;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @Builder.Default
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
-    @OneToMany(mappedBy = "orderEntity")
-    private List<OrderCertificateEntity> orderCertificateEntityList;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @Builder.Default
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "certificate_id")
+    private CertificateEntity certificateEntity;
 }

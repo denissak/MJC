@@ -1,9 +1,6 @@
 package com.epam.esm.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +8,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"userDto", "certificateDto"})
 public class OrderDto {
     private Long id;
     private Double cost;
     private LocalDateTime date;
+    private UserDto userDto;
+    private CertificateDto certificateDto;
 }

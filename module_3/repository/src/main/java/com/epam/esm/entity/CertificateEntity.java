@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "name")
-@ToString(exclude = {"tagEntities","orderCertificateEntityList"})
+@ToString(exclude = {"tagEntities","orders"})
 @Builder
 @Entity
 @Table(name = "gift_certificate")
@@ -26,6 +26,8 @@ public class CertificateEntity {
     private LocalDateTime lastUpdateDate;
     private LocalDateTime createDate;
 //    @Builder.Default
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "gift_certificate_m2m_tag",
@@ -33,6 +35,9 @@ public class CertificateEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<TagEntity> tagEntities;
-    @OneToMany(mappedBy = "certificateEntity")
-    private List<OrderCertificateEntity> orderCertificateEntityList;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @Builder.Default
+    @OneToMany(mappedBy = "certificateEntity", fetch = FetchType.LAZY)
+    private List<OrderEntity> orders;
 }

@@ -42,12 +42,12 @@ public interface CertificateRepository extends AbstractRepository<CertificateEnt
      */
     List<CertificateEntity> readCertificateWithDifferentParams (String tagValue, String name, String description, String sortBy, String sortOrder);
 
-    /**
-     * Search all tags
-     *
-     * @param certificateId certificate id with all tags
-     *
-     * @return All tags by certificate
-     */
-    List<TagEntity> readCertificateTags (long certificateId);
+//    /**
+//     * Search all tags
+//     *
+//     * @param certificateId certificate id with all tags
+//     *
+//     * @return All tags by certificate
+//     */
+//    List<TagEntity> readCertificateTags (long certificateId);
 }
