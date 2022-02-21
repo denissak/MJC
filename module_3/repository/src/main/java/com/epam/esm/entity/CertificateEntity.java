@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "name")
-@ToString(exclude = {"tagEntities","orders"})
+@EqualsAndHashCode(exclude = {"tagEntities","orderCertificateEntityList"})
+@ToString(exclude = {"tagEntities","orderCertificateEntityList"})
 @Builder
 @Entity
 @Table(name = "gift_certificate")
@@ -39,5 +39,5 @@ public class CertificateEntity {
 //    @ToString.Exclude
 //    @Builder.Default
     @OneToMany(mappedBy = "certificateEntity", fetch = FetchType.LAZY)
-    private List<OrderEntity> orders;
+    private List<OrderCertificateEntity> orderCertificateEntityList;
 }

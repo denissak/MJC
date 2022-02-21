@@ -36,6 +36,16 @@ public class NotFoundException extends RuntimeException {
         return () -> new NotFoundException(message);
     }
 
+    public static Supplier<NotFoundException> notFoundWithOrderId(long id) {
+        String message = String.format("There is no order with id = %s", id);
+        return () -> new NotFoundException(message, id);
+    }
+
+    public static Supplier<NotFoundException> notFoundOrder() {
+        String message = "Order not found";
+        return () -> new NotFoundException(message);
+    }
+
     public NotFoundException(String message) {
         super(message);
     }

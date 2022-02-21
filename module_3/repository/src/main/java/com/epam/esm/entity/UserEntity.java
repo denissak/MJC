@@ -22,6 +22,6 @@ public class UserEntity {
 /*    @EqualsAndHashCode.Exclude
     @ToString.Exclude*/
 //    @Builder.Default
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    private List<OrderEntity> orders;
+//    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+//    private List<OrderEntity> orderEntityList;
 }

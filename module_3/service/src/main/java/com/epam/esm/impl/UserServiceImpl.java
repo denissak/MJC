@@ -3,12 +3,9 @@ package com.epam.esm.impl;
 import com.epam.esm.UserService;
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dao.UserRepository;
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.UserDto;
-import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.NotFoundException;
-import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +19,12 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     OrderRepository orderRepository;
     UserMapper userMapper;
-    OrderMapper orderMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository, UserMapper userMapper, OrderMapper orderMapper) {
+    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.userMapper = userMapper;
-        this.orderMapper = orderMapper;
     }
 
     @Override

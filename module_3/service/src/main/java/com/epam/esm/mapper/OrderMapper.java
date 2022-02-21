@@ -1,26 +1,43 @@
 package com.epam.esm.mapper;
 
+import com.epam.esm.dao.OrderRepository;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.entity.UserEntity;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CertificateMapper.class})
-public interface OrderMapper {
+public class OrderMapper {
 
-    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
+    private final OrderRepository orderRepository;
+    private final UserMapper userMapper;
+    private final CertificateMapper certificateMapper;
 
-        @Mapping(source = "userEntity", target = "userDto")
-        @Mapping(source = "certificateEntity", target = "certificateDto")
-    OrderDto convertToOrderDto(OrderEntity orderEntity);
+    @Autowired
+    public OrderMapper(OrderRepository orderRepository, UserMapper userMapper, CertificateMapper certificateMapper) {
+        this.orderRepository = orderRepository;
+        this.userMapper = userMapper;
+        this.certificateMapper = certificateMapper;
+    }
 
-        @InheritInverseConfiguration
-    //  @Mapping(target = "orders", ignore = true)
-    OrderEntity convertToOrder(OrderDto orderDto);
+    public OrderDto convertToOrderDTO(OrderEntity orderEntity){
+        List<CertificateDto> certificateDtoList = new ArrayList<>();
+        orderEntity.getOrderCertificateEntityList().forEach(orderCertificateEntity ->
+                certificateDtoList.add(certificateMapper.convertToCertificateDto(orderCertificateEntity.getCertificateEntity()))
+        );
+        return OrderDto.builder()
+                .id(orderEntity.getId())
+                .cost(orderEntity.getCost())
+                .date(orderEntity.getDate())
+                .userDto(new UserDto(orderEntity.getUserEntity().getId(), orderEntity.getUserEntity().getLogin()))
+                .certificateDto(certificateDtoList)
+                .build();
+    }
+
 }

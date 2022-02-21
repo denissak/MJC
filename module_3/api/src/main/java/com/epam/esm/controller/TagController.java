@@ -41,11 +41,11 @@ public class TagController {
      *
      * @return all tagEntities
      */
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<TagDto> readsAllTags() {
-        return tagService.readAll();
-    }
+        @GetMapping
+        @ResponseStatus(HttpStatus.OK)
+        public List<TagDto> readsAllTags() {
+            return tagService.readAll();
+        }
 
     /**
      * Creates and saves the passed tag.
