@@ -12,16 +12,43 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+
 @Repository
 public class OrderRepositoryImpl implements OrderRepository {
+
+    private static final String ORDER_SAVE = "INSERT INTO orders (name, cost, date, user_id) VALUES (?,?,?,?)";
+    private static final String ORDER_CERTIFICATE_SAVE = "INSERT INTO order_certificate_m2m (order_id, certificate_id) VALUES (?,?)";
+    private static final String VALUES = ", (?,?)";
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public OrderEntity create(OrderEntity model) {
-        entityManager.persist(model);
-        return model;
+    public OrderEntity create(OrderEntity orderEntity) {
+//        String query = String.format(ORDER_SAVE, model.getName(), 66, model.getDate(), model.getUserEntity().getId());
+        /*List<OrderEntity> orderEntityList = *//*entityManager.createNativeQuery(ORDER_SAVE)
+                .setParameter(1, model.getName())
+                .setParameter(2, model.getCost())
+                .setParameter(3, model.getDate())
+                .setParameter(4, model.getUserEntity().getId()).executeUpdate();*/
+        entityManager.persist(orderEntity);
+        return orderEntity;
+    }
+
+    @Override
+    public void setCertificatesOnOrder(Long orderId, Long certificateId) {
+        /*StringBuilder query = new StringBuilder();
+        query.append(ORDER_CERTIFICATE_SAVE);
+        int certificateSize = orderEntity.getOrderCertificateEntityList().size();
+        if (certificateSize > 1) {
+            for (int i = 1; i > certificateSize; i++) {
+                query.append(VALUES);
+            }
+        }
+        String.format(TAG_CONDITION, i, i, i, i, i)*/
+        entityManager.createNativeQuery(ORDER_CERTIFICATE_SAVE)
+                .setParameter(1, orderId)
+                .setParameter(2, certificateId)/*.executeUpdate()*/;
     }
 
     @Override
@@ -68,7 +95,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot);
         Join<OrderEntity, UserEntity> users = orderEntityRoot.join(OrderEntity_.userEntity);
-        criteria.select(orderEntityRoot).where(cb.equal(users.get(UserEntity_.id),userId));
+        criteria.select(orderEntityRoot).where(cb.equal(users.get(UserEntity_.id), userId));
         return entityManager.createQuery(criteria).getResultList();
     }
 

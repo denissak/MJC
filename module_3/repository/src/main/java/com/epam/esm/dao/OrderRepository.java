@@ -7,4 +7,6 @@ import java.util.List;
 public interface OrderRepository extends AbstractRepository<OrderEntity>{
 
     List<OrderEntity> readAllOrdersByUserId (long userId);
+
+    void setCertificatesOnOrder(Long orderId, Long certificateId);
 }

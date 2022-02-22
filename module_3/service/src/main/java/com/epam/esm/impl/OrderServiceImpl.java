@@ -4,6 +4,7 @@ import com.epam.esm.OrderService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dao.UserRepository;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.entity.OrderEntity;
 import com.epam.esm.entity.TagEntity;
@@ -61,6 +62,9 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
         orderRepository.create(orderEntity);
+        for (CertificateDto certificateDto: orderDto.getCertificateDto()) {
+            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
+        }
 //        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
 //        OrderEntity orderEntity = orderRepository.create(orderMapper.convertToTag(tagDto));
 //        return tagMapper.convertToTagDto(tagEntity);
