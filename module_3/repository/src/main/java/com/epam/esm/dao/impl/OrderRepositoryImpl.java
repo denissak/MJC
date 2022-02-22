@@ -44,7 +44,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot)
-                .where(cb.equal(orderEntityRoot.get("login"), name));
+                .where(cb.equal(orderEntityRoot.get("name"), name));
         List<OrderEntity> orderEntityList = entityManager.createQuery(criteria).getResultList();
         if (orderEntityList.size() > 0) {
             return orderEntityList.get(0);

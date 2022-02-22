@@ -12,6 +12,7 @@ import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.UserMapper;
+import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.OrderValidator;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +34,19 @@ public class OrderServiceImpl implements OrderService {
     OrderMapper orderMapper;
     UserMapper userMapper;
     CertificateMapper certificateMapper;
+    DateTimeWrapper dateTimeWrapper;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository,
                             CertificateRepository certificateRepository, OrderMapper orderMapper,
-                            UserMapper userMapper, CertificateMapper certificateMapper) {
+                            UserMapper userMapper, CertificateMapper certificateMapper, DateTimeWrapper dateTimeWrapper) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.certificateRepository = certificateRepository;
         this.orderMapper = orderMapper;
         this.userMapper = userMapper;
         this.certificateMapper = certificateMapper;
+        this.dateTimeWrapper = dateTimeWrapper;
     }
 
     @Override
@@ -53,6 +57,10 @@ public class OrderServiceImpl implements OrderService {
             throw DuplicateException.tagExists().get();
         }
         OrderValidator.validate(orderDto);
+        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+        orderDto.setDate(now);
+        OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
+        orderRepository.create(orderEntity);
 //        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
 //        OrderEntity orderEntity = orderRepository.create(orderMapper.convertToTag(tagDto));
 //        return tagMapper.convertToTagDto(tagEntity);

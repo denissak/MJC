@@ -1,7 +1,6 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.CertificateEntity;
-import com.epam.esm.entity.TagEntity;
 
 import java.util.List;
 
@@ -41,13 +40,4 @@ public interface CertificateRepository extends AbstractRepository<CertificateEnt
      * @return all certificates from search terms
      */
     List<CertificateEntity> readCertificateWithDifferentParams (String[] tagValue, String name, String description, String sortBy, String sortOrder);
-
-//    /**
-//     * Search all tags
-//     *
-//     * @param certificateId certificate id with all tags
-//     *
-//     * @return All tags by certificate
-//     */
-//    List<TagEntity> readCertificateTags (long certificateId);
 }

@@ -42,7 +42,7 @@ public class Search {
 
         if (tagName.length != 0) {
             for (int i = 0; i < tagName.length; i++) {
-                query.append(String.format(TAG_CONDITION, i, i, i, i, i/*, i, tagName[i]*/));
+                query.append(String.format(TAG_CONDITION, i, i, i, i, i));
             }
             query.append(String.format(WHERE_TAG_CONDITION, 0, tagName[0]));
             for (int i = 1; i < tagName.length; i++) {

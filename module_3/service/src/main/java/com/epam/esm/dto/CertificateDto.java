@@ -2,6 +2,7 @@ package com.epam.esm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "name")
 @ToString(exclude = "tags")
-public class CertificateDto {
+public class CertificateDto extends RepresentationModel<CertificateDto> {
 
     private Long id;
     private String name;

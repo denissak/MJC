@@ -3,11 +3,16 @@ package com.epam.esm.controller;
 import com.epam.esm.CertificateService;
 import com.epam.esm.dto.CertificateDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * Controller for working with certificates.
@@ -30,8 +35,9 @@ public class CertificateController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CertificateDto> readAllCertificates() {
-        return certificateService.readAll();
+    public CollectionModel<CertificateDto> readAllCertificates() {
+        List<CertificateDto> certificateDtoList = certificateService.readAll();
+        return addLinksToCertificate(certificateDtoList);
     }
 
     /**
@@ -43,7 +49,10 @@ public class CertificateController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto readCertificate(@PathVariable long id) {
-        return certificateService.readById(id);
+        Link link = linkTo(CertificateController.class).withSelfRel();
+        CertificateDto certificateDto = certificateService.readById(id);
+        certificateDto.add(link);
+        return certificateDto;
     }
 
     /**
@@ -58,12 +67,13 @@ public class CertificateController {
      */
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String[] tagValue,
+    public CollectionModel<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String[] tagValue,
                                                           @RequestParam(required = false) String name,
                                                           @RequestParam(required = false) String description,
                                                           @RequestParam(required = false) String sortBy,
                                                           @RequestParam(required = false) String sortOrder) {
-        return certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
+        List<CertificateDto> certificateDtoList = certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
+        return addLinksToCertificate(certificateDtoList);
     }
 
     /**
@@ -98,5 +108,16 @@ public class CertificateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCertificate(@PathVariable long id) {
         certificateService.delete(id);
+    }
+
+    private CollectionModel<CertificateDto> addLinksToCertificate(List<CertificateDto> certificateDtoList) {
+        for (final CertificateDto certificateDto : certificateDtoList) {
+            Link selfLink = linkTo(methodOn(CertificateController.class)
+                    .readCertificate(certificateDto.getId())).withSelfRel();
+            certificateDto.add(selfLink);
+        }
+        Link link = linkTo(CertificateController.class).withSelfRel();
+        CollectionModel<CertificateDto> result = CollectionModel.of(certificateDtoList, link);
+        return result;
     }
 }

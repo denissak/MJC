@@ -5,7 +5,9 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.CertificateEntity;
+import com.epam.esm.entity.OrderCertificateEntity;
 import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,4 +43,33 @@ public class OrderMapper {
                 .build();
     }
 
+    public OrderEntity convertToOrder(OrderDto orderDto){
+        List<CertificateEntity> certificateEntityList = new ArrayList<>();
+        orderDto.getCertificateDto().forEach(certificateDto ->
+                certificateEntityList.add(certificateMapper.convertToCertificate(certificateDto))
+        );
+        List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
+        certificateEntityList.forEach(certificateEntity -> {
+            OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
+                    .certificateEntity(certificateEntity)
+                    .orderEntity(
+                            OrderEntity.builder()
+                                    .name(orderDto.getName())
+                                    .cost(orderDto.getCost())
+                                    .date(orderDto.getDate())
+                                    .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
+                                    .build())
+                    .build();
+                orderCertificateEntityList.add(orderCertificateEntity);
+                }
+        );
+        return OrderEntity.builder()
+                .id(orderDto.getId())
+                .name(orderDto.getName())
+                .cost(orderDto.getCost())
+                .date(orderDto.getDate())
+                .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
+                .orderCertificateEntityList(orderCertificateEntityList)
+                .build();
+    }
 }

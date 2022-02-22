@@ -3,16 +3,12 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.Search;
 import com.epam.esm.entity.CertificateEntity;
-import com.epam.esm.mapper.CertificateRowMapper;
-import com.epam.esm.mapper.TagRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -26,29 +22,13 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-//    private static final String GET_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id = ?";
-//    private static final String GET_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name = ?";
-//    private static final String GET_ALL_CERTIFICATES = "SELECT * FROM gift_certificate";
-//    private static final String GET_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT id, name FROM tag t JOIN gift_certificate_m2m_tag m2m " +
-//            "ON t.id=m2m.tag_id WHERE gift_certificate_id = :certificate_id";
-//    private static final String SAVE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, price, duration," +
-//            " create_date, last_update_date) VALUES (?,?,?,?,?,?)";
-//    private static final String UPDATE_CERTIFICATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
-//            "duration = ?, create_date = ?, last_update_date = ? WHERE id = ?";
-//    private static final String DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
     private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 
-    private JdbcTemplate jdbcTemplate;
-    private Search search;
-    private CertificateRowMapper certificateRowMapper;
-    private TagRowMapper tagRowMapper;
+    private final Search search;
 
     @Autowired
-    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, Search search, CertificateRowMapper certificateRowMapper, TagRowMapper tagRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.certificateRowMapper = certificateRowMapper;
-        this.tagRowMapper = tagRowMapper;
+    public CertificateRepositoryImpl(Search search) {
         this.search = search;
     }
 
@@ -63,32 +43,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         entityManager.persist(certificateEntity);
         return certificateEntity;
     }
-
-//    /**
-//     * Reads certificate tagEntities with passed id.
-//     *
-//     * @param certificateId the id of certificate to be read
-//     * @return will return the tagEntities belonging to the certificate
-//     */
-//    @Override
-//    public List<TagEntity> readCertificateTags(long certificateId) {//TODO
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
-//        Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
-//        Join<TagEntity, CertificateEntity> certificates = tagEntityRoot.join(TagEntity_.certificateEntity);
-//        criteria.select(tagEntityRoot).where(cb.equal(certificates.get(CertificateEntity_.id), certificateId));
-//
-//
-//
-///*        var resultList = entityManager.createQuery("SELECT t.id, t.name FROM TagEntity t join fetch CertificateEntity c on c.id= :certId", TagEntity.class)
-//                .setParameter("certId",certificateId)
-//                .getResultList();*/
-///*        var resultList= entityManager.createQuery(GET_ALL_TAGS_BY_CERTIFICATE_ID, TagEntity.class)
-//                .setParameter("certificate_id",certificateId)
-//                .getResultList();*/
-////        return resultList;
-//        return entityManager.createQuery(criteria).getResultList();
-//    }
 
     /**
      * Reads certificate with passed id.
@@ -138,9 +92,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      */
     @Override
     public void addTag(long tagId, long certificateId) {
-        String query = String.format(ADD_TAG, tagId, certificateId);
         entityManager.createNativeQuery(ADD_TAG).setParameter(1, tagId).setParameter(2, certificateId);
-//        jdbcTemplate.update(ADD_TAG, tagId, certificateId);
     }
 
     /**
@@ -170,7 +122,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder) {
         return entityManager.createNativeQuery(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), CertificateEntity.class).getResultList();
-//        return jdbcTemplate.query(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), certificateRowMapper);
     }
 
     /**
@@ -197,16 +148,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      *                          values to be set
      */
     @Override
-    public void update(long id, CertificateEntity certificateEntity) { //TODO UPDATE WITH NEW TAG CRASH
-        // CertificateEntity certificate = entityManager.find(CertificateEntity.class, id);
+    public void update(long id, CertificateEntity certificateEntity) {
         entityManager.merge(certificateEntity);
-/*        jdbcTemplate.update(UPDATE_CERTIFICATE,
-                certificateEntity.getName(),
-                certificateEntity.getDescription(),
-                certificateEntity.getPrice(),
-                certificateEntity.getDuration(),
-                certificateEntity.getCreateDate(),
-                certificateEntity.getLastUpdateDate(),
-                id);*/
     }
 }
