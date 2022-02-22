@@ -33,6 +33,7 @@ public class OrderMapper {
         );
         return OrderDto.builder()
                 .id(orderEntity.getId())
+                .name(orderEntity.getName())
                 .cost(orderEntity.getCost())
                 .date(orderEntity.getDate())
                 .userDto(new UserDto(orderEntity.getUserEntity().getId(), orderEntity.getUserEntity().getLogin()))

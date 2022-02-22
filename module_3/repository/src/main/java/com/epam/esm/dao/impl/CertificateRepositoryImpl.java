@@ -3,9 +3,6 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.Search;
 import com.epam.esm.entity.CertificateEntity;
-import com.epam.esm.entity.CertificateEntity_;
-import com.epam.esm.entity.TagEntity;
-import com.epam.esm.entity.TagEntity_;
 import com.epam.esm.mapper.CertificateRowMapper;
 import com.epam.esm.mapper.TagRowMapper;
 
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -140,7 +138,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      */
     @Override
     public void addTag(long tagId, long certificateId) {
-        jdbcTemplate.update(ADD_TAG, tagId, certificateId);
+        String query = String.format(ADD_TAG, tagId, certificateId);
+        entityManager.createNativeQuery(ADD_TAG).setParameter(1, tagId).setParameter(2, certificateId);
+//        jdbcTemplate.update(ADD_TAG, tagId, certificateId);
     }
 
     /**
@@ -168,8 +168,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateEntity> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
-        return jdbcTemplate.query(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), certificateRowMapper);
+    public List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder) {
+        return entityManager.createNativeQuery(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), CertificateEntity.class).getResultList();
+//        return jdbcTemplate.query(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), certificateRowMapper);
     }
 
     /**

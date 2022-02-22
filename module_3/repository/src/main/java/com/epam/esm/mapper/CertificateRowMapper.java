@@ -16,7 +16,7 @@ public class CertificateRowMapper implements RowMapper<CertificateEntity> {
                 .id(rs.getLong(1))
                 .name(rs.getString(2))
                 .description(rs.getString(3))
-                .price(rs.getBigDecimal(4))
+                .price(rs.getDouble(4))
                 .duration(rs.getInt(5))
                 .createDate(rs.getTimestamp(6).toLocalDateTime())
                 .lastUpdateDate(rs.getTimestamp(7).toLocalDateTime())

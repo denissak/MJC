@@ -58,8 +58,8 @@ public class CertificateServiceImpl implements CertificateService {
         certificateDto.setCreateDate(now);
         certificateDto.setLastUpdateDate(now);
         CertificateEntity createdCertificateEntity = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
-        List<TagEntity> tagEntities = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-        createdCertificateEntity.setTagEntities(tagEntities);
+//        List<TagEntity> tagEntities = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+//        createdCertificateEntity.setTagEntities(tagEntities);
         addTagsToBase(createdCertificateEntity);
         return certificateMapper.convertToCertificateDto(createdCertificateEntity);
     }
@@ -76,7 +76,6 @@ public class CertificateServiceImpl implements CertificateService {
         if (certificate == null){
             throw NotFoundException.notFoundWithCertificateId(certificateId).get();
         }
-//        certificate.ifPresent(actualCertificate -> actualCertificate.setTagEntities(certificateRepository.readCertificateTags(certificateId)));
         return certificateMapper.convertToCertificateDto(certificate);
     }
 
@@ -93,13 +92,6 @@ public class CertificateServiceImpl implements CertificateService {
             certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
         }
         return certificateDtoList;
-//        List<CertificateEntity> certificateEntities = certificateRepository.readAll();
-//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-//        for (CertificateEntity certificateEntity : certificateEntities) {
-//            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
-//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-//        }
-//        return certificateDtoList;
     }
 
     /**
@@ -113,7 +105,7 @@ public class CertificateServiceImpl implements CertificateService {
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
+    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder) {
         List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
@@ -173,6 +165,9 @@ public class CertificateServiceImpl implements CertificateService {
                 TagEntity existedTag = tagRepository.readByName(tagEntity.getName());
                 Long tagId;
                 if (existedTag == null) {
+                    if (tagEntity.getId() != null) {
+                        tagEntity.setId(null);
+                    }
                     tagId = tagRepository.create(tagEntity).getId();
                 } else {
                     tagId = existedTag.getId();
@@ -209,9 +204,6 @@ public class CertificateServiceImpl implements CertificateService {
         if (certificateInBase == null){
             throw NotFoundException.notFoundWithCertificateId(certificateDto.getId()).get();
         }
-//        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())
-//                .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));
-
         if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) && certificateDto.getName() != null) {
             certificateInBase.setName(certificateDto.getName());
         }

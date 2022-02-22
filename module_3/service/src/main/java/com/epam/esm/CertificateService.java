@@ -51,7 +51,7 @@ public interface CertificateService {
      * @param sortOrder   Sort type (asc or desc)
      * @return all certificates from search terms
      */
-    List<CertificateDto> readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder);
+    List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder);
 
     /**
      * Deletes certificate with passed id.

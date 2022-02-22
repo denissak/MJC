@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 public class Search {
 
     private static final String SELECT = "SELECT * from gift_certificate gc ";
-    private static final String TAG_CONDITION = "JOIN gift_certificate_m2m_tag m2m on gc.id = m2m.gift_certificate_id\n" +
-            "                  JOIN tag on m2m.tag_id = tag.id\n" +
-            "WHERE tag.name = '%s' ";
+    private static final String TAG_CONDITION = "JOIN gift_certificate_m2m_tag m2m%s on gc.id = m2m%s.gift_certificate_id\n" +
+            "                  JOIN tag as t%s on m2m%s.tag_id = t%s.id ";
+    private static final String WHERE_TAG_CONDITION = "WHERE t%s.name = '%s' ";
+    private static final String AND_MORE_TAG = "AND t%s.name = '%s' ";
     private static final String SEARCH_BY_NAME = "gc.name ";
     private static final String SEARCH_BY_DESCRIPTION = "gc.description ";
     private static final String AND = "AND ";
@@ -28,24 +29,29 @@ public class Search {
     /**
      * Search by specified certificate values
      *
-     * @param tagName    tag name
+     * @param tagName     tag name
      * @param name        whole or partial certificate name
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
-     *
      * @return all certificates from search terms
      */
-    public String buildSearchCertificate(String tagName, String name, String description, String sortBy, String sortOrder) {
+    public String buildSearchCertificate(String[] tagName, String name, String description, String sortBy, String sortOrder) {
         StringBuilder query = new StringBuilder();
         query.append(SELECT);
 
-        if (!tagName.equals("")) {
-            query.append(String.format(TAG_CONDITION, tagName));
+        if (tagName.length != 0) {
+            for (int i = 0; i < tagName.length; i++) {
+                query.append(String.format(TAG_CONDITION, i, i, i, i, i/*, i, tagName[i]*/));
+            }
+            query.append(String.format(WHERE_TAG_CONDITION, 0, tagName[0]));
+            for (int i = 1; i < tagName.length; i++) {
+                query.append(String.format(AND_MORE_TAG, i, tagName[i]));
+            }
         } else {
             query.append(WHERE);
         }
-        if ((!tagName.equals("") && !name.equals("")) || (!tagName.equals("") && !description.equals(""))) {
+        if ((tagName.length != 0 && !name.equals("")) || (tagName.length != 0 && !description.equals(""))) {
             query.append(AND);
         }
         if (!name.equals("")) {

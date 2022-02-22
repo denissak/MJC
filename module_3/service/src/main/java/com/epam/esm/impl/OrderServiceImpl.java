@@ -6,10 +6,14 @@ import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.entity.TagEntity;
+import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.UserMapper;
+import com.epam.esm.validation.OrderValidator;
+import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -44,7 +48,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public OrderDto create(OrderDto orderDto) {
-        return null;
+        OrderEntity order = orderRepository.readByName(orderDto.getName());
+        if (order != null) {
+            throw DuplicateException.tagExists().get();
+        }
+        OrderValidator.validate(orderDto);
+//        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
+//        OrderEntity orderEntity = orderRepository.create(orderMapper.convertToTag(tagDto));
+//        return tagMapper.convertToTagDto(tagEntity);
+//        return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
+        return null; //TODO
     }
 
     @Override
@@ -68,7 +81,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(Long orderId) {
-
+        readById(orderId);
+        orderRepository.delete(orderId);
     }
 
     @Override

@@ -34,8 +34,8 @@ public class CertificateValidator {
         }
     }
 
-    private static void validatePrice(BigDecimal price) throws ValidationException {
-        if (price.compareTo(BigDecimal.ZERO) < 0) {
+    private static void validatePrice(Double price) throws ValidationException {
+        if (price < 0) {
             throw new ValidationException("Incorrect price");
         }
     }

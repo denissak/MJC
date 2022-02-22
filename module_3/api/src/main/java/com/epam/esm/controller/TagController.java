@@ -31,9 +31,9 @@ public class TagController {
      * @return tag with passed id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> readTag(@PathVariable long id) {
-        TagDto tagDto = tagService.readById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(tagDto);
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto readTagById(@PathVariable long id) {
+        return tagService.readById(id);
     }
 
     /**
@@ -41,11 +41,11 @@ public class TagController {
      *
      * @return all tagEntities
      */
-        @GetMapping
-        @ResponseStatus(HttpStatus.OK)
-        public List<TagDto> readsAllTags() {
-            return tagService.readAll();
-        }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TagDto> readsAllTags() {
+        return tagService.readAll();
+    }
 
     /**
      * Creates and saves the passed tag.

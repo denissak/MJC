@@ -40,7 +40,7 @@ public interface CertificateRepository extends AbstractRepository<CertificateEnt
      *
      * @return all certificates from search terms
      */
-    List<CertificateEntity> readCertificateWithDifferentParams (String tagValue, String name, String description, String sortBy, String sortOrder);
+    List<CertificateEntity> readCertificateWithDifferentParams (String[] tagValue, String name, String description, String sortBy, String sortOrder);
 
 //    /**
 //     * Search all tags

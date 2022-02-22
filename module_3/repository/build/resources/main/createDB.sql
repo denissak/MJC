@@ -18,9 +18,7 @@ CREATE TABLE orders
     cost           NUMERIC     NOT NULL,
     date           TIMESTAMP   NOT NULL,
     user_id        BIGINT      NOT NULL,
---     certificate_id BIGINT      NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
---     FOREIGN KEY (certificate_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
 CREATE TABLE gift_certificate

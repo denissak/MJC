@@ -11,6 +11,7 @@ import java.util.List;
 @ToString(exclude = {"userDto", "certificateDto"})
 public class OrderDto {
     private Long id;
+    private String name;
     private Double cost;
     private LocalDateTime date;
     private UserDto userDto;
