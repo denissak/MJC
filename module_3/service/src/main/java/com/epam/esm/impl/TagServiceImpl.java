@@ -11,6 +11,7 @@ import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,11 +84,17 @@ public class TagServiceImpl implements TagService {
         return tagDtoList;
     }
 
+    @Override
+    public TagDto getMostPopularTag() {
+        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());
+    }
+
     /**
      * Deletes tag with passed id.
      *
      * @param tagId the id of tag to be deleted
      */
+    @Transactional
     @Override
     public void delete(Long tagId) {
         readById(tagId);

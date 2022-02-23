@@ -144,6 +144,8 @@ public class CertificateServiceImpl implements CertificateService {
      *
      * @param certificateId the id of certificate to be deleted
      */
+
+    @Transactional
     @Override
     public void delete(Long certificateId) {
         readById(certificateId);

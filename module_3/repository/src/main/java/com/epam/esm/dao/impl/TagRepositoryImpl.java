@@ -21,6 +21,18 @@ import java.util.List;
 @Repository
 public class TagRepositoryImpl implements TagRepository {
 
+    private static final String MOST_POPULAR_TAG = "SELECT tag.id, tag.name\n" +
+            "FROM tag\n" +
+            "         JOIN gift_certificate_m2m_tag gcm2mt on tag.id = gcm2mt.tag_id\n" +
+            "         JOIN gift_certificate gc on gcm2mt.gift_certificate_id = gc.id\n" +
+            "         JOIN order_certificate_m2m ocm2m on gc.id = ocm2m.certificate_id\n" +
+            "         JOIN orders as o on ocm2m.order_id = o.id\n" +
+            "WHERE o.user_id = (\n" +
+            "    select user_id from orders group by user_id having sum(cost) >= ALL (select sum(cost) from orders group by user_id))\n" +
+            "GROUP BY tag.id, tag.name\n" +
+            "ORDER BY count(tag.name) DESC\n" +
+            "LIMIT 1";
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -101,6 +113,12 @@ public class TagRepositoryImpl implements TagRepository {
         TypedQuery<TagEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public TagEntity getMostPopularTag() {
+//        TagEntity tagEntity = entityManager.createNativeQuery(MOST_POPULAR_TAG, TagEntity.class).getResultList().get(0);
+        return (TagEntity) entityManager.createNativeQuery(MOST_POPULAR_TAG, TagEntity.class).getSingleResult();
     }
 
     /**

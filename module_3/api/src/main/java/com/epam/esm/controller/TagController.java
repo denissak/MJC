@@ -56,6 +56,15 @@ public class TagController {
         return addLinksToTag(tagDtoList);
     }
 
+    @GetMapping("/popular-tag")
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto getMostPopularTag() {
+        Link link = linkTo(TagController.class).withSelfRel();
+        TagDto tagDto = tagService.getMostPopularTag();
+        tagDto.add(link);
+        return tagDto;
+    }
+
     /**
      * Creates and saves the passed tag.
      *

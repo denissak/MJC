@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 
 public interface TagRepository extends AbstractRepository<TagEntity> {
+
+    TagEntity getMostPopularTag();
 }

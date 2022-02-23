@@ -92,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDtoList;
     }
 
+    @Transactional
     @Override
     public void delete(Long orderId) {
         readById(orderId);

@@ -39,7 +39,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     public void setCertificatesOnOrder(Long orderId, Long certificateId) {
         entityManager.createNativeQuery(ORDER_CERTIFICATE_SAVE)
                 .setParameter(1, orderId)
-                .setParameter(2, certificateId);
+                .setParameter(2, certificateId).executeUpdate();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot)
                 .where(cb.equal(orderEntityRoot.get("id"), id));
-        OrderEntity orderEntity = entityManager.createQuery(criteria).getResultList().get(0);
+        OrderEntity orderEntity = entityManager.createQuery(criteria).getSingleResult();
         entityManager.remove(orderEntity);
     }
 }
