@@ -3,11 +3,15 @@ package com.epam.esm.controller;
 import com.epam.esm.TagService;
 import com.epam.esm.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * Controller for working with tagEntities.
@@ -17,7 +21,7 @@ import java.util.List;
 @RequestMapping("/tag")
 public class TagController {
 
-    private TagService tagService;
+    private final TagService tagService;
 
     @Autowired
     public TagController(TagService tagService) {
@@ -33,7 +37,10 @@ public class TagController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TagDto readTagById(@PathVariable long id) {
-        return tagService.readById(id);
+        Link link = linkTo(TagController.class).withSelfRel();
+        TagDto tagDto = tagService.readById(id);
+        tagDto.add(link);
+        return tagDto;
     }
 
     /**
@@ -43,8 +50,9 @@ public class TagController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TagDto> readsAllTags() {
-        return tagService.readAll();
+    public CollectionModel<TagDto> readsAllTags() {
+        List<TagDto> tagDtoList = tagService.readAll();
+        return addLinksToTag(tagDtoList);
     }
 
     /**
@@ -68,5 +76,15 @@ public class TagController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
+    }
+
+    private CollectionModel<TagDto> addLinksToTag(List<TagDto> tagDtoList) {
+        for (final TagDto tagDto : tagDtoList) {
+            Link selfLink = linkTo(methodOn(TagController.class)
+                    .readTagById(tagDto.getId())).withSelfRel();
+            tagDto.add(selfLink);
+        }
+        Link link = linkTo(TagController.class).withSelfRel();
+        return CollectionModel.of(tagDtoList, link);
     }
 }

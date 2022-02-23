@@ -1,13 +1,18 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.OrderService;
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.ReadOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/order")
@@ -22,20 +27,37 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> readsAllOrders() {
-        return orderService.readAll();
+    public CollectionModel<OrderDto> readsAllOrders() {
+        List<OrderDto> orderDtoList = orderService.readAll();
+        return addLinksToOrder(orderDtoList);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDto readOrderById(@PathVariable long id) {
-        return orderService.readById(id);
+        Link link = linkTo(OrderController.class).withSelfRel();
+        OrderDto orderDto = orderService.readById(id);
+        orderDto.add(link);
+        return orderDto;
     }
 
     @GetMapping("user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> readOrderByUserId(@PathVariable long id) {
-        return orderService.readAllOrdersByUserId(id);
+    public CollectionModel<OrderDto> readOrderByUserId(@PathVariable long id) {
+        List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id);
+        return addLinksToOrder(orderDtoList);
+    }
+
+    @GetMapping("user/{id}/status-order")
+    @ResponseStatus(HttpStatus.OK)
+    public CollectionModel<ReadOrderDto> readCostAndDateByUserId(@PathVariable long id) {
+        List<ReadOrderDto> readOrderDtoList = orderService.readCostAndDateOrderByUserId(id);
+        for (final ReadOrderDto readOrderDto: readOrderDtoList){
+            Link selfLink = linkTo(methodOn(OrderController.class).readOrderById(readOrderDto.getId())).withSelfRel();
+            readOrderDto.add(selfLink);
+        }
+        Link link = linkTo(OrderController.class).withSelfRel();
+        return CollectionModel.of(readOrderDtoList,link);
     }
 
     @PostMapping
@@ -49,4 +71,15 @@ public class OrderController {
     public void deleteCertificate(@PathVariable long id) {
         orderService.delete(id);
     }
+
+    private CollectionModel<OrderDto> addLinksToOrder(List<OrderDto> orderDtoList) {
+        for (final OrderDto orderDto : orderDtoList) {
+            Link selfLink = linkTo(methodOn(OrderController.class)
+                    .readOrderById(orderDto.getId())).withSelfRel();
+            orderDto.add(selfLink);
+        }
+        Link link = linkTo(OrderController.class).withSelfRel();
+        return CollectionModel.of(orderDtoList, link);
+    }
+
 }

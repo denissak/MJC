@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/certificate")
 public class CertificateController {
 
-    private CertificateService certificateService;
+    private final CertificateService certificateService;
 
     @Autowired
     public CertificateController(CertificateService certificateService) {
@@ -117,7 +116,6 @@ public class CertificateController {
             certificateDto.add(selfLink);
         }
         Link link = linkTo(CertificateController.class).withSelfRel();
-        CollectionModel<CertificateDto> result = CollectionModel.of(certificateDtoList, link);
-        return result;
+        return CollectionModel.of(certificateDtoList, link);
     }
 }
