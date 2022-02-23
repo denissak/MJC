@@ -83,8 +83,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> readAll() {
-        List<OrderEntity> orderEntityList = orderRepository.readAll();
+    public List<OrderDto> readAll(int page, int size) {
+        List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
         List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
         for (OrderEntity orderEntity : orderEntityList) {
             orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
@@ -99,8 +99,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> readAllOrdersByUserId(long userId) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId);
+    public List<OrderDto> readAllOrdersByUserId(long userId, int page, int size) {
+        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
         List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
         for (OrderEntity orderEntity : orderEntityList) {
             orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
@@ -109,8 +109,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId);
+    public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size) {
+        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
         List<ReadOrderDto> readOrderDtoList = new ArrayList<>(orderEntityList.size());
         for (OrderEntity orderEntity : orderEntityList) {
             readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));

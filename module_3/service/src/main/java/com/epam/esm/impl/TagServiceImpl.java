@@ -74,8 +74,8 @@ public class TagServiceImpl implements TagService {
      * @return all tagEntities.
      */
     @Override
-    public List<TagDto> readAll() {
-        List<TagEntity> tagEntityList = tagRepository.readAll();
+    public List<TagDto> readAll(int page, int size) {
+        List<TagEntity> tagEntityList = tagRepository.readAll(page, size);
         List<TagDto> tagDtoList = new ArrayList<>(tagEntityList.size());
         for (TagEntity tagEntity : tagEntityList) {
             tagDtoList.add(tagMapper.convertToTagDto(tagEntity));

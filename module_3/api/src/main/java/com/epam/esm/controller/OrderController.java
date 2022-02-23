@@ -27,8 +27,9 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<OrderDto> readsAllOrders() {
-        List<OrderDto> orderDtoList = orderService.readAll();
+    public CollectionModel<OrderDto> readsAllOrders(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                    @RequestParam(value = "size", defaultValue = "5",required = false) int size) {
+        List<OrderDto> orderDtoList = orderService.readAll(page, size);
         return addLinksToOrder(orderDtoList);
     }
 
@@ -43,15 +44,19 @@ public class OrderController {
 
     @GetMapping("user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<OrderDto> readOrderByUserId(@PathVariable long id) {
-        List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id);
+    public CollectionModel<OrderDto> readOrderByUserId(@PathVariable long id,
+                                                       @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                       @RequestParam(value = "size", defaultValue = "5",required = false) int size) {
+        List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id, page, size);
         return addLinksToOrder(orderDtoList);
     }
 
     @GetMapping("user/{id}/status-order")
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<ReadOrderDto> readCostAndDateByUserId(@PathVariable long id) {
-        List<ReadOrderDto> readOrderDtoList = orderService.readCostAndDateOrderByUserId(id);
+    public CollectionModel<ReadOrderDto> readCostAndDateByUserId(@PathVariable long id,
+                                                                 @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                                 @RequestParam(value = "size", defaultValue = "5",required = false) int size) {
+        List<ReadOrderDto> readOrderDtoList = orderService.readCostAndDateOrderByUserId(id, page, size);
         for (final ReadOrderDto readOrderDto: readOrderDtoList){
             Link selfLink = linkTo(methodOn(OrderController.class).readOrderById(readOrderDto.getId())).withSelfRel();
             readOrderDto.add(selfLink);

@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.CertificateRepository;
+import com.epam.esm.dao.PaginationHandler;
 import com.epam.esm.dao.Search;
 import com.epam.esm.entity.CertificateEntity;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -26,10 +28,12 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             "VALUES (?, ?)";
 
     private final Search search;
+    private final PaginationHandler paginationHandler;
 
     @Autowired
-    public CertificateRepositoryImpl(Search search) {
+    public CertificateRepositoryImpl(Search search, PaginationHandler paginationHandler) {
         this.search = search;
+        this.paginationHandler = paginationHandler;
     }
 
     /**
@@ -101,12 +105,16 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return all certificates
      */
     @Override
-    public List<CertificateEntity> readAll() {
+    public List<CertificateEntity> readAll(int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
-        criteria.select(certificateEntityRoot);
-        return entityManager.createQuery(criteria).getResultList();
+        CriteriaQuery<CertificateEntity> select = criteria.select(certificateEntityRoot);
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        countQuery.select(cb.count(countQuery.from(CertificateEntity.class)));
+        TypedQuery<CertificateEntity> typedQuery = entityManager.createQuery(select);
+        paginationHandler.setPageToQuery(typedQuery, page, size);
+        return typedQuery.getResultList();
     }
 
     /**
@@ -120,8 +128,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder) {
-        return entityManager.createNativeQuery(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), CertificateEntity.class).getResultList();
+    public List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
+        return entityManager.createNativeQuery(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), CertificateEntity.class)
+                .setFirstResult((page-1) * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     /**

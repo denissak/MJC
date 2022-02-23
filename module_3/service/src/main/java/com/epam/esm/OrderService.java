@@ -13,11 +13,11 @@ public interface OrderService {
 
     OrderDto readById(Long orderId);
 
-    List<OrderDto> readAll();
+    List<OrderDto> readAll(int page, int size);
 
     void delete(Long orderId);
 
-    List<OrderDto> readAllOrdersByUserId (long userId);
+    List<OrderDto> readAllOrdersByUserId (long userId, int page, int size);
 
-    public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId);
+    List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size);
 }

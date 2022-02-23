@@ -40,7 +40,7 @@ public interface AbstractRepository<T> {
      *
      * @return entities which meet passed parameters
      */
-    List<T> readAll();
+    List<T> readAll(int page, int size);
 
     /**
      * Deletes entity with passed id.

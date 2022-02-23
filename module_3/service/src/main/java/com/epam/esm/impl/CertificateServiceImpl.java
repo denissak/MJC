@@ -85,8 +85,8 @@ public class CertificateServiceImpl implements CertificateService {
      * @return all certificates
      */
     @Override
-    public List<CertificateDto> readAll() {
-        List<CertificateEntity> certificateEntities = certificateRepository.readAll();
+    public List<CertificateDto> readAll(int page, int size) {
+        List<CertificateEntity> certificateEntities = certificateRepository.readAll(page, size);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
             certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
@@ -105,8 +105,8 @@ public class CertificateServiceImpl implements CertificateService {
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
+    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
+        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
 //            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
@@ -130,13 +130,13 @@ public class CertificateServiceImpl implements CertificateService {
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         currentCertificateDto.setLastUpdateDate(now);
         List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-        Set<TagEntity> createdTagsSet = new HashSet<>(tagRepository.readAll());
-        List<TagEntity> responseTagEntities = saveNewTags(requestTagEntities, createdTagsSet);
+//        Set<TagEntity> createdTagsSet = new HashSet<>(tagRepository.readAll(page, size));
+//        List<TagEntity> responseTagEntities = saveNewTags(requestTagEntities, createdTagsSet);
         CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
         certificateRepository.update(id, certificateEntity);
-        certificateEntity.setTagEntities(responseTagEntities);
+//        certificateEntity.setTagEntities(responseTagEntities);
         addTagsToBase(certificateEntity);
-        return currentCertificateDto;
+        return currentCertificateDto; //TODO
     }
 
     /**

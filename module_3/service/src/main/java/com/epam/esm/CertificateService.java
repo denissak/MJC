@@ -30,7 +30,7 @@ public interface CertificateService {
      *
      * @return all certificates
      */
-    List<CertificateDto> readAll();
+    List<CertificateDto> readAll(int page, int size);
 
     /**
      * Updates certificate fields with passed id
@@ -51,7 +51,7 @@ public interface CertificateService {
      * @param sortOrder   Sort type (asc or desc)
      * @return all certificates from search terms
      */
-    List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder);
+    List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size);
 
     /**
      * Deletes certificate with passed id.

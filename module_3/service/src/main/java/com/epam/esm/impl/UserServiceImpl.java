@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> readAll() {
-        List<UserEntity> userEntities = userRepository.readAll();
+    public List<UserDto> readAll(int page, int size) {
+        List<UserEntity> userEntities = userRepository.readAll(page, size);
         List<UserDto> userDtoList = new ArrayList<>(userEntities.size());
         for (UserEntity userEntity : userEntities) {
             userDtoList.add(userMapper.convertToUserDto(userEntity));

@@ -10,5 +10,5 @@ public interface UserRepository {
 
     UserEntity readByLogin(String login);
 
-    List<UserEntity> readAll();
+    List<UserEntity> readAll(int page, int size);
 }

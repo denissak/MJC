@@ -34,8 +34,9 @@ public class CertificateController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<CertificateDto> readAllCertificates() {
-        List<CertificateDto> certificateDtoList = certificateService.readAll();
+    public CollectionModel<CertificateDto> readAllCertificates(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                               @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+        List<CertificateDto> certificateDtoList = certificateService.readAll(page, size);
         return addLinksToCertificate(certificateDtoList);
     }
 
@@ -67,11 +68,14 @@ public class CertificateController {
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String[] tagValue,
-                                                          @RequestParam(required = false) String name,
-                                                          @RequestParam(required = false) String description,
-                                                          @RequestParam(required = false) String sortBy,
-                                                          @RequestParam(required = false) String sortOrder) {
-        List<CertificateDto> certificateDtoList = certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);
+                                                                     @RequestParam(required = false) String name,
+                                                                     @RequestParam(required = false) String description,
+                                                                     @RequestParam(required = false) String sortBy,
+                                                                     @RequestParam(required = false) String sortOrder,
+                                                                     @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                                     @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+        List<CertificateDto> certificateDtoList =
+                certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
         return addLinksToCertificate(certificateDtoList);
     }
 

@@ -50,8 +50,9 @@ public class TagController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<TagDto> readsAllTags() {
-        List<TagDto> tagDtoList = tagService.readAll();
+    public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                @RequestParam(value = "size", defaultValue = "5",required = false) int size){
+        List<TagDto> tagDtoList = tagService.readAll(page, size);
         return addLinksToTag(tagDtoList);
     }
 

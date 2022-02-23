@@ -2,10 +2,12 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -17,6 +19,12 @@ import java.util.List;
 public class OrderRepositoryImpl implements OrderRepository {
 
     private static final String ORDER_CERTIFICATE_SAVE = "INSERT INTO order_certificate_m2m (order_id, certificate_id) VALUES (?,?)";
+    private final PaginationHandlerImpl paginationHandler;
+
+    @Autowired
+    public OrderRepositoryImpl(PaginationHandlerImpl paginationHandler) {
+        this.paginationHandler = paginationHandler;
+    }
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -63,23 +71,32 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<OrderEntity> readAll() {
+    public List<OrderEntity> readAll(int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
-        criteria.select(orderEntityRoot);
-        return entityManager.createQuery(criteria).getResultList();
+        CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot);
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        countQuery.select(cb.count(countQuery.from(OrderEntity.class)));
+        TypedQuery<OrderEntity> typedQuery = entityManager.createQuery(select);
+        paginationHandler.setPageToQuery(typedQuery, page, size);
+        return typedQuery.getResultList();
     }
 
     @Override
-    public List<OrderEntity> readAllOrdersByUserId(long userId) { //TODO NEED TEST
+    public List<OrderEntity> readAllOrdersByUserId(long userId, int page, int size) { //TODO NEED TEST
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot);
         Join<OrderEntity, UserEntity> users = orderEntityRoot.join(OrderEntity_.userEntity);
-        criteria.select(orderEntityRoot).where(cb.equal(users.get(UserEntity_.id), userId));
-        return entityManager.createQuery(criteria).getResultList();
+        CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot).where(cb.equal(users.get(UserEntity_.id), userId));
+//        CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot);
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        countQuery.select(cb.count(countQuery.from(OrderEntity.class)));
+        TypedQuery<OrderEntity> typedQuery = entityManager.createQuery(select);
+        paginationHandler.setPageToQuery(typedQuery, page, size);
+        return typedQuery.getResultList();
     }
 
     @Override

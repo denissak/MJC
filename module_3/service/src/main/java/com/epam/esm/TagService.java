@@ -30,7 +30,7 @@ public interface TagService {
      *
      * @return all tags.
      */
-    List<TagDto> readAll();
+    List<TagDto> readAll(int page, int size);
 
     /**
      * Deletes tag with passed id.

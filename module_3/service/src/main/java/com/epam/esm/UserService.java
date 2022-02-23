@@ -11,5 +11,5 @@ public interface UserService {
 
     UserDto readByLogin(String login);
 
-    List<UserDto> readAll();
+    List<UserDto> readAll(int page, int size);
 }

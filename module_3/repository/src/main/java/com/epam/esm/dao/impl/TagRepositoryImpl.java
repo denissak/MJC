@@ -2,11 +2,13 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.entity.TagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -21,6 +23,13 @@ public class TagRepositoryImpl implements TagRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final PaginationHandlerImpl paginationHandler;
+
+    @Autowired
+    public TagRepositoryImpl(PaginationHandlerImpl paginationHandler) {
+        this.paginationHandler = paginationHandler;
+    }
 
     /**
      * Saves the passed tag.
@@ -82,12 +91,16 @@ public class TagRepositoryImpl implements TagRepository {
      * @return all tagEntities
      */
     @Override
-    public List<TagEntity> readAll() {
+    public List<TagEntity> readAll(int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
         Root<TagEntity> tagEntity = criteria.from(TagEntity.class);
-        criteria.select(tagEntity);
-        return entityManager.createQuery(criteria).getResultList();
+        CriteriaQuery<TagEntity> select = criteria.select(tagEntity);
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        countQuery.select(cb.count(countQuery.from(TagEntity.class)));
+        TypedQuery<TagEntity> typedQuery = entityManager.createQuery(select);
+        paginationHandler.setPageToQuery(typedQuery, page, size);
+        return typedQuery.getResultList();
     }
 
     /**

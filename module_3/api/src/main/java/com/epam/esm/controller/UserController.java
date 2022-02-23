@@ -35,8 +35,9 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<UserDto> readsAllUsers() {
-        List<UserDto> userDtoList = userService.readAll();
+    public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                  @RequestParam(value = "size", defaultValue = "5",required = false) int size) {
+        List<UserDto> userDtoList = userService.readAll(page, size);
         return addLinksToUser(userDtoList);
     }
 
