@@ -4,13 +4,14 @@ import com.epam.esm.TagService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.TagMapper;
-import com.epam.esm.model.Tag;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,14 @@ public class TagServiceImpl implements TagService {
 
     TagRepository tagRepository;
     CertificateRepository certificateRepository;
-
     TagMapper tagMapper;
 
     @Autowired
-<span class="fc" id="L32">    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {</span>
-<span class="fc" id="L33">        this.tagRepository = tagRepository;</span>
-<span class="fc" id="L34">        this.tagMapper = tagMapper;</span>
-<span class="fc" id="L35">        this.certificateRepository = certificateRepository;</span>
-<span class="fc" id="L36">    }</span>
+<span class="nc" id="L32">    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {</span>
+<span class="nc" id="L33">        this.tagRepository = tagRepository;</span>
+<span class="nc" id="L34">        this.tagMapper = tagMapper;</span>
+<span class="nc" id="L35">        this.certificateRepository = certificateRepository;</span>
+<span class="nc" id="L36">    }</span>
 
     /**
      * Creates and saves the passed tag.
@@ -43,13 +43,15 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto create(TagDto tagDto) {
-<span class="fc" id="L46">        Optional&lt;Tag&gt; tag = tagRepository.readByName(tagDto.getName());</span>
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (tag.isPresent()) {</span>
-<span class="nc" id="L48">            throw (DuplicateException) DuplicateException.tagExists();</span>
+<span class="nc" id="L46">        TagEntity tag = tagRepository.readByName(tagDto.getName());</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (tag != null) {</span>
+<span class="nc" id="L48">            throw DuplicateException.tagExists().get();</span>
         }
-<span class="fc" id="L50">        TagValidator.validate(tagDto);</span>
-<span class="fc" id="L51">        Optional&lt;Tag&gt; tagExist = tagRepository.readById(tagDto.getId());</span>
-<span class="fc" id="L52">        return tagMapper.convertToTagDto(tagExist.orElseGet(() -&gt; (tagRepository.create(tagMapper.convertToTag(tagDto)))));</span>
+<span class="nc" id="L50">        TagValidator.validate(tagDto);</span>
+//        Optional&lt;TagEntity&gt; tagExist = tagRepository.readById(tagDto.getId());
+<span class="nc" id="L52">        TagEntity tagEntity = tagRepository.create(tagMapper.convertToTag(tagDto));</span>
+<span class="nc" id="L53">        return tagMapper.convertToTagDto(tagEntity);</span>
+//        return tagMapper.convertToTagDto(tagExist.orElseGet(() -&gt; (tagRepository.create(tagMapper.convertToTag(tagDto)))));
     }
 
     /**
@@ -60,23 +62,31 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto readById(Long tagId) {
-<span class="fc" id="L63">        Optional&lt;Tag&gt; tag = tagRepository.readById(tagId);</span>
-<span class="fc" id="L64">        return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));</span>
+<span class="nc" id="L65">        TagEntity tag = tagRepository.readById(tagId);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (tag == null){</span>
+<span class="nc" id="L67">            throw NotFoundException.notFoundWithTagId(tagId).get();</span>
+        }
+<span class="nc" id="L69">        return tagMapper.convertToTagDto(tag);</span>
     }
 
     /**
-     * Reads all tags.
+     * Reads all tagEntities.
      *
-     * @return all tags.
+     * @return all tagEntities.
      */
     @Override
-    public List&lt;TagDto&gt; readAll() {
-<span class="fc" id="L74">        List&lt;Tag&gt; tagList = tagRepository.readAll();</span>
-<span class="fc" id="L75">        List&lt;TagDto&gt; tagDtoList = new ArrayList&lt;&gt;(tagList.size());</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        for (Tag tag : tagList) {</span>
-<span class="nc" id="L77">            tagDtoList.add(tagMapper.convertToTagDto(tag));</span>
-<span class="nc" id="L78">        }</span>
-<span class="fc" id="L79">        return tagDtoList;</span>
+    public List&lt;TagDto&gt; readAll(int page, int size) {
+<span class="nc" id="L79">        List&lt;TagEntity&gt; tagEntityList = tagRepository.readAll(page, size);</span>
+<span class="nc" id="L80">        List&lt;TagDto&gt; tagDtoList = new ArrayList&lt;&gt;(tagEntityList.size());</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (TagEntity tagEntity : tagEntityList) {</span>
+<span class="nc" id="L82">            tagDtoList.add(tagMapper.convertToTagDto(tagEntity));</span>
+<span class="nc" id="L83">        }</span>
+<span class="nc" id="L84">        return tagDtoList;</span>
+    }
+
+    @Override
+    public TagDto getMostPopularTag() {
+<span class="nc" id="L89">        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());</span>
     }
 
     /**
@@ -84,10 +94,11 @@ public class TagServiceImpl implements TagService {
      *
      * @param tagId the id of tag to be deleted
      */
+    @Transactional
     @Override
     public void delete(Long tagId) {
-<span class="fc" id="L89">        readById(tagId);</span>
-<span class="fc" id="L90">        tagRepository.delete(tagId);</span>
-<span class="fc" id="L91">    }</span>
+<span class="nc" id="L100">        readById(tagId);</span>
+<span class="nc" id="L101">        tagRepository.delete(tagId);</span>
+<span class="nc" id="L102">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

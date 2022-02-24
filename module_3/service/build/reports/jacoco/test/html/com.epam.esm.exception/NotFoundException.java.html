@@ -7,8 +7,8 @@ public class NotFoundException extends RuntimeException {
     private long id;
 
     public static Supplier&lt;NotFoundException&gt; notFoundWithCertificateId(long id) {
-<span class="fc" id="L10">        String message = String.format(&quot;There is no certificate with id = %s&quot;, id);</span>
-<span class="fc" id="L11">        return () -&gt; new NotFoundException(message, id);</span>
+<span class="nc" id="L10">        String message = String.format(&quot;There is no certificate with id = %s&quot;, id);</span>
+<span class="nc" id="L11">        return () -&gt; new NotFoundException(message, id);</span>
     }
 
     public static Supplier&lt;NotFoundException&gt; notFoundCertificate() {
@@ -17,8 +17,8 @@ public class NotFoundException extends RuntimeException {
     }
 
     public static Supplier&lt;NotFoundException&gt; notFoundWithTagId(long id) {
-<span class="fc" id="L20">        String message = String.format(&quot;There is no tag with id = %s&quot;, id);</span>
-<span class="fc" id="L21">        return () -&gt; new NotFoundException(message, id);</span>
+<span class="nc" id="L20">        String message = String.format(&quot;There is no tag with id = %s&quot;, id);</span>
+<span class="nc" id="L21">        return () -&gt; new NotFoundException(message, id);</span>
     }
 
     public static Supplier&lt;NotFoundException&gt; notFoundTag() {
@@ -26,13 +26,33 @@ public class NotFoundException extends RuntimeException {
 <span class="nc" id="L26">        return () -&gt; new NotFoundException(message);</span>
     }
 
+    public static Supplier&lt;NotFoundException&gt; notFoundWithUserId(long id) {
+<span class="nc" id="L30">        String message = String.format(&quot;There is no user with id = %s&quot;, id);</span>
+<span class="nc" id="L31">        return () -&gt; new NotFoundException(message, id);</span>
+    }
+
+    public static Supplier&lt;NotFoundException&gt; notFoundUser() {
+<span class="nc" id="L35">        String message = &quot;User not found&quot;;</span>
+<span class="nc" id="L36">        return () -&gt; new NotFoundException(message);</span>
+    }
+
+    public static Supplier&lt;NotFoundException&gt; notFoundWithOrderId(long id) {
+<span class="nc" id="L40">        String message = String.format(&quot;There is no order with id = %s&quot;, id);</span>
+<span class="nc" id="L41">        return () -&gt; new NotFoundException(message, id);</span>
+    }
+
+    public static Supplier&lt;NotFoundException&gt; notFoundOrder() {
+<span class="nc" id="L45">        String message = &quot;Order not found&quot;;</span>
+<span class="nc" id="L46">        return () -&gt; new NotFoundException(message);</span>
+    }
+
     public NotFoundException(String message) {
-<span class="nc" id="L30">        super(message);</span>
-<span class="nc" id="L31">    }</span>
+<span class="nc" id="L50">        super(message);</span>
+<span class="nc" id="L51">    }</span>
 
     public NotFoundException(String message, long id) {
-<span class="fc" id="L34">        super(message);</span>
-<span class="fc" id="L35">        this.id = id;</span>
-<span class="fc" id="L36">    }</span>
+<span class="nc" id="L54">        super(message);</span>
+<span class="nc" id="L55">        this.id = id;</span>
+<span class="nc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

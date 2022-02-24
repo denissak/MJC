@@ -4,12 +4,12 @@ import com.epam.esm.CertificateService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.entity.CertificateEntity;
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
-import com.epam.esm.model.Certificate;
-import com.epam.esm.model.Tag;
 import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.CertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +49,19 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto create(CertificateDto certificateDto) {
-<span class="fc" id="L52">        Optional&lt;Certificate&gt; certificate = certificateRepository.readByName(certificateDto.getName());</span>
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (certificate.isPresent()) {</span>
+<span class="nc" id="L52">        CertificateEntity certificate = certificateRepository.readByName(certificateDto.getName());</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (certificate != null) {</span>
 <span class="nc" id="L54">            throw DuplicateException.certificateExists().get();</span>
         }
-<span class="fc" id="L56">        CertificateValidator.validate(certificateDto);</span>
-<span class="fc" id="L57">        LocalDateTime now = dateTimeWrapper.wrapDateTime();</span>
-<span class="fc" id="L58">        certificateDto.setCreateDate(now);</span>
-<span class="fc" id="L59">        certificateDto.setLastUpdateDate(now);</span>
-<span class="fc" id="L60">        Certificate createdCertificate = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));</span>
-<span class="fc" id="L61">        List&lt;Tag&gt; tags = certificateDto.getTags().stream().map(tagDto -&gt; tagMapper.convertToTag(tagDto)).collect(Collectors.toList());</span>
-<span class="fc" id="L62">        createdCertificate.setTags(tags);</span>
-<span class="fc" id="L63">        addTagsToBase(createdCertificate);</span>
-<span class="fc" id="L64">        return certificateMapper.convertToCertificateDto(createdCertificate);</span>
+<span class="nc" id="L56">        CertificateValidator.validate(certificateDto);</span>
+<span class="nc" id="L57">        LocalDateTime now = dateTimeWrapper.wrapDateTime();</span>
+<span class="nc" id="L58">        certificateDto.setCreateDate(now);</span>
+<span class="nc" id="L59">        certificateDto.setLastUpdateDate(now);</span>
+<span class="nc" id="L60">        CertificateEntity createdCertificateEntity = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));</span>
+//        List&lt;TagEntity&gt; tagEntities = certificateDto.getTags().stream().map(tagDto -&gt; tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+//        createdCertificateEntity.setTagEntities(tagEntities);
+<span class="nc" id="L63">        addTagsToBase(createdCertificateEntity);</span>
+<span class="nc" id="L64">        return certificateMapper.convertToCertificateDto(createdCertificateEntity);</span>
     }
 
     /**
@@ -72,9 +72,11 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public CertificateDto readById(Long certificateId) {
-<span class="fc" id="L75">        Optional&lt;Certificate&gt; certificate = certificateRepository.readById(certificateId);</span>
-<span class="fc" id="L76">        certificate.ifPresent(actualCertificate -&gt; actualCertificate.setTags(certificateRepository.readCertificateTags(certificateId)));</span>
-<span class="fc" id="L77">        return certificateMapper.convertToCertificateDto(certificate.orElseThrow(NotFoundException.notFoundWithCertificateId(certificateId)));</span>
+<span class="nc" id="L75">       CertificateEntity certificate = certificateRepository.readById(certificateId);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (certificate == null){</span>
+<span class="nc" id="L77">            throw NotFoundException.notFoundWithCertificateId(certificateId).get();</span>
+        }
+<span class="nc" id="L79">        return certificateMapper.convertToCertificateDto(certificate);</span>
     }
 
     /**
@@ -83,14 +85,13 @@ public class CertificateServiceImpl implements CertificateService {
      * @return all certificates
      */
     @Override
-    public List&lt;CertificateDto&gt; readAll() {
-<span class="fc" id="L87">        List&lt;Certificate&gt; certificates = certificateRepository.readAll();</span>
-<span class="fc" id="L88">        List&lt;CertificateDto&gt; certificateDtoList = new ArrayList&lt;&gt;(certificates.size());</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (Certificate certificate : certificates) {</span>
-<span class="fc" id="L90">            certificate.setTags(certificateRepository.readCertificateTags(certificate.getId()));</span>
-<span class="fc" id="L91">            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificate));</span>
-<span class="fc" id="L92">        }</span>
-<span class="fc" id="L93">        return certificateDtoList;</span>
+    public List&lt;CertificateDto&gt; readAll(int page, int size) {
+<span class="nc" id="L89">        List&lt;CertificateEntity&gt; certificateEntities = certificateRepository.readAll(page, size);</span>
+<span class="nc" id="L90">        List&lt;CertificateDto&gt; certificateDtoList = new ArrayList&lt;&gt;(certificateEntities.size());</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        for (CertificateEntity certificateEntity : certificateEntities) {</span>
+<span class="nc" id="L92">            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));</span>
+<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">        return certificateDtoList;</span>
     }
 
     /**
@@ -104,14 +105,14 @@ public class CertificateServiceImpl implements CertificateService {
      * @return all certificates from search terms
      */
     @Override
-    public List&lt;CertificateDto&gt; readCertificateWithDifferentParams(String tagValue, String name, String description, String sortBy, String sortOrder) {
-<span class="fc" id="L108">        List&lt;Certificate&gt; certificates = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder);</span>
-<span class="fc" id="L109">        List&lt;CertificateDto&gt; certificateDtoList = new ArrayList&lt;&gt;(certificates.size());</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        for (Certificate certificate : certificates) {</span>
-<span class="fc" id="L111">            certificate.setTags(certificateRepository.readCertificateTags(certificate.getId()));</span>
-<span class="fc" id="L112">            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificate));</span>
-<span class="fc" id="L113">        }</span>
-<span class="fc" id="L114">        return certificateDtoList;</span>
+    public List&lt;CertificateDto&gt; readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
+<span class="fc" id="L109">        List&lt;CertificateEntity&gt; certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);</span>
+<span class="fc" id="L110">        List&lt;CertificateDto&gt; certificateDtoList = new ArrayList&lt;&gt;(certificateEntities.size());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (CertificateEntity certificateEntity : certificateEntities) {</span>
+//            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
+<span class="fc" id="L113">            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return certificateDtoList;</span>
     }
 
     /**
@@ -124,18 +125,18 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto update(long id, CertificateDto certificateDto) {
-<span class="fc" id="L127">        CertificateValidator.validate(certificateDto);</span>
-<span class="fc" id="L128">        CertificateDto currentCertificateDto = checkFields(certificateDto);</span>
-<span class="fc" id="L129">        LocalDateTime now = dateTimeWrapper.wrapDateTime();</span>
-<span class="fc" id="L130">        currentCertificateDto.setLastUpdateDate(now);</span>
-<span class="fc" id="L131">        List&lt;Tag&gt; requestTags = currentCertificateDto.getTags().stream().map(tagDto -&gt; tagMapper.convertToTag(tagDto)).collect(Collectors.toList());</span>
-<span class="fc" id="L132">        Set&lt;Tag&gt; createdTagsSet = new HashSet&lt;&gt;(tagRepository.readAll());</span>
-<span class="fc" id="L133">        List&lt;Tag&gt; responseTags = saveNewTags(requestTags, createdTagsSet);</span>
-<span class="fc" id="L134">        Certificate certificate = certificateMapper.convertToCertificate(currentCertificateDto);</span>
-<span class="fc" id="L135">        certificateRepository.update(id, certificate);</span>
-<span class="fc" id="L136">        certificate.setTags(responseTags);</span>
-<span class="fc" id="L137">        addTagsToBase(certificate);</span>
-<span class="fc" id="L138">        return currentCertificateDto;</span>
+<span class="nc" id="L128">        CertificateValidator.validate(certificateDto);</span>
+<span class="nc" id="L129">        CertificateDto currentCertificateDto = checkFields(certificateDto);</span>
+<span class="nc" id="L130">        LocalDateTime now = dateTimeWrapper.wrapDateTime();</span>
+<span class="nc" id="L131">        currentCertificateDto.setLastUpdateDate(now);</span>
+<span class="nc" id="L132">        List&lt;TagEntity&gt; requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -&gt; tagMapper.convertToTag(tagDto)).collect(Collectors.toList());</span>
+//        Set&lt;TagEntity&gt; createdTagsSet = new HashSet&lt;&gt;(tagRepository.readAll(page, size));
+//        List&lt;TagEntity&gt; responseTagEntities = saveNewTags(requestTagEntities, createdTagsSet);
+<span class="nc" id="L135">        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);</span>
+<span class="nc" id="L136">        certificateRepository.update(id, certificateEntity);</span>
+//        certificateEntity.setTagEntities(responseTagEntities);
+<span class="nc" id="L138">        addTagsToBase(certificateEntity);</span>
+<span class="nc" id="L139">        return currentCertificateDto; //TODO</span>
     }
 
     /**
@@ -143,46 +144,56 @@ public class CertificateServiceImpl implements CertificateService {
      *
      * @param certificateId the id of certificate to be deleted
      */
+
+    @Transactional
     @Override
     public void delete(Long certificateId) {
-<span class="fc" id="L148">        readById(certificateId);</span>
-<span class="fc" id="L149">        certificateRepository.delete(certificateId);</span>
-<span class="fc" id="L150">    }</span>
+<span class="nc" id="L151">        readById(certificateId);</span>
+<span class="nc" id="L152">        certificateRepository.delete(certificateId);</span>
+<span class="nc" id="L153">    }</span>
 
     /**
-     * Check tags are existing. Add new tags in database and attach them
+     * Check tagEntities are existing. Add new tagEntities in database and attach them
      * on certificate.
      *
-     * @param certificate certificate which need read all tags,
-     *                    create all new tags in database and attach
-     *                    them on certificate
+     * @param certificateEntity certificate which need read all tagEntities,
+     *                          create all new tagEntities in database and attach
+     *                          them on certificate
      */
-    public void addTagsToBase(Certificate certificate) {
-<span class="fc" id="L161">        List&lt;Tag&gt; tagList = certificate.getTags();</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if (tagList != null) {</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">            for (Tag tag : tagList) {</span>
-<span class="fc" id="L164">                Optional&lt;Tag&gt; existedTag = tagRepository.readByName(tag.getName());</span>
-<span class="fc" id="L165">                Long tagId = existedTag.map(Tag::getId).orElseGet(() -&gt; tagRepository.create(tag).getId());</span>
-<span class="fc" id="L166">                certificateRepository.addTag(tagId, certificate.getId());</span>
-<span class="fc" id="L167">            }</span>
+    public void addTagsToBase(CertificateEntity certificateEntity) {
+<span class="nc" id="L164">        List&lt;TagEntity&gt; tagEntityList = certificateEntity.getTagEntities();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (tagEntityList != null) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            for (TagEntity tagEntity : tagEntityList) {</span>
+<span class="nc" id="L167">                TagEntity existedTag = tagRepository.readByName(tagEntity.getName());</span>
+                Long tagId;
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                if (existedTag == null) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                    if (tagEntity.getId() != null) {</span>
+<span class="nc" id="L171">                        tagEntity.setId(null);</span>
+                    }
+<span class="nc" id="L173">                    tagId = tagRepository.create(tagEntity).getId();</span>
+                } else {
+<span class="nc" id="L175">                    tagId = existedTag.getId();</span>
+                }
+<span class="nc" id="L177">                certificateRepository.addTag(tagId, certificateEntity.getId());</span>
+<span class="nc" id="L178">            }</span>
         }
-<span class="fc" id="L169">    }</span>
+<span class="nc" id="L180">    }</span>
 
     /**
-     * Add new tags in database
+     * Add new tagEntities in database
      *
-     * @param requestTags tags in request
-     * @param createdTags tags in dataBase
-     * @return all tags in certificate
+     * @param requestTagEntities tagEntities in request
+     * @param createdTagEntities tagEntities in dataBase
+     * @return all tagEntities in certificate
      */
-    private List&lt;Tag&gt; saveNewTags(List&lt;Tag&gt; requestTags, Set&lt;Tag&gt; createdTags) {
-<span class="fc" id="L179">        List&lt;Tag&gt; responseTags = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (Tag requestTag : requestTags) {</span>
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            if (!createdTags.contains(requestTag)) {</span>
-<span class="fc" id="L182">                responseTags.add(tagRepository.create(requestTag));</span>
+    private List&lt;TagEntity&gt; saveNewTags(List&lt;TagEntity&gt; requestTagEntities, Set&lt;TagEntity&gt; createdTagEntities) {
+<span class="nc" id="L190">        List&lt;TagEntity&gt; responseTagEntities = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        for (TagEntity requestTagEntity : requestTagEntities) {</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (!createdTagEntities.contains(requestTagEntity)) {</span>
+<span class="nc" id="L193">                responseTagEntities.add(tagRepository.create(requestTagEntity));</span>
             }
-<span class="fc" id="L184">        }</span>
-<span class="fc" id="L185">        return responseTags;</span>
+<span class="nc" id="L195">        }</span>
+<span class="nc" id="L196">        return responseTagEntities;</span>
     }
 
     /**
@@ -191,26 +202,27 @@ public class CertificateServiceImpl implements CertificateService {
      * @param certificateDto certificate which need to check
      */
     private CertificateDto checkFields(CertificateDto certificateDto) {
-<span class="fc" id="L194">        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId())</span>
-<span class="fc" id="L195">                .orElseThrow(NotFoundException.notFoundWithCertificateId(certificateDto.getId())));</span>
-
-<span class="pc bpc" id="L197" title="3 of 4 branches missed.">        if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) &amp;&amp; certificateDto.getName() != null) {</span>
-<span class="nc" id="L198">            certificateInBase.setName(certificateDto.getName());</span>
+<span class="nc" id="L205">        CertificateDto certificateInBase =certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId()));</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (certificateInBase == null){</span>
+<span class="nc" id="L207">            throw NotFoundException.notFoundWithCertificateId(certificateDto.getId()).get();</span>
         }
-<span class="pc bpc" id="L200" title="3 of 4 branches missed.">        if (!Objects.equals(certificateDto.getDescription(), certificateInBase.getDescription()) &amp;&amp; certificateDto.getDescription() != null) {</span>
-<span class="nc" id="L201">            certificateInBase.setDescription(certificateDto.getDescription());</span>
+<span class="nc bnc" id="L209" title="All 4 branches missed.">        if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) &amp;&amp; certificateDto.getName() != null) {</span>
+<span class="nc" id="L210">            certificateInBase.setName(certificateDto.getName());</span>
         }
-<span class="pc bpc" id="L203" title="3 of 4 branches missed.">        if (!Objects.equals(certificateDto.getDuration(), certificateInBase.getDuration()) &amp;&amp; certificateDto.getDuration() != null) {</span>
-<span class="nc" id="L204">            certificateInBase.setDuration(certificateDto.getDuration());</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">        if (!Objects.equals(certificateDto.getDescription(), certificateInBase.getDescription()) &amp;&amp; certificateDto.getDescription() != null) {</span>
+<span class="nc" id="L213">            certificateInBase.setDescription(certificateDto.getDescription());</span>
         }
-<span class="pc bpc" id="L206" title="3 of 4 branches missed.">        if (!Objects.equals(certificateDto.getPrice(), certificateInBase.getPrice()) &amp;&amp; certificateDto.getPrice() != null) {</span>
-<span class="nc" id="L207">            certificateInBase.setPrice(certificateDto.getPrice());</span>
+<span class="nc bnc" id="L215" title="All 4 branches missed.">        if (!Objects.equals(certificateDto.getDuration(), certificateInBase.getDuration()) &amp;&amp; certificateDto.getDuration() != null) {</span>
+<span class="nc" id="L216">            certificateInBase.setDuration(certificateDto.getDuration());</span>
         }
-<span class="pc bpc" id="L209" title="3 of 4 branches missed.">        if (!Objects.equals(certificateDto.getTags(), certificateInBase.getTags()) &amp;&amp; certificateDto.getTags() != null) {</span>
-<span class="nc" id="L210">            certificateInBase.setTags(certificateDto.getTags());</span>
+<span class="nc bnc" id="L218" title="All 4 branches missed.">        if (!Objects.equals(certificateDto.getPrice(), certificateInBase.getPrice()) &amp;&amp; certificateDto.getPrice() != null) {</span>
+<span class="nc" id="L219">            certificateInBase.setPrice(certificateDto.getPrice());</span>
         }
-<span class="fc" id="L212">        certificateInBase.setLastUpdateDate(certificateDto.getCreateDate());</span>
-<span class="fc" id="L213">        return certificateInBase;</span>
+<span class="nc bnc" id="L221" title="All 4 branches missed.">        if (!Objects.equals(certificateDto.getTags(), certificateInBase.getTags()) &amp;&amp; certificateDto.getTags() != null) {</span>
+<span class="nc" id="L222">            certificateInBase.setTags(certificateDto.getTags());</span>
+        }
+<span class="nc" id="L224">        certificateInBase.setLastUpdateDate(certificateDto.getCreateDate());</span>
+<span class="nc" id="L225">        return certificateInBase;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

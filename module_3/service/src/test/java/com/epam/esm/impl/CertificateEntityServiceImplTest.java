@@ -53,17 +53,17 @@ public class CertificateEntityServiceImplTest {
     @Mock
     private DateTimeWrapper dateTimeWrapper;
 //    @Autowired
-    private static CertificateMapper certificateMapper;
+    private static CertificateMapper certificateMapper = new CertificateMapperImpl(new TagMapperImpl());
 //    @Autowired
-    private static TagMapper tagMapper;
+    private static TagMapper tagMapper = new TagMapperImpl();
     private static LocalDateTime localDateTime;
 
     private CertificateService certificateServiceImpl;
 
     @BeforeAll
     public static void init() {
-        certificateMapper = CertificateMapper.INSTANCE;
-        tagMapper = TagMapper.INSTANCE;
+        certificateMapper = new CertificateMapperImpl(tagMapper);
+        tagMapper = new TagMapperImpl();
         localDateTime = LocalDateTime.now();
     }
 
@@ -168,7 +168,7 @@ public class CertificateEntityServiceImplTest {
       //  when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificateEntity.getTagEntities());
         List<CertificateDto> actual = certificateServiceImpl.readCertificateWithDifferentParams(ANY_MASSIVE , ANY_STRING, ANY_STRING, ANY_STRING, ANY_STRING, ANY_INTEGER, ANY_INTEGER);
         assertEquals(expected, actual);
-        verify(certificateRepository).readCertificateWithDifferentParams(any(),anyString(),anyString(),anyString(),anyString(),any(),any());
+        verify(certificateRepository).readCertificateWithDifferentParams(any(),anyString(),anyString(),anyString(),anyString(),anyInt(),anyInt());
     }
 
     @Test

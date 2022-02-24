@@ -14,14 +14,19 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-24T14:51:41+0300",
+    date = "2022-02-24T15:12:35+0300",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.1.jar, environment: Java 16.0.2 (Oracle Corporation)"
 )
 @Component
 public class CertificateMapperImpl implements CertificateMapper {
 
+    private final TagMapper tagMapper;
+
     @Autowired
-    private TagMapper tagMapper;
+    public CertificateMapperImpl(TagMapper tagMapper) {
+
+        this.tagMapper = tagMapper;
+    }
 
     @Override
     public CertificateDto convertToCertificateDto(CertificateEntity certificateEntity) {
