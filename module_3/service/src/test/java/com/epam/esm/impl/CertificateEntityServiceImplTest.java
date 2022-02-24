@@ -17,14 +17,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -126,11 +120,9 @@ public class CertificateEntityServiceImplTest {
         certificateDto.setTags(List.of(tagDto));
         List<CertificateDto> expected = List.of(certificateDto);
         when(certificateRepository.readAll(anyInt(), anyInt())).thenReturn(certificateEntities);
-       // when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificateEntity.getTagEntities());
         List<CertificateDto> actual = certificateServiceImpl.readAll(anyInt(), anyInt());
         assertEquals(expected, actual);
         verify(certificateRepository).readAll(anyInt(), anyInt());
-       // verify(certificateRepository).readCertificateTags(anyLong());
     }
 
     @Test
@@ -142,7 +134,6 @@ public class CertificateEntityServiceImplTest {
     void testReadCertificateById() {
         when(certificateRepository.readById(anyLong())).thenReturn(certificateEntity);
         certificateServiceImpl.readById(certificateEntity.getId());
-//        verify(certificateRepository).readCertificateTags(certificateEntity.getId());
     }
 
     @Test
@@ -153,7 +144,6 @@ public class CertificateEntityServiceImplTest {
     @Test
     void testDeleteCertificate() {
         when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(certificateEntity);
-      //  when(certificateRepository.delete(CERTIFICATE_ID_1));
         certificateServiceImpl.delete(CERTIFICATE_ID_1);
         verify(certificateRepository).delete(CERTIFICATE_ID_1);
     }
@@ -165,7 +155,6 @@ public class CertificateEntityServiceImplTest {
         List<CertificateDto> expected = List.of(certificateDto);
         when(certificateRepository.readCertificateWithDifferentParams(any(),anyString(),anyString(),
                 anyString(),anyString(),anyInt(),anyInt())).thenReturn(certificateEntities);
-      //  when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificateEntity.getTagEntities());
         List<CertificateDto> actual = certificateServiceImpl.readCertificateWithDifferentParams(ANY_MASSIVE , ANY_STRING, ANY_STRING, ANY_STRING, ANY_STRING, ANY_INTEGER, ANY_INTEGER);
         assertEquals(expected, actual);
         verify(certificateRepository).readCertificateWithDifferentParams(any(),anyString(),anyString(),anyString(),anyString(),anyInt(),anyInt());

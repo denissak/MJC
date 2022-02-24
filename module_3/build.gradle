@@ -21,20 +21,11 @@ allprojects {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-        // https://mvnrepository.com/artifact/org.projectlombok/lombok-mapstruct-binding
-//        implementation 'org.projectlombok:lombok-mapstruct-binding'
-
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'org.mapstruct:mapstruct:1.4.2.Final'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-//        testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-//        testImplementation 'org.mockito:mockito-junit-jupiter'
-//        testImplementation 'org.mockito:mockito-core'
-        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-//        testImplementation 'org.springframework:spring-test'
         implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     }
 

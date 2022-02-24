@@ -12,10 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -86,9 +83,7 @@ public class TagEntityServiceImplTest {
     @Test
     void testDeleteCertificate() {
         when(tagRepository.readById(TAG_ID_1)).thenReturn(tagEntity);
-//        when(tagRepository.delete(TAG_ID_1)).thenReturn(1);
         tagServiceImpl.delete(TAG_ID_1);
         verify(tagRepository).delete(anyLong());
-//        verify(tagRepository).delete(TAG_ID_1);
     }
 }

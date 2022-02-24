@@ -1,10 +1,8 @@
 dependencies {
     implementation 'org.springframework:spring-orm:3.0.6.RELEASE'
     annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.4.27.Final'
-//    implementation 'com.vladmihalcea:hibernate-types-52:2.12.1'
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.27.Final'
     implementation 'com.zaxxer:HikariCP:5.0.1'
-//    implementation 'org.springframework:spring-jdbc:5.3.15'
     implementation 'org.postgresql:postgresql'
     testImplementation 'com.h2database:h2:1.4.200'
 }
