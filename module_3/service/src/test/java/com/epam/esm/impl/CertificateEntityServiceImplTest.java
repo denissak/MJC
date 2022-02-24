@@ -9,18 +9,25 @@ import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
+import com.epam.esm.mapper.CertificateMapperImpl;
 import com.epam.esm.mapper.TagMapper;
+import com.epam.esm.mapper.TagMapperImpl;
 import com.epam.esm.util.DateTimeWrapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +52,9 @@ public class CertificateEntityServiceImplTest {
     private TagRepository tagRepository;
     @Mock
     private DateTimeWrapper dateTimeWrapper;
+//    @Autowired
     private static CertificateMapper certificateMapper;
+//    @Autowired
     private static TagMapper tagMapper;
     private static LocalDateTime localDateTime;
 
@@ -111,30 +120,30 @@ public class CertificateEntityServiceImplTest {
         verify(tagRepository).readByName(any());
     }
 
-//    @Test
-//    void testReadAllCertificates() {
-//        List<CertificateEntity> certificateEntities = List.of(certificateEntity);
-//        certificateDto.setTags(List.of(tagDto));
-//        List<CertificateDto> expected = List.of(certificateDto);
-//        when(certificateRepository.readAll(anyInt(), anyInt())).thenReturn(certificateEntities);
-//       // when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificateEntity.getTagEntities());
-//        List<CertificateDto> actual = certificateServiceImpl.readAll(anyInt(), anyInt());
-//        assertEquals(expected, actual);
-//        verify(certificateRepository).readAll(anyInt(), anyInt());
-//       // verify(certificateRepository).readCertificateTags(anyLong());
-//    }
+    @Test
+    void testReadAllCertificates() {
+        List<CertificateEntity> certificateEntities = List.of(certificateEntity);
+        certificateDto.setTags(List.of(tagDto));
+        List<CertificateDto> expected = List.of(certificateDto);
+        when(certificateRepository.readAll(anyInt(), anyInt())).thenReturn(certificateEntities);
+       // when(certificateRepository.readCertificateTags(anyLong())).thenReturn(certificateEntity.getTagEntities());
+        List<CertificateDto> actual = certificateServiceImpl.readAll(anyInt(), anyInt());
+        assertEquals(expected, actual);
+        verify(certificateRepository).readAll(anyInt(), anyInt());
+       // verify(certificateRepository).readCertificateTags(anyLong());
+    }
 
     @Test
     void testReadByIdWithInvalidId() {
         assertThrows(NotFoundException.class, () -> certificateServiceImpl.readById(INVALID_ID));
     }
 
-//    @Test
-//    void testReadCertificateById() {
-//        when(certificateRepository.readById(anyLong())).thenReturn(Optional.of(certificateEntity));
-//        certificateServiceImpl.readById(certificateEntity.getId());
-//       // verify(certificateRepository).readCertificateTags(certificateEntity.getId());
-//    }
+    @Test
+    void testReadCertificateById() {
+        when(certificateRepository.readById(anyLong())).thenReturn(certificateEntity);
+        certificateServiceImpl.readById(certificateEntity.getId());
+//        verify(certificateRepository).readCertificateTags(certificateEntity.getId());
+    }
 
     @Test
     void testUpdateNotFoundException() {

@@ -1,4 +1,3 @@
-/*
 package com.epam.esm.impl;
 
 import com.epam.esm.TagService;
@@ -18,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,8 +39,8 @@ public class TagEntityServiceImplTest {
 
     @BeforeEach
     public void setUp () {
-        certificateRepository = Mockito.mock(CertificateRepository.class);
-        tagRepository = Mockito.mock(TagRepository.class);
+        certificateRepository = mock(CertificateRepository.class);
+        tagRepository = mock(TagRepository.class);
         tagServiceImpl = new TagServiceImpl(tagRepository, tagMapper, certificateRepository);
 
         tagEntity = TagEntity.builder()
@@ -57,25 +57,25 @@ public class TagEntityServiceImplTest {
     @Test
     void testCreate() {
         TagDto expected = tagDto;
-        Mockito.when(tagRepository.create(Mockito.any())).thenReturn(tagEntity);
+        when(tagRepository.create(any())).thenReturn(tagEntity);
         TagDto actual = tagServiceImpl.create(expected);
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(tagRepository).create(Mockito.any());
+        verify(tagRepository).create(any());
     }
 
     @Test
     void testReadById() {
         TagDto expected = tagDto;
-        Mockito.when(tagRepository.readById(TAG_ID_1)).thenReturn(Optional.of(tagEntity));
+        when(tagRepository.readById(TAG_ID_1)).thenReturn(tagEntity);
         TagDto actual = tagServiceImpl.readById(TAG_ID_1);
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(tagRepository).readById(Mockito.anyLong());
+        verify(tagRepository).readById(anyLong());
     }
 
     @Test
     void testReadAll() {
-        tagServiceImpl.readAll();
-        Mockito.verify(tagRepository).readAll();
+        tagServiceImpl.readAll(anyInt(), anyInt());
+        verify(tagRepository).readAll(anyInt(), anyInt());
     }
 
     @Test
@@ -85,10 +85,10 @@ public class TagEntityServiceImplTest {
 
     @Test
     void testDeleteCertificate() {
-        when(tagRepository.readById(TAG_ID_1)).thenReturn(Optional.of(tagEntity));
-        when(tagRepository.delete(TAG_ID_1)).thenReturn(1);
+        when(tagRepository.readById(TAG_ID_1)).thenReturn(tagEntity);
+//        when(tagRepository.delete(TAG_ID_1)).thenReturn(1);
         tagServiceImpl.delete(TAG_ID_1);
-        verify(tagRepository).delete(TAG_ID_1);
+        verify(tagRepository).delete(anyLong());
+//        verify(tagRepository).delete(TAG_ID_1);
     }
 }
-*/

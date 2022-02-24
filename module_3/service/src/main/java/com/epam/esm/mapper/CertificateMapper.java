@@ -17,6 +17,6 @@ public interface CertificateMapper {
     CertificateDto convertToCertificateDto(CertificateEntity certificateEntity);
 
     @InheritInverseConfiguration
-//    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "tagEntities", ignore = true)
     CertificateEntity convertToCertificate(CertificateDto certificateDto);
 }
