@@ -32,25 +32,15 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
-    private final CertificateRepository certificateRepository;
     private final OrderMapper orderMapper;
-    private final UserMapper userMapper;
-    private final CertificateMapper certificateMapper;
     private final ReadOrderMapper readOrderMapper;
     private final DateTimeWrapper dateTimeWrapper;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository,
-                            CertificateRepository certificateRepository, OrderMapper orderMapper,
-                            UserMapper userMapper, CertificateMapper certificateMapper,
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper,
                             DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
-        this.certificateRepository = certificateRepository;
         this.orderMapper = orderMapper;
-        this.userMapper = userMapper;
-        this.certificateMapper = certificateMapper;
         this.dateTimeWrapper = dateTimeWrapper;
         this.readOrderMapper = readOrderMapper;
     }

@@ -167,9 +167,6 @@ public class CertificateServiceImpl implements CertificateService {
                 TagEntity existedTag = tagRepository.readByName(tagEntity.getName());
                 Long tagId;
                 if (existedTag == null) {
-                    if (tagEntity.getId() != null) {
-                        tagEntity.setId(null);
-                    }
                     tagId = tagRepository.create(tagEntity).getId();
                 } else {
                     tagId = existedTag.getId();

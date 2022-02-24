@@ -1,7 +1,6 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.UserService;
-import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.UserEntity;
@@ -16,14 +15,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
-    OrderRepository orderRepository;
-    UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
         this.userMapper = userMapper;
     }
 
@@ -32,15 +29,6 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.readById(userId);
         if (userEntity == null){
             throw NotFoundException.notFoundWithUserId(userId).get();
-        }
-        return userMapper.convertToUserDto(userEntity);
-    }
-
-    @Override
-    public UserDto readByLogin(String login) { //TODO is needed?
-        UserEntity userEntity = userRepository.readByLogin(login);
-        if (userEntity == null){
-            throw NotFoundException.notFoundUser().get();
         }
         return userMapper.convertToUserDto(userEntity);
     }

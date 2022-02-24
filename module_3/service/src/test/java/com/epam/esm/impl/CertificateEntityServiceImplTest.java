@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 public class CertificateEntityServiceImplTest {
 
     private static final Long CERTIFICATE_ID_1 = 1L;
-    private static final Long TAG_ID_1 = 1L;
+    private static final Long TAG_ID_1 = 1111L;
     private static final Long INVALID_ID = -1L;
     private static final String ANY_STRING = "";
     private static final Integer ANY_INTEGER = 1;
@@ -46,9 +46,7 @@ public class CertificateEntityServiceImplTest {
     private TagRepository tagRepository;
     @Mock
     private DateTimeWrapper dateTimeWrapper;
-//    @Autowired
     private static CertificateMapper certificateMapper = new CertificateMapperImpl(new TagMapperImpl());
-//    @Autowired
     private static TagMapper tagMapper = new TagMapperImpl();
     private static LocalDateTime localDateTime;
 
@@ -63,7 +61,7 @@ public class CertificateEntityServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        certificateServiceImpl = new CertificateServiceImpl(certificateRepository, tagRepository, certificateMapper, tagMapper, dateTimeWrapper );
+        certificateServiceImpl = new CertificateServiceImpl(certificateRepository, tagRepository, certificateMapper, tagMapper, dateTimeWrapper);
 
         tagEntity = TagEntity.builder()
                 .id(TAG_ID_1)
@@ -167,8 +165,6 @@ public class CertificateEntityServiceImplTest {
         certificateRepository.update(anyLong(), any());
         when(certificateRepository.readById(anyLong())).thenReturn(certificateEntity);
         when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
-        when(tagRepository.readByName(any())).thenReturn(null);
-        when(tagRepository.create(any())).thenReturn(tagEntity);
         when(certificateRepository.readById(CERTIFICATE_ID_1)).thenReturn(certificateEntity);
         tagRepository.readById(TAG_ID_1);
         CertificateDto actual = certificateServiceImpl.update(CERTIFICATE_ID_1, expected);

@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TagEntityServiceImplTest {
+
     private static TagMapper tagMapper;
     private TagRepository tagRepository;
     private CertificateRepository certificateRepository;
@@ -80,10 +81,21 @@ public class TagEntityServiceImplTest {
         Assertions.assertThrows(NotFoundException.class, () -> tagServiceImpl.readById(TAG_ID_1));
     }
 
+//    @Test
+//    void createException() {
+//        Assertions.assertThrows(NotFoundException.class, () -> tagServiceImpl.create(new TagDto()));
+//    }
+
     @Test
     void testDeleteCertificate() {
         when(tagRepository.readById(TAG_ID_1)).thenReturn(tagEntity);
         tagServiceImpl.delete(TAG_ID_1);
         verify(tagRepository).delete(anyLong());
+    }
+
+    @Test
+    void getMostPopularTag() {
+        tagServiceImpl.getMostPopularTag();
+        verify(tagRepository).getMostPopularTag();
     }
 }

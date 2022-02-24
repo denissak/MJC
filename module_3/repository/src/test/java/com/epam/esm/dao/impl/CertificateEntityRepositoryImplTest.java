@@ -126,12 +126,12 @@ public class CertificateEntityRepositoryImplTest {
 //        Assertions.assertEquals(expected, actual);
 //    }
 
-    @Test
-    void readAll() {
-        List<CertificateEntity> actual = certificateRepository.readAll();
-        List<CertificateEntity> expected = Arrays.asList(certificateEntity1, certificateEntity2, certificateEntity3);
-        Assertions.assertEquals(expected, actual);
-    }
+//    @Test
+//    void readAll() {
+//        List<CertificateEntity> actual = certificateRepository.readAll();
+//        List<CertificateEntity> expected = Arrays.asList(certificateEntity1, certificateEntity2, certificateEntity3);
+//        Assertions.assertEquals(expected, actual);
+//    }
 
 //    @Test
 //    void delete() {

@@ -9,7 +9,5 @@ public interface UserService {
 
     UserDto readById(long userId);
 
-    UserDto readByLogin(String login);
-
     List<UserDto> readAll(int page, int size);
 }

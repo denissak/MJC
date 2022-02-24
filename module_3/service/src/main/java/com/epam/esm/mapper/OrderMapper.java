@@ -15,16 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class OrderMapper {
+public class OrderMapper{
 
-    private final OrderRepository orderRepository;
-    private final UserMapper userMapper;
+//    private final OrderRepository orderRepository;
+//    private final UserMapper userMapper;
     private final CertificateMapper certificateMapper;
 
     @Autowired
-    public OrderMapper(OrderRepository orderRepository, UserMapper userMapper, CertificateMapper certificateMapper) {
-        this.orderRepository = orderRepository;
-        this.userMapper = userMapper;
+    public OrderMapper(/*OrderRepository orderRepository, UserMapper userMapper,*/ CertificateMapper certificateMapper) {
+//        this.orderRepository = orderRepository;
+//        this.userMapper = userMapper;
         this.certificateMapper = certificateMapper;
     }
 

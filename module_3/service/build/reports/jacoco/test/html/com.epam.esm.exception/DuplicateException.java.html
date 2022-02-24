@@ -14,13 +14,8 @@ public class DuplicateException extends RuntimeException {
 <span class="nc" id="L14">        return () -&gt; new DuplicateException(message);</span>
     }
 
-    public static Supplier&lt;DuplicateException&gt; userExists() {
-<span class="nc" id="L18">        String message = &quot;User already exists&quot;;</span>
-<span class="nc" id="L19">        return () -&gt; new DuplicateException(message);</span>
-    }
-
     public DuplicateException(String message) {
-<span class="nc" id="L23">        super(message);</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L18">        super(message);</span>
+<span class="nc" id="L19">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
