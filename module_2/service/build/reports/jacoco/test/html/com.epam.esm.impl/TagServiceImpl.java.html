@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.impl</a> &gt; <span class="el_source">TagServiceImpl.java</span></div><h1>TagServiceImpl.java</h1><pre class="source lang-java linenums">package com.epam.esm.impl;
+
+import com.epam.esm.TagService;
+import com.epam.esm.dao.CertificateRepository;
+import com.epam.esm.dao.TagRepository;
+import com.epam.esm.dto.TagDto;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
+import com.epam.esm.mapper.TagMapper;
+import com.epam.esm.model.Tag;
+import com.epam.esm.validation.TagValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Contains methods implementation for working mostly with {@code TagDto}
+ * entity.
+ */
+@Service
+public class TagServiceImpl implements TagService {
+
+    TagRepository tagRepository;
+    CertificateRepository certificateRepository;
+
+    TagMapper tagMapper;
+
+    @Autowired
+<span class="nc" id="L32">    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {</span>
+<span class="nc" id="L33">        this.tagRepository = tagRepository;</span>
+<span class="nc" id="L34">        this.tagMapper = tagMapper;</span>
+<span class="nc" id="L35">        this.certificateRepository = certificateRepository;</span>
+<span class="nc" id="L36">    }</span>
+
+    /**
+     * Creates and saves the passed tag.
+     *
+     * @param tagDto the tag to be saved
+     * @return saved tag
+     */
+    @Override
+    public TagDto create(TagDto tagDto) {
+<span class="nc" id="L46">        Optional&lt;Tag&gt; tag = tagRepository.readByName(tagDto.getName());</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (tag.isPresent()) {</span>
+<span class="nc" id="L48">            throw (DuplicateException) DuplicateException.tagExists();</span>
+        }
+<span class="nc" id="L50">        TagValidator.validate(tagDto);</span>
+<span class="nc" id="L51">        Optional&lt;Tag&gt; tagExist = tagRepository.readById(tagDto.getId());</span>
+<span class="nc" id="L52">        return tagMapper.convertToTagDto(tagExist.orElseGet(() -&gt; (tagRepository.create(tagMapper.convertToTag(tagDto)))));</span>
+    }
+
+    /**
+     * Reads tag with passed id.
+     *
+     * @param tagId id of tag to be read
+     * @return tag with passed id
+     */
+    @Override
+    public TagDto readById(Long tagId) {
+<span class="nc" id="L63">        Optional&lt;Tag&gt; tag = tagRepository.readById(tagId);</span>
+<span class="nc" id="L64">        return tagMapper.convertToTagDto(tag.orElseThrow(NotFoundException.notFoundWithTagId(tagId)));</span>
+    }
+
+    /**
+     * Reads all tags.
+     *
+     * @return all tags.
+     */
+    @Override
+    public List&lt;TagDto&gt; readAll() {
+<span class="nc" id="L74">        List&lt;Tag&gt; tagList = tagRepository.readAll();</span>
+<span class="nc" id="L75">        List&lt;TagDto&gt; tagDtoList = new ArrayList&lt;&gt;(tagList.size());</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        for (Tag tag : tagList) {</span>
+<span class="nc" id="L77">            tagDtoList.add(tagMapper.convertToTagDto(tag));</span>
+<span class="nc" id="L78">        }</span>
+<span class="nc" id="L79">        return tagDtoList;</span>
+    }
+
+    /**
+     * Deletes tag with passed id.
+     *
+     * @param tagId the id of tag to be deleted
+     */
+    @Override
+    public void delete(Long tagId) {
+<span class="nc" id="L89">        readById(tagId);</span>
+<span class="nc" id="L90">        tagRepository.delete(tagId);</span>
+<span class="nc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
