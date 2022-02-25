@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.mapper</a> &gt; <span class="el_source">OrderMapper.java</span></div><h1>OrderMapper.java</h1><pre class="source lang-java linenums">package com.epam.esm.mapper;
+
+import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.CertificateEntity;
+import com.epam.esm.entity.OrderCertificateEntity;
+import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class OrderMapper {
+
+    private final CertificateMapper certificateMapper;
+
+    @Autowired
+<span class="fc" id="L22">    public OrderMapper(CertificateMapper certificateMapper) {</span>
+<span class="fc" id="L23">        this.certificateMapper = certificateMapper;</span>
+<span class="fc" id="L24">    }</span>
+
+    public OrderDto convertToOrderDTO(OrderEntity orderEntity) {
+<span class="fc" id="L27">        List&lt;CertificateDto&gt; certificateDtoList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L28">        orderEntity.getOrderCertificateEntityList().forEach(orderCertificateEntity -&gt;</span>
+<span class="fc" id="L29">                certificateDtoList.add(certificateMapper.convertToCertificateDto(orderCertificateEntity.getCertificateEntity()))</span>
+        );
+<span class="fc" id="L31">        return OrderDto.builder()</span>
+<span class="fc" id="L32">                .id(orderEntity.getId())</span>
+<span class="fc" id="L33">                .name(orderEntity.getName())</span>
+<span class="fc" id="L34">                .cost(orderEntity.getCost())</span>
+<span class="fc" id="L35">                .date(orderEntity.getDate())</span>
+<span class="fc" id="L36">                .userDto(new UserDto(orderEntity.getUserEntity().getId(), orderEntity.getUserEntity().getLogin()))</span>
+<span class="fc" id="L37">                .certificateDto(certificateDtoList)</span>
+<span class="fc" id="L38">                .build();</span>
+    }
+
+    public OrderEntity convertToOrder(OrderDto orderDto) {
+<span class="fc" id="L42">        List&lt;CertificateEntity&gt; certificateEntityList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L43">        orderDto.getCertificateDto().forEach(certificateDto -&gt;</span>
+<span class="fc" id="L44">                certificateEntityList.add(certificateMapper.convertToCertificate(certificateDto))</span>
+        );
+<span class="fc" id="L46">        List&lt;OrderCertificateEntity&gt; orderCertificateEntityList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L47">        certificateEntityList.forEach(certificateEntity -&gt; {</span>
+<span class="fc" id="L48">                    OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()</span>
+<span class="fc" id="L49">                            .certificateEntity(certificateEntity)</span>
+<span class="fc" id="L50">                            .orderEntity(</span>
+<span class="fc" id="L51">                                    OrderEntity.builder()</span>
+<span class="fc" id="L52">                                            .name(orderDto.getName())</span>
+<span class="fc" id="L53">                                            .cost(orderDto.getCost())</span>
+<span class="fc" id="L54">                                            .date(orderDto.getDate())</span>
+<span class="fc" id="L55">                                            .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))</span>
+<span class="fc" id="L56">                                            .build())</span>
+<span class="fc" id="L57">                            .build();</span>
+<span class="fc" id="L58">                    orderCertificateEntityList.add(orderCertificateEntity);</span>
+<span class="fc" id="L59">                }</span>
+        );
+<span class="fc" id="L61">        return OrderEntity.builder()</span>
+<span class="fc" id="L62">                .id(orderDto.getId())</span>
+<span class="fc" id="L63">                .name(orderDto.getName())</span>
+<span class="fc" id="L64">                .cost(orderDto.getCost())</span>
+<span class="fc" id="L65">                .date(orderDto.getDate())</span>
+<span class="fc" id="L66">                .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))</span>
+<span class="fc" id="L67">                .orderCertificateEntityList(orderCertificateEntityList)</span>
+<span class="fc" id="L68">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

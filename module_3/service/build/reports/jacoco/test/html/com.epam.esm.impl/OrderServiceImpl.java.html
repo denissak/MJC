@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.impl</a> &gt; <span class="el_source">OrderServiceImpl.java</span></div><h1>OrderServiceImpl.java</h1><pre class="source lang-java linenums">package com.epam.esm.impl;
+
+import com.epam.esm.OrderService;
+import com.epam.esm.dao.OrderRepository;
+import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.ReadOrderDto;
+import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
+import com.epam.esm.mapper.OrderMapper;
+import com.epam.esm.mapper.ReadOrderMapper;
+import com.epam.esm.util.DateTimeWrapper;
+import com.epam.esm.validation.OrderValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
+    private final ReadOrderMapper readOrderMapper;
+    private final DateTimeWrapper dateTimeWrapper;
+
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper,
+<span class="fc" id="L35">                            DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper) {</span>
+<span class="fc" id="L36">        this.orderRepository = orderRepository;</span>
+<span class="fc" id="L37">        this.orderMapper = orderMapper;</span>
+<span class="fc" id="L38">        this.dateTimeWrapper = dateTimeWrapper;</span>
+<span class="fc" id="L39">        this.readOrderMapper = readOrderMapper;</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    public OrderDto create(OrderDto orderDto) {
+<span class="fc" id="L45">        OrderEntity order = orderRepository.readByName(orderDto.getName());</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (order != null) {</span>
+<span class="nc" id="L47">            throw DuplicateException.tagExists().get();</span>
+        }
+<span class="fc" id="L49">        OrderValidator.validate(orderDto);</span>
+<span class="fc" id="L50">        LocalDateTime now = dateTimeWrapper.wrapDateTime();</span>
+<span class="fc" id="L51">        orderDto.setDate(now);</span>
+<span class="fc" id="L52">        OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);</span>
+<span class="fc" id="L53">        orderRepository.create(orderEntity);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (CertificateDto certificateDto: orderDto.getCertificateDto()) {</span>
+<span class="fc" id="L55">            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        return orderMapper.convertToOrderDTO(orderEntity);</span>
+    }
+
+    @Override
+    public OrderDto readById(Long orderId) {
+<span class="fc" id="L62">        OrderEntity orderEntity = orderRepository.readById(orderId);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (orderEntity == null){</span>
+<span class="fc" id="L64">            throw NotFoundException.notFoundWithOrderId(orderId).get();</span>
+        }
+<span class="fc" id="L66">        return orderMapper.convertToOrderDTO(orderEntity);</span>
+    }
+
+    @Override
+    public List&lt;OrderDto&gt; readAll(int page, int size) {
+<span class="fc" id="L71">        List&lt;OrderEntity&gt; orderEntityList = orderRepository.readAll(page, size);</span>
+<span class="fc" id="L72">        List&lt;OrderDto&gt; orderDtoList = new ArrayList&lt;&gt;(orderEntityList.size());</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (OrderEntity orderEntity : orderEntityList) {</span>
+<span class="fc" id="L74">            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));</span>
+<span class="fc" id="L75">        }</span>
+<span class="fc" id="L76">        return orderDtoList;</span>
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long orderId) {
+<span class="fc" id="L82">        readById(orderId);</span>
+<span class="fc" id="L83">        orderRepository.delete(orderId);</span>
+<span class="fc" id="L84">    }</span>
+
+    @Override
+    public List&lt;OrderDto&gt; readAllOrdersByUserId(long userId, int page, int size) {
+<span class="fc" id="L88">        List&lt;OrderEntity&gt; orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);</span>
+<span class="fc" id="L89">        List&lt;OrderDto&gt; orderDtoList = new ArrayList&lt;&gt;(orderEntityList.size());</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (OrderEntity orderEntity : orderEntityList) {</span>
+<span class="fc" id="L91">            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));</span>
+<span class="fc" id="L92">        }</span>
+<span class="fc" id="L93">        return orderDtoList;</span>
+    }
+
+    @Override
+    public List&lt;ReadOrderDto&gt; readCostAndDateOrderByUserId(long userId, int page, int size) {
+<span class="nc" id="L98">        List&lt;OrderEntity&gt; orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);</span>
+<span class="nc" id="L99">        List&lt;ReadOrderDto&gt; readOrderDtoList = new ArrayList&lt;&gt;(orderEntityList.size());</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        for (OrderEntity orderEntity : orderEntityList) {</span>
+<span class="nc" id="L101">            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));</span>
+<span class="nc" id="L102">        }</span>
+<span class="nc" id="L103">        return readOrderDtoList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

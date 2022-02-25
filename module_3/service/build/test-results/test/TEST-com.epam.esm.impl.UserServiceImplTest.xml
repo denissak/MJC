@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.impl.UserServiceImplTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-02-25T08:38:45" hostname="ASU_DENIS" time="0.042">
+  <properties/>
+  <testcase name="readById()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.035"/>
+  <testcase name="readException()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.002"/>
+  <testcase name="readAll()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
