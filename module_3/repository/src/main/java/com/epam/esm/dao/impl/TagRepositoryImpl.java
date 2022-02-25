@@ -70,9 +70,9 @@ public class TagRepositoryImpl implements TagRepository {
         criteria.select(tagEntity)
                 .where(cb.equal(tagEntity.get("id"), id));
         List<TagEntity> entityList = entityManager.createQuery(criteria).getResultList();
-        if (entityList.size() > 0){
+        if (entityList.size() > 0) {
             return entityList.get(0);
-        }else
+        } else
             return null;
 
     }
@@ -91,10 +91,10 @@ public class TagRepositoryImpl implements TagRepository {
         criteria.select(tagEntity)
                 .where(cb.equal(tagEntity.get("name"), name));
         List<TagEntity> resultList = entityManager.createQuery(criteria).getResultList();
-        if (resultList.size() > 0){
+        if (resultList.size() > 0) {
             return resultList.get(0);
-        }else
-        return null;
+        } else
+            return null;
     }
 
     /**

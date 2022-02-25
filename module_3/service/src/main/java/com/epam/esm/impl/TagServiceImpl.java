@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Contains methods implementation for working mostly with {@code TagDto}
@@ -48,10 +47,8 @@ public class TagServiceImpl implements TagService {
             throw DuplicateException.tagExists().get();
         }
         TagValidator.validate(tagDto);
-//        Optional<TagEntity> tagExist = tagRepository.readById(tagDto.getId());
         TagEntity tagEntity = tagRepository.create(tagMapper.convertToTag(tagDto));
         return tagMapper.convertToTagDto(tagEntity);
-//        return tagMapper.convertToTagDto(tagExist.orElseGet(() -> (tagRepository.create(tagMapper.convertToTag(tagDto)))));
     }
 
     /**
@@ -63,7 +60,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto readById(Long tagId) {
         TagEntity tag = tagRepository.readById(tagId);
-        if (tag == null){
+        if (tag == null) {
             throw NotFoundException.notFoundWithTagId(tagId).get();
         }
         return tagMapper.convertToTagDto(tag);

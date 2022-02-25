@@ -1,6 +1,5 @@
 package com.epam.esm.mapper;
 
-import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.UserDto;
@@ -15,20 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class OrderMapper{
+public class OrderMapper {
 
-//    private final OrderRepository orderRepository;
-//    private final UserMapper userMapper;
     private final CertificateMapper certificateMapper;
 
     @Autowired
-    public OrderMapper(/*OrderRepository orderRepository, UserMapper userMapper,*/ CertificateMapper certificateMapper) {
-//        this.orderRepository = orderRepository;
-//        this.userMapper = userMapper;
+    public OrderMapper(CertificateMapper certificateMapper) {
         this.certificateMapper = certificateMapper;
     }
 
-    public OrderDto convertToOrderDTO(OrderEntity orderEntity){
+    public OrderDto convertToOrderDTO(OrderEntity orderEntity) {
         List<CertificateDto> certificateDtoList = new ArrayList<>();
         orderEntity.getOrderCertificateEntityList().forEach(orderCertificateEntity ->
                 certificateDtoList.add(certificateMapper.convertToCertificateDto(orderCertificateEntity.getCertificateEntity()))
@@ -43,24 +38,24 @@ public class OrderMapper{
                 .build();
     }
 
-    public OrderEntity convertToOrder(OrderDto orderDto){
+    public OrderEntity convertToOrder(OrderDto orderDto) {
         List<CertificateEntity> certificateEntityList = new ArrayList<>();
         orderDto.getCertificateDto().forEach(certificateDto ->
                 certificateEntityList.add(certificateMapper.convertToCertificate(certificateDto))
         );
         List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
         certificateEntityList.forEach(certificateEntity -> {
-            OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
-                    .certificateEntity(certificateEntity)
-                    .orderEntity(
-                            OrderEntity.builder()
-                                    .name(orderDto.getName())
-                                    .cost(orderDto.getCost())
-                                    .date(orderDto.getDate())
-                                    .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
-                                    .build())
-                    .build();
-                orderCertificateEntityList.add(orderCertificateEntity);
+                    OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
+                            .certificateEntity(certificateEntity)
+                            .orderEntity(
+                                    OrderEntity.builder()
+                                            .name(orderDto.getName())
+                                            .cost(orderDto.getCost())
+                                            .date(orderDto.getDate())
+                                            .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
+                                            .build())
+                            .build();
+                    orderCertificateEntityList.add(orderCertificateEntity);
                 }
         );
         return OrderEntity.builder()

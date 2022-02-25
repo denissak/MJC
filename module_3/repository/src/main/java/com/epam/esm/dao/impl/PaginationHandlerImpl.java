@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.TypedQuery;
 
+/**
+ * Contains implementation methods for working pagination with readAll methods.
+ */
 @Component
 public class PaginationHandlerImpl implements PaginationHandler {
 

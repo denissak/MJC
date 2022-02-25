@@ -9,6 +9,7 @@ import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.*;
+import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.*;
 import com.epam.esm.util.DateTimeWrapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,10 +21,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +39,6 @@ class OrderServiceImplTest {
     private static final Long CERTIFICATE_ID_1 = 1L;
     private static final Long TAG_ID_1 = 1L;
     private static final Long INVALID_ID = -1L;
-    private static final String ANY_STRING = "";
-    private static final Integer ANY_INTEGER = 1;
-    private static final String[] ANY_MASSIVE = new String[1];
     private OrderEntity orderEntity;
     private OrderDto orderDto;
     private UserEntity userEntity;
@@ -46,8 +47,8 @@ class OrderServiceImplTest {
     private CertificateDto certificateDto;
     private TagEntity tagEntity;
     private TagDto tagDto;
-    private List<OrderCertificateEntity> orderCertificateEntityList;
-    private List<CertificateDto> certificateDtoList;
+    private List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
+    private List<CertificateDto> certificateDtoList = new ArrayList<>();
     private OrderCertificateEntity orderCertificateEntity;
 
     @Mock
@@ -73,37 +74,10 @@ class OrderServiceImplTest {
 
     @BeforeEach
     public void setUp() {
+
         orderServiceImpl = new OrderServiceImpl(orderRepository, orderMapper, dateTimeWrapper, readOrderMapper);
 
-        orderCertificateEntity = OrderCertificateEntity.builder()
-                .certificateEntity(certificateEntity)
-                .orderEntity(orderEntity)
-                .build();
-
-        orderEntity = OrderEntity.builder()
-                .id(ORDER_ID)
-                .name("order1")
-                .cost(5.0)
-                .date(localDateTime)
-                .userEntity(userEntity)
-                .orderCertificateEntityList(orderCertificateEntityList)
-                .build();
-
-        orderDto = OrderDto.builder()
-                .id(ORDER_ID)
-                .name("order1")
-                .cost(5.0)
-                .date(localDateTime)
-                .userDto(userDto)
-                .certificateDto(certificateDtoList)
-                .build();
-
         userEntity = UserEntity.builder()
-                .id(USER_ID)
-                .login("name1")
-                .build();
-
-        userDto = UserDto.builder()
                 .id(USER_ID)
                 .login("name1")
                 .build();
@@ -113,9 +87,13 @@ class OrderServiceImplTest {
                 .name("tag1")
                 .build();
 
-        tagDto = TagDto.builder()
-                .id(TAG_ID_1)
-                .name("tag1")
+        orderEntity = OrderEntity.builder()
+                .id(ORDER_ID)
+                .name("order1")
+                .cost(5.0)
+                .date(localDateTime)
+                .userEntity(userEntity)
+                .orderCertificateEntityList(orderCertificateEntityList)
                 .build();
 
         certificateEntity = CertificateEntity.builder()
@@ -129,6 +107,18 @@ class OrderServiceImplTest {
                 .tagEntities(List.of(tagEntity))
                 .build();
 
+        orderCertificateEntity = OrderCertificateEntity.builder()
+                .certificateEntity(certificateEntity)
+                .orderEntity(orderEntity)
+                .build();
+
+        orderCertificateEntityList.add(orderCertificateEntity);
+
+        tagDto = TagDto.builder()
+                .id(TAG_ID_1)
+                .name("tag1")
+                .build();
+
         certificateDto = CertificateDto.builder()
                 .id(CERTIFICATE_ID_1)
                 .name("Some certificate")
@@ -140,14 +130,40 @@ class OrderServiceImplTest {
                 .tags(List.of(tagDto))
                 .build();
 
+        certificateDtoList.add(certificateDto);
+
+        userDto = UserDto.builder()
+                .id(USER_ID)
+                .login("name1")
+                .build();
+
+        orderDto = OrderDto.builder()
+                .id(ORDER_ID)
+                .name("order1")
+                .cost(5.0)
+                .date(localDateTime)
+                .userDto(userDto)
+                .certificateDto(certificateDtoList)
+                .build();
     }
 
     @Test
     void create() {
+        OrderDto expected = orderDto;
+        when(orderRepository.create(any())).thenReturn(orderEntity);
+        when(dateTimeWrapper.wrapDateTime()).thenReturn(localDateTime);
+        when(orderRepository.readByName(anyString())).thenReturn(null);
+        OrderDto actual = orderServiceImpl.create(expected);
+        assertEquals(expected, actual);
+        verify(orderRepository).create(any());
+        verify(dateTimeWrapper).wrapDateTime();
+        verify(orderRepository).readByName(any());
     }
 
     @Test
     void readById() {
+        when(orderRepository.readById(anyLong())).thenReturn(orderEntity);
+        orderServiceImpl.readById(certificateEntity.getId());
     }
 
     @Test
@@ -169,9 +185,26 @@ class OrderServiceImplTest {
 
     @Test
     void readAllOrdersByUserId() {
+        List<OrderEntity> orderEntityList = List.of(orderEntity);
+        List<OrderDto> expected = List.of(orderDto);
+        when(orderRepository.readAllOrdersByUserId(anyLong(), anyInt(), anyInt())).thenReturn(orderEntityList);
+        List<OrderDto> actual = orderServiceImpl.readAllOrdersByUserId(anyLong(), anyInt(), anyInt());
+        assertEquals(expected, actual);
+        verify(orderRepository).readAllOrdersByUserId(anyLong(), anyInt(), anyInt());
     }
 
     @Test
     void readCostAndDateOrderByUserId() {
+        List<OrderEntity> orderEntityList = List.of(orderEntity);
+        List<OrderDto> expected = List.of(orderDto);
+        when(orderRepository.readAllOrdersByUserId(anyLong(), anyInt(), anyInt())).thenReturn(orderEntityList);
+        List<OrderDto> actual = orderServiceImpl.readAllOrdersByUserId(anyLong(), anyInt(), anyInt());
+        assertEquals(expected, actual);
+        verify(orderRepository).readAllOrdersByUserId(anyLong(), anyInt(), anyInt());
+    }
+
+    @Test
+    void testReadByIdWithInvalidId() {
+        assertThrows(NotFoundException.class, () -> orderServiceImpl.readById(INVALID_ID));
     }
 }

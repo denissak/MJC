@@ -1,10 +1,8 @@
 package com.epam.esm.entity;
 
-import ch.qos.logback.classic.pattern.LineSeparatorConverter;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,9 +17,4 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
-/*    @EqualsAndHashCode.Exclude
-    @ToString.Exclude*/
-//    @Builder.Default
-//    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-//    private List<OrderEntity> orderEntityList;
 }

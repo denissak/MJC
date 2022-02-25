@@ -11,7 +11,7 @@ CREATE TABLE gift_certificate
 );
 
 
-CREATE TABLE tag
+CREATE TABLE tagEntity
 (
     id   BIGINT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(40) NULL,

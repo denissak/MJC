@@ -57,10 +57,11 @@ public class CertificateServiceImpl implements CertificateService {
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         certificateDto.setCreateDate(now);
         certificateDto.setLastUpdateDate(now);
-        CertificateEntity createdCertificateEntity = certificateRepository.create(certificateMapper.convertToCertificate(certificateDto));
-//        List<TagEntity> tagEntities = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-//        createdCertificateEntity.setTagEntities(tagEntities);
-        addTagsToBase(createdCertificateEntity);
+        CertificateEntity createdCertificateEntity = certificateMapper.convertToCertificate(certificateDto);
+        List<TagEntity> tagEntities = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+        createdCertificateEntity.setTagEntities(tagEntities);
+        addTagsToDataBase(createdCertificateEntity);
+        createdCertificateEntity = certificateRepository.create(createdCertificateEntity);
         return certificateMapper.convertToCertificateDto(createdCertificateEntity);
     }
 
@@ -109,7 +110,6 @@ public class CertificateServiceImpl implements CertificateService {
         List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
         List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
         for (CertificateEntity certificateEntity : certificateEntities) {
-//            certificateEntity.setTagEntities(certificateRepository.readCertificateTags(certificateEntity.getId()));
             certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
         }
         return certificateDtoList;
@@ -130,13 +130,11 @@ public class CertificateServiceImpl implements CertificateService {
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         currentCertificateDto.setLastUpdateDate(now);
         List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-//        Set<TagEntity> createdTagsSet = new HashSet<>(tagRepository.readAll(page, size));
-//        List<TagEntity> responseTagEntities = saveNewTags(requestTagEntities, createdTagsSet);
         CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
+        certificateEntity.setTagEntities(requestTagEntities);
+        addTagsToDataBase(certificateEntity);
         certificateRepository.update(id, certificateEntity);
-//        certificateEntity.setTagEntities(responseTagEntities);
-        addTagsToBase(certificateEntity);
-        return currentCertificateDto; //TODO
+        return currentCertificateDto;
     }
 
     /**
@@ -160,37 +158,16 @@ public class CertificateServiceImpl implements CertificateService {
      *                          create all new tagEntities in database and attach
      *                          them on certificate
      */
-    public void addTagsToBase(CertificateEntity certificateEntity) {
+    public void addTagsToDataBase(CertificateEntity certificateEntity) {
         List<TagEntity> tagEntityList = certificateEntity.getTagEntities();
         if (tagEntityList != null) {
             for (TagEntity tagEntity : tagEntityList) {
                 TagEntity existedTag = tagRepository.readByName(tagEntity.getName());
-                Long tagId;
                 if (existedTag == null) {
-                    tagId = tagRepository.create(tagEntity).getId();
-                } else {
-                    tagId = existedTag.getId();
+                    tagRepository.create(tagEntity);
                 }
-                certificateRepository.addTag(tagId, certificateEntity.getId());
             }
         }
-    }
-
-    /**
-     * Add new tagEntities in database
-     *
-     * @param requestTagEntities tagEntities in request
-     * @param createdTagEntities tagEntities in dataBase
-     * @return all tagEntities in certificate
-     */
-    private List<TagEntity> saveNewTags(List<TagEntity> requestTagEntities, Set<TagEntity> createdTagEntities) {
-        List<TagEntity> responseTagEntities = new ArrayList<>();
-        for (TagEntity requestTagEntity : requestTagEntities) {
-            if (!createdTagEntities.contains(requestTagEntity)) {
-                responseTagEntities.add(tagRepository.create(requestTagEntity));
-            }
-        }
-        return responseTagEntities;
     }
 
     /**

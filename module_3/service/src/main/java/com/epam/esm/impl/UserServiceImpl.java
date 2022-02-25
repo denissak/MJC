@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains methods implementation for working mostly with {@code UserDto}
+ * entity.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -24,6 +28,12 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
+    /**
+     * Reads user with passed id.
+     *
+     * @param userId the id of user to be read
+     * @return user with passed id
+     */
     @Override
     public UserDto readById(long userId) {
         UserEntity userEntity = userRepository.readById(userId);
@@ -33,6 +43,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.convertToUserDto(userEntity);
     }
 
+    /**
+     * Reads all users.
+     *
+     * @return all users
+     */
     @Override
     public List<UserDto> readAll(int page, int size) {
         List<UserEntity> userEntities = userRepository.readAll(page, size);
