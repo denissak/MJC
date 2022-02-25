@@ -81,11 +81,6 @@ public class TagEntityServiceImplTest {
         Assertions.assertThrows(NotFoundException.class, () -> tagServiceImpl.readById(TAG_ID_1));
     }
 
-//    @Test
-//    void createException() {
-//        Assertions.assertThrows(NotFoundException.class, () -> tagServiceImpl.create(new TagDto()));
-//    }
-
     @Test
     void testDeleteCertificate() {
         when(tagRepository.readById(TAG_ID_1)).thenReturn(tagEntity);

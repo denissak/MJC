@@ -1,9 +1,6 @@
 package com.epam.esm.dao;
 
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Contains common methods for working with all entities during the interaction
@@ -46,7 +43,6 @@ public interface AbstractRepository<T> {
      * Deletes entity with passed id.
      *
      * @param id the id of entity to be deleted
-     * @return the number of deleted entities
      */
     void delete(Long id);
 }

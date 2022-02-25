@@ -13,11 +13,11 @@ CREATE TABLE users
 DROP TABLE orders;
 CREATE TABLE orders
 (
-    id             BIGSERIAL PRIMARY KEY,
-    name           VARCHAR(40) NOT NULL,
-    cost           NUMERIC     NOT NULL,
-    date           TIMESTAMP   NOT NULL,
-    user_id        BIGINT      NOT NULL,
+    id      BIGSERIAL PRIMARY KEY,
+    name    VARCHAR(40) NOT NULL,
+    cost    NUMERIC     NOT NULL,
+    date    TIMESTAMP   NOT NULL,
+    user_id BIGINT      NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
@@ -56,10 +56,10 @@ CREATE TABLE gift_certificate_m2m_tag
 
 CREATE TABLE order_certificate_m2m
 (
-    id BIGSERIAL PRIMARY KEY,
-    order_id BIGINT NOT NULL,
+    id             BIGSERIAL PRIMARY KEY,
+    order_id       BIGINT NOT NULL,
     certificate_id BIGINT NOT NULL,
-        FOREIGN KEY (order_id)
+    FOREIGN KEY (order_id)
         REFERENCES orders (id)
         ON DELETE CASCADE
         ON UPDATE NO ACTION,

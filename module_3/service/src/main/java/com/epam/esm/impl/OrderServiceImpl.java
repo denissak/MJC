@@ -1,23 +1,17 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.OrderService;
-import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
-import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
 import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
-import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.ReadOrderMapper;
-import com.epam.esm.mapper.UserMapper;
 import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.OrderValidator;
-import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -28,6 +22,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains methods implementation for working mostly with {@code OrderDto}
+ * entity.
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -45,6 +43,12 @@ public class OrderServiceImpl implements OrderService {
         this.readOrderMapper = readOrderMapper;
     }
 
+    /**
+     * Creates and saves the passed order.
+     *
+     * @param orderDto the order to be saved
+     * @return saved order
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public OrderDto create(OrderDto orderDto) {
@@ -63,6 +67,12 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.convertToOrderDTO(orderEntity);
     }
 
+    /**
+     * Reads order with passed id.
+     *
+     * @param orderId the id of order to be read
+     * @return order with passed id
+     */
     @Override
     public OrderDto readById(Long orderId) {
         OrderEntity orderEntity = orderRepository.readById(orderId);
@@ -72,6 +82,11 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.convertToOrderDTO(orderEntity);
     }
 
+    /**
+     * Reads all users according to passed parameters.
+     *
+     * @return entities which meet passed parameters
+     */
     @Override
     public List<OrderDto> readAll(int page, int size) {
         List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
@@ -82,6 +97,11 @@ public class OrderServiceImpl implements OrderService {
         return orderDtoList;
     }
 
+    /**
+     * Deletes orders with passed id.
+     *
+     * @param orderId the id of order to be deleted
+     */
     @Transactional
     @Override
     public void delete(Long orderId) {
@@ -89,6 +109,13 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(orderId);
     }
 
+    /**
+     * Reads all orders by user.
+     *
+     * @param userId the id of user to be sorted
+     *
+     * @return orderDto which meet passed parameters
+     */
     @Override
     public List<OrderDto> readAllOrdersByUserId(long userId, int page, int size) {
         List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
@@ -99,6 +126,13 @@ public class OrderServiceImpl implements OrderService {
         return orderDtoList;
     }
 
+    /**
+     * Reads cost and date orders by user.
+     *
+     * @param userId the id of user to be sorted
+     *
+     * @return readOrderDto which meet passed parameters
+     */
     @Override
     public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size) {
         List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);

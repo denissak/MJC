@@ -19,7 +19,6 @@ public class TagEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    @Builder.Default
     @ManyToMany(mappedBy = "tagEntities")
     private List<CertificateEntity> certificateEntity;
 }

@@ -14,8 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
- * Controller for working with tagEntities.
- *
+ * Controller for working with tags.
  */
 @RestController
 @RequestMapping("/tag")
@@ -51,7 +50,7 @@ public class TagController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-                                                @RequestParam(value = "size", defaultValue = "5",required = false) int size){
+                                                @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<TagDto> tagDtoList = tagService.readAll(page, size);
         return addLinksToTag(tagDtoList);
     }
@@ -75,6 +74,12 @@ public class TagController {
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto createTag(@RequestBody TagDto tagDto) {
         return tagService.create(tagDto);
+    }
+
+    @PostMapping("/auto-tag")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTag() {
+        tagService.createAutoTag();
     }
 
     /**

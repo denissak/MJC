@@ -13,6 +13,9 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * Controller for working with users.
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -24,6 +27,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Reads user with passed id.
+     *
+     * @param id id of tag to be read
+     * @return tag with passed id
+     */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto readById(@PathVariable long id) {
@@ -33,10 +42,15 @@ public class UserController {
         return userDto;
     }
 
+    /**
+     * Read all users.
+     *
+     * @return all users
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-                                                  @RequestParam(value = "size", defaultValue = "5",required = false) int size) {
+                                                  @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<UserDto> userDtoList = userService.readAll(page, size);
         return addLinksToUser(userDtoList);
     }

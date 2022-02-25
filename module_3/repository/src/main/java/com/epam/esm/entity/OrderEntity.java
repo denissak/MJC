@@ -22,18 +22,9 @@ public class OrderEntity {
     private String name;
     private Double cost;
     private LocalDateTime date;
-    //    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @Builder.Default
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
-    //    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @Builder.Default
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "certificate_id")
-//    private CertificateEntity certificateEntity;
-    @OneToMany(mappedBy = "orderEntity"/*, fetch = FetchType.LAZY*/)
+    @OneToMany(mappedBy = "orderEntity")
     private List<OrderCertificateEntity> orderCertificateEntityList;
 }

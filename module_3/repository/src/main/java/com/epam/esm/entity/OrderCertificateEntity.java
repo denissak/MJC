@@ -23,14 +23,4 @@ public class OrderCertificateEntity {
     @ManyToOne
     @JoinColumn(name = "certificate_id")
     private CertificateEntity certificateEntity;
-
-    /*public void setOrder(OrderEntity orderEntity){
-        this.orderEntity = orderEntity;
-        this.orderEntity.getOrderCertificateEntityList().add(this);
-    }
-
-    public void setCertificate (CertificateEntity certificateEntity){
-        this.certificateEntity = certificateEntity;
-        this.certificateEntity.getOrderCertificateEntityList().add(this);
-    }*/
 }

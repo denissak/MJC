@@ -1,7 +1,6 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.UserRepository;
-import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * Contains methods implementation for working mostly with {@code User}
+ * entity.
+ */
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
@@ -27,6 +30,12 @@ public class UserRepositoryImpl implements UserRepository {
         this.paginationHandler = paginationHandler;
     }
 
+    /**
+     * Reads user with passed id.
+     *
+     * @param userId the id of entity to be read
+     * @return entity with passed id
+     */
     @Override
     public UserEntity readById(long userId) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -41,20 +50,11 @@ public class UserRepositoryImpl implements UserRepository {
             return null;
     }
 
-    @Override
-    public UserEntity readByLogin(String login) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteria = cb.createQuery(UserEntity.class);
-        Root<UserEntity> userEntityRoot = criteria.from(UserEntity.class);
-        criteria.select(userEntityRoot)
-                .where(cb.equal(userEntityRoot.get("login"), login));
-        List<UserEntity> userEntityList = entityManager.createQuery(criteria).getResultList();
-        if (userEntityList.size() > 0) {
-            return userEntityList.get(0);
-        } else
-            return null;
-    }
-
+    /**
+     * Reads all users according to passed parameters.
+     *
+     * @return entities which meet passed parameters
+     */
     @Override
     public List<UserEntity> readAll(int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
