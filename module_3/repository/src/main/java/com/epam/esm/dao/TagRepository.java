@@ -14,4 +14,6 @@ public interface TagRepository extends AbstractRepository<TagEntity> {
      * @return TagEntity which meet passed parameters
      */
     TagEntity getMostPopularTag();
+
+    void createAutoTag(TagEntity tagEntity);
 }

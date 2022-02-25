@@ -76,6 +76,12 @@ public class TagController {
         return tagService.create(tagDto);
     }
 
+    @PostMapping("/auto-tag")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTag() {
+        tagService.createAutoTag();
+    }
+
     /**
      * Deletes tag with passed id.
      *

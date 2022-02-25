@@ -97,4 +97,15 @@ public class TagServiceImpl implements TagService {
         readById(tagId);
         tagRepository.delete(tagId);
     }
+
+    @Override
+    @Transactional
+    public void createAutoTag() {
+        for (int i = 0; i < 1000; i++) {
+            TagEntity tagEntity = TagEntity.builder()
+                    .name("Tag " + i)
+                    .build();
+            tagRepository.createAutoTag(tagEntity);
+        }
+    }
 }

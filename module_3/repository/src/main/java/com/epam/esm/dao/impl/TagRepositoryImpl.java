@@ -121,6 +121,12 @@ public class TagRepositoryImpl implements TagRepository {
         return (TagEntity) entityManager.createNativeQuery(MOST_POPULAR_TAG, TagEntity.class).getSingleResult();
     }
 
+    @Override
+    @Transactional
+    public void createAutoTag(TagEntity tagEntity) {
+        entityManager.persist(tagEntity);
+    }
+
     /**
      * Deletes tag with passed id.
      *
