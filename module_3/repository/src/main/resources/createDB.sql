@@ -3,6 +3,7 @@ DROP TABLE tag;
 DROP TABLE gift_certificate;
 DROP TABLE orders;
 DROP TABLE order_certificate_m2m;
+DROP TABLE users;
 
 CREATE TABLE users
 (

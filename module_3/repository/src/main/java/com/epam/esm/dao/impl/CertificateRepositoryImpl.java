@@ -7,6 +7,7 @@ import com.epam.esm.entity.CertificateEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,6 +44,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @return saved certificate
      */
     @Override
+    @Transactional
     public CertificateEntity create(CertificateEntity certificateEntity) {
         entityManager.persist(certificateEntity);
         return certificateEntity;
@@ -94,10 +96,10 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @param tagId         tag id which needs to set in m2m table
      * @param certificateId certificate id which need to set in m2m table
      */
-    @Override
+    /*@Override
     public void addTag(long tagId, long certificateId) {
         entityManager.createNativeQuery(ADD_TAG).setParameter(1, tagId).setParameter(2, certificateId);
-    }
+    }*/
 
     /**
      * Reads all certificates.

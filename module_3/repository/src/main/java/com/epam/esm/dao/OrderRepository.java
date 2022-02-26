@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.entity.UserEntity;
 
 import java.util.List;
 
@@ -23,4 +24,5 @@ public interface OrderRepository extends AbstractRepository<OrderEntity> {
      * @param certificateId certificate id which need to set in m2m table
      */
     void setCertificatesOnOrder(Long orderId, Long certificateId);
+
 }

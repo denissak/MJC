@@ -40,6 +40,4 @@ public interface TagService {
      * @param tagId the id of tag to be deleted
      */
     void delete(Long tagId);
-
-    void createAutoTag();
 }

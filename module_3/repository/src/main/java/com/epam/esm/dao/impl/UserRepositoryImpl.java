@@ -1,9 +1,11 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.UserRepository;
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -66,5 +68,11 @@ public class UserRepositoryImpl implements UserRepository {
         TypedQuery<UserEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
+    }
+
+    @Transactional
+    @Override
+    public void createAutoUser(UserEntity userEntity) {
+        entityManager.persist(userEntity);
     }
 }

@@ -1,5 +1,6 @@
 package com.epam.esm.dao;
 
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserRepository {
      * @return entities which meet passed parameters
      */
     List<UserEntity> readAll(int page, int size);
+
+    void createAutoUser(UserEntity userEntity);
 }

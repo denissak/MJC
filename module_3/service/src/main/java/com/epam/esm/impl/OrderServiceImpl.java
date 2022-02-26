@@ -5,7 +5,10 @@ import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
+import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.OrderEntity;
+import com.epam.esm.entity.TagEntity;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.OrderMapper;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Contains methods implementation for working mostly with {@code OrderDto}
@@ -61,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
         orderRepository.create(orderEntity);
-        for (CertificateDto certificateDto: orderDto.getCertificateDto()) {
+        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
             orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
         }
         return orderMapper.convertToOrderDTO(orderEntity);
@@ -76,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto readById(Long orderId) {
         OrderEntity orderEntity = orderRepository.readById(orderId);
-        if (orderEntity == null){
+        if (orderEntity == null) {
             throw NotFoundException.notFoundWithOrderId(orderId).get();
         }
         return orderMapper.convertToOrderDTO(orderEntity);
@@ -113,7 +117,6 @@ public class OrderServiceImpl implements OrderService {
      * Reads all orders by user.
      *
      * @param userId the id of user to be sorted
-     *
      * @return orderDto which meet passed parameters
      */
     @Override
@@ -130,7 +133,6 @@ public class OrderServiceImpl implements OrderService {
      * Reads cost and date orders by user.
      *
      * @param userId the id of user to be sorted
-     *
      * @return readOrderDto which meet passed parameters
      */
     @Override

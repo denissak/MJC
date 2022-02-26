@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.UserService;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;

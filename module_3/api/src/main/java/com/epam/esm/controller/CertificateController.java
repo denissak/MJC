@@ -2,6 +2,8 @@ package com.epam.esm.controller;
 
 import com.epam.esm.CertificateService;
 import com.epam.esm.dto.CertificateDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;

@@ -3,6 +3,7 @@ package com.epam.esm.impl;
 import com.epam.esm.UserService;
 import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.UserMapper;
