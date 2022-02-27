@@ -25,7 +25,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
+    private static final String ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (gift_certificate_id, tag_id) " +
             "VALUES (?, ?)";
 
     private final Search search;
@@ -46,6 +46,22 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     @Transactional
     public CertificateEntity create(CertificateEntity certificateEntity) {
+        entityManager.persist(certificateEntity);
+        return certificateEntity;
+    }
+
+    @Override
+    @Transactional
+    public CertificateEntity createAuto(CertificateEntity certificateEntity) {
+        /*String query = "INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
+        entityManager.createNativeQuery(query)
+                .setParameter(1, certificateEntity.getName())
+                .setParameter(2, certificateEntity.getDescription())
+                .setParameter(3, certificateEntity.getPrice())
+                .setParameter(4, certificateEntity.getDuration())
+                .setParameter(5, certificateEntity.getCreateDate())
+                .setParameter(6, certificateEntity.getLastUpdateDate())
+                .executeUpdate();*/
         entityManager.persist(certificateEntity);
         return certificateEntity;
     }
@@ -96,10 +112,16 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @param tagId         tag id which needs to set in m2m table
      * @param certificateId certificate id which need to set in m2m table
      */
-    /*@Override
+    @Override
+    @Transactional
     public void addTag(long tagId, long certificateId) {
-        entityManager.createNativeQuery(ADD_TAG).setParameter(1, tagId).setParameter(2, certificateId);
-    }*/
+        try {
+//            wait(10);
+            entityManager.createNativeQuery(ADD_TAG).setParameter(1, certificateId).setParameter(2, tagId).executeUpdate();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
 
     /**
      * Reads all certificates.

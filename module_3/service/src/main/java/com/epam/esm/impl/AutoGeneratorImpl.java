@@ -45,7 +45,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
             LocalDateTime now = dateTimeWrapper.wrapDateTime();
             List<TagEntity> tagEntitiesUse = new ArrayList<>();
             int sizeTag = random.nextInt(5);
-            for (int j = 0; j < sizeTag; j++) {
+            for (int j = 0; j <= sizeTag; j++) {
                 tagEntitiesUse.add(tagEntities.get(random.nextInt(1000)));
             }
             CertificateEntity certificateEntity = CertificateEntity.builder()
@@ -57,7 +57,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
                     .lastUpdateDate(now)
                     .tagEntities(tagEntitiesUse)
                     .build();
-            certificateRepository.create(certificateEntity);
+            certificateRepository.createAuto(certificateEntity);
         }
     }
 

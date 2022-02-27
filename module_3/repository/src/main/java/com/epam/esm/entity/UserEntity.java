@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "login")
-@ToString(exclude = "orders")
 @Builder
 @Entity
 @Table(name = "users")

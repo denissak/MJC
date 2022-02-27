@@ -26,11 +26,7 @@ public class AutoGeneratorController {
     @PostMapping("/certificate")
     @ResponseStatus(HttpStatus.CREATED)
     public void createCertificate() {
-        try {
-            autoGenerator.createAutoCertificate();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+        autoGenerator.createAutoCertificate();
     }
 
     @PostMapping("/tag")

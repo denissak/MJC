@@ -24,7 +24,7 @@ public interface CertificateRepository extends AbstractRepository<CertificateEnt
      * @param tagId         tag id which needs to set in m2m table
      * @param certificateId certificate id which need to set in m2m table
      */
-//    void addTag(long tagId, long certificateId);
+    void addTag(long tagId, long certificateId);
 
     /**
      * Search by specified certificate values
@@ -38,4 +38,6 @@ public interface CertificateRepository extends AbstractRepository<CertificateEnt
      */
     List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description,
                                                                String sortBy, String sortOrder, int page, int size);
+
+    CertificateEntity createAuto(CertificateEntity certificateEntity);
 }
