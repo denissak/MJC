@@ -1,3 +1,0 @@
-rootProject.name = 'by.epam.module1.gradle.multi-project'
-include 'api',
-'core'
