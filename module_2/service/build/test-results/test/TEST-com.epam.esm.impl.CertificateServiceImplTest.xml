@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.impl.CertificateServiceImplTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-02-24T11:56:54" hostname="ASU_DENIS" time="87.802">
-  <properties/>
-  <testcase name="testDeleteCertificate()" classname="com.epam.esm.impl.CertificateServiceImplTest" time="87.802"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
