@@ -10,6 +10,10 @@ import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.RoleMapper;
 import com.epam.esm.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,29 +26,38 @@ import java.util.List;
  * entity.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, RoleMapper roleMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, RoleMapper roleMapper/*, PasswordEncoder passwordEncoder*/) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
-        this.passwordEncoder = passwordEncoder;
+     //   this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDto userDto = userMapper.convertToUserDto(userRepository.readByName(username));
+        if (userDto == null){
+            throw new UsernameNotFoundException("user not found"); //TODO Custom ex
+        }
+        return new User(userDto.getLogin(), userDto.getPassword(), userDto.getAuthorities());
     }
 
     @Override
     public UserDto register(UserDto userDto) {
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setRoleDto(RoleDto.builder()
-                .name("User")
-                .build());
+//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        userDto.setRoleDto(RoleDto.builder()
+//                .name("User")
+//                .build());
         return null;
     }
 

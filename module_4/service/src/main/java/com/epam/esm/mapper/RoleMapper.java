@@ -7,14 +7,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface RoleMapper {
 
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
 
-    RoleDto convertToRoleDto(RoleEntity roleEntity);
+ //   RoleDto convertToRoleDto(RoleEntity roleEntity);
 
     RoleEntity convertToRole(RoleDto roleDto);
 
+    RoleDto convertToRoleDto(Optional<RoleEntity> byId);
 }

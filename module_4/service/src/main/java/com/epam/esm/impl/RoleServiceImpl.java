@@ -3,12 +3,16 @@ package com.epam.esm.impl;
 import com.epam.esm.RoleService;
 import com.epam.esm.dao.RoleRepository;
 import com.epam.esm.dto.RoleDto;
+import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.RoleEntity;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.mapper.RoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -24,16 +28,22 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto create(RoleEntity roleEntity) {
+  //      return roleMapper.convertToRoleDto(roleRepository.save(roleEntity));
         return null;
     }
 
     @Override
     public RoleDto findById(long roleId) {
-        return null;
+        return roleMapper.convertToRoleDto(roleRepository.findById(roleId));
     }
 
     @Override
     public List<RoleDto> findAll() {
-        return null;
+        List<RoleEntity> roleEntities = roleRepository.findAll();
+        List<RoleDto> roleDtoList = new ArrayList<>();
+        for (RoleEntity roleEntity : roleEntities) {
+            roleDtoList.add(roleMapper.convertToRoleDto(Optional.ofNullable(roleEntity)));
+        }
+        return roleDtoList;
     }
 }

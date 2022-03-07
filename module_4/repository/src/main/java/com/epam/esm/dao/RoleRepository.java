@@ -7,7 +7,4 @@ import java.util.List;
 
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 
-    RoleEntity findByName(String name);
-
-    List<RoleEntity> findAll ();
 }

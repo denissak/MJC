@@ -15,10 +15,10 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-   // @Mapping(source = "roleEntity", target = "roleDto")
+    @Mapping(source = "roleEntity", target = "roleDto")
     UserDto convertToUserDto(UserEntity userEntity);
 
-    @InheritInverseConfiguration
-    @Mapping(target = "roleEntity", ignore = true)
+//    @InheritInverseConfiguration
+//    @Mapping(target = "roleEntity", ignore = true)
     UserEntity convertToUser(UserDto userDto);
 }
