@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +33,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, RoleMapper roleMapper/*, PasswordEncoder passwordEncoder*/) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, RoleMapper roleMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
-     //   this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,6 +51,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("user not found"); //TODO Custom ex
         }
         return new User(userDto.getLogin(), userDto.getPassword(), userDto.getAuthorities());
+    }
+
+    @Override
+    @Transactional
+    public UserDto create(UserDto userDto) {
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        UserEntity userEntity = userMapper.convertToUser(userDto);
+        return userMapper.convertToUserDto(userRepository.create(userEntity));
     }
 
     @Override

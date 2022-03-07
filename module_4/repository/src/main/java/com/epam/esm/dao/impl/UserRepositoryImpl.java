@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.UserRepository;
+import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,13 @@ public class UserRepositoryImpl implements UserRepository {
         TypedQuery<UserEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public UserEntity create(UserEntity userEntity) {
+        entityManager.persist(userEntity);
+        return userEntity;
     }
 
     @Transactional

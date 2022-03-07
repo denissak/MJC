@@ -28,4 +28,6 @@ public interface UserRepository {
     UserEntity readByName(String login);
 
     void createAutoUser(UserEntity userEntity);
+
+    UserEntity create(UserEntity userEntity);
 }

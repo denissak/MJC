@@ -1,5 +1,6 @@
 package com.epam.esm;
 
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.UserEntity;
 
@@ -28,4 +29,6 @@ public interface UserService {
     List<UserDto> readAll(int page, int size);
 
     UserDto readByName (String login);
+
+    UserDto create(UserDto userDto);
 }
