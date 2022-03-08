@@ -41,14 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setFilterProcessesUrl("/login/**");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasAnyRole("USER", "ADMIN");
-        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers(PUT, "/certificate/**").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/login", "user/token/refresh").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasAnyAuthority("ADMIN", "USER");
+        http.authorizeRequests().antMatchers(POST,   "/order/**").hasAuthority("USER");
+        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/order/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(PUT, "/certificate/**").hasAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);
-        http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
