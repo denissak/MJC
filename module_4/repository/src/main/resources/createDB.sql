@@ -7,8 +7,11 @@ DROP TABLE users;
 
 CREATE TABLE users
 (
-    id    BIGSERIAL PRIMARY KEY,
-    login VARCHAR(40) NOT NULL
+    id       BIGSERIAL PRIMARY KEY,
+    login    VARCHAR(40)  NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role_id  BIGINT       NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE NO ACTION
 );
 
 DROP TABLE orders;
@@ -34,6 +37,12 @@ CREATE TABLE gift_certificate
 );
 
 CREATE TABLE tag
+(
+    id   BIGSERIAL PRIMARY KEY,
+    name VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE roles
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(40) NOT NULL
@@ -86,8 +95,25 @@ VALUES (1, 1),
        (1, 3),
        (2, 1);
 
-INSERT INTO users (login)
-VALUES ('user1'),
-       ('user2'),
-       ('user3'),
-       ('user4');
+INSERT INTO roles (name)
+VALUES ('ADMIN'),
+       ('USER'),
+       ('GUEST');
+
+INSERT INTO orders (name, cost, date, user_id)
+VALUES ('order1', 100, now(), 1),
+       ('order2', 200, now(), 2),
+       ('order3', 300, now(), 3),
+       ('order4', 400, now(), 4);
+
+INSERT INTO users (login, password, role_id)
+VALUES ('user1', '123', 1),
+       ('user2', '123', 2),
+       ('user3', '123', 3),
+       ('user4', '123', 2);
+
+INSERT INTO order_certificate_m2m (order_id, certificate_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (2, 1);

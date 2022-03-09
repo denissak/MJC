@@ -10,4 +10,5 @@ public class ApplicationRunner extends SpringServletContainerInitializer {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationRunner.class, args);
     }
+
 }

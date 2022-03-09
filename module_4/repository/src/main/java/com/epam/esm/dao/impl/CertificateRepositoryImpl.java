@@ -53,15 +53,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     @Transactional
     public CertificateEntity createAuto(CertificateEntity certificateEntity) {
-        /*String query = "INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
-        entityManager.createNativeQuery(query)
-                .setParameter(1, certificateEntity.getName())
-                .setParameter(2, certificateEntity.getDescription())
-                .setParameter(3, certificateEntity.getPrice())
-                .setParameter(4, certificateEntity.getDuration())
-                .setParameter(5, certificateEntity.getCreateDate())
-                .setParameter(6, certificateEntity.getLastUpdateDate())
-                .executeUpdate();*/
         entityManager.persist(certificateEntity);
         return certificateEntity;
     }
@@ -115,12 +106,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     @Transactional
     public void addTag(long tagId, long certificateId) {
-        try {
-//            wait(10);
-            entityManager.createNativeQuery(ADD_TAG).setParameter(1, certificateId).setParameter(2, tagId).executeUpdate();
-        } catch (Exception e) {
-            e.getMessage();
-        }
+        entityManager.createNativeQuery(ADD_TAG).setParameter(1, certificateId).setParameter(2, tagId).executeUpdate();
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.epam.esm;
 
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.UserEntity;
 
 import java.util.List;
 
@@ -8,6 +10,8 @@ import java.util.List;
  * Contains methods for working mostly with {@code UserDto} entity.
  */
 public interface UserService {
+
+    UserDto register (UserDto userDto);
 
     /**
      * Reads user with passed id.
@@ -23,4 +27,8 @@ public interface UserService {
      * @return all users
      */
     List<UserDto> readAll(int page, int size);
+
+    UserDto readByName (String login);
+
+    UserDto create(UserDto userDto);
 }

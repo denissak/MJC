@@ -5,7 +5,6 @@ import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dao.UserRepository;
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.entity.*;
 import com.epam.esm.util.DateTimeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
@@ -25,5 +25,9 @@ public interface UserRepository {
      */
     List<UserEntity> readAll(int page, int size);
 
+    UserEntity readByName(String login);
+
     void createAutoUser(UserEntity userEntity);
+
+    UserEntity create(UserEntity userEntity);
 }

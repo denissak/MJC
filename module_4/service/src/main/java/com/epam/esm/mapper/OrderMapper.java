@@ -2,11 +2,9 @@ package com.epam.esm.mapper;
 
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.RoleDto;
 import com.epam.esm.dto.UserDto;
-import com.epam.esm.entity.CertificateEntity;
-import com.epam.esm.entity.OrderCertificateEntity;
-import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.entity.UserEntity;
+import com.epam.esm.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,12 +26,13 @@ public class OrderMapper {
         orderEntity.getOrderCertificateEntityList().forEach(orderCertificateEntity ->
                 certificateDtoList.add(certificateMapper.convertToCertificateDto(orderCertificateEntity.getCertificateEntity()))
         );
+
         return OrderDto.builder()
                 .id(orderEntity.getId())
                 .name(orderEntity.getName())
                 .cost(orderEntity.getCost())
                 .date(orderEntity.getDate())
-                .userDto(new UserDto(orderEntity.getUserEntity().getId(), orderEntity.getUserEntity().getLogin()))
+//                .userDto(new UserDto(orderEntity.getUserEntity().getId(), orderEntity.getUserEntity().getLogin()))
                 .certificateDto(certificateDtoList)
                 .build();
     }
@@ -52,7 +51,8 @@ public class OrderMapper {
                                             .name(orderDto.getName())
                                             .cost(orderDto.getCost())
                                             .date(orderDto.getDate())
-                                            .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
+//                                            .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin(),
+//                                                    orderDto.getUserDto().getPassword(), orderDto.getUserDto().getRoleDto()))
                                             .build())
                             .build();
                     orderCertificateEntityList.add(orderCertificateEntity);
@@ -63,7 +63,7 @@ public class OrderMapper {
                 .name(orderDto.getName())
                 .cost(orderDto.getCost())
                 .date(orderDto.getDate())
-                .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
+//                .userEntity(new UserEntity(orderDto.getUserDto().getId(), orderDto.getUserDto().getLogin()))
                 .orderCertificateEntityList(orderCertificateEntityList)
                 .build();
     }

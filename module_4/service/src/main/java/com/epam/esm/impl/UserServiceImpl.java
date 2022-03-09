@@ -1,14 +1,23 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.UserService;
+import com.epam.esm.dao.RoleRepository;
 import com.epam.esm.dao.UserRepository;
+import com.epam.esm.dto.RoleDto;
 import com.epam.esm.dto.UserDto;
-import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.NotFoundException;
+import com.epam.esm.mapper.RoleMapper;
 import com.epam.esm.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +27,47 @@ import java.util.List;
  * entity.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, RoleMapper roleMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.roleRepository = roleRepository;
+        this.roleMapper = roleMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDto userDto = userMapper.convertToUserDto(userRepository.readByName(username));
+        if (userDto == null){
+            throw new UsernameNotFoundException("user not found"); //TODO Custom ex
+        }
+        return new User(userDto.getLogin(), userDto.getPassword(), userDto.getAuthorities());
+    }
+
+    @Override
+    @Transactional
+    public UserDto create(UserDto userDto) {
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        UserEntity userEntity = userMapper.convertToUser(userDto);
+        return userMapper.convertToUserDto(userRepository.create(userEntity));
+    }
+
+    @Override
+    public UserDto register(UserDto userDto) {
+//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        userDto.setRoleDto(RoleDto.builder()
+//                .name("User")
+//                .build());
+        return null;
     }
 
     /**
@@ -57,5 +98,11 @@ public class UserServiceImpl implements UserService {
             userDtoList.add(userMapper.convertToUserDto(userEntity));
         }
         return userDtoList;
+    }
+
+    @Override
+    public UserDto readByName(String login) {
+        UserEntity userEntity = userRepository.readByName(login);
+        return userMapper.convertToUserDto(userEntity);
     }
 }
