@@ -49,20 +49,20 @@ public class TagController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+    public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                 @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<TagDto> tagDtoList = tagService.readAll(page, size);
         return addLinksToTag(tagDtoList);
     }
 
-    @GetMapping("/popular-tag")
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto getMostPopularTag() {
-        Link link = linkTo(TagController.class).withSelfRel();
-        TagDto tagDto = tagService.getMostPopularTag();
-        tagDto.add(link);
-        return tagDto;
-    }
+//    @GetMapping("/popular-tag")
+//    @ResponseStatus(HttpStatus.OK)
+//    public TagDto getMostPopularTag() {
+//        Link link = linkTo(TagController.class).withSelfRel();
+//        TagDto tagDto = tagService.getMostPopularTag();
+//        tagDto.add(link);
+//        return tagDto;
+//    }
 
     /**
      * Creates and saves the passed tag.

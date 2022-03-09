@@ -32,7 +32,7 @@ public interface TagService {
      */
     List<TagDto> readAll(int page, int size);
 
-    TagDto getMostPopularTag();
+//    TagDto getMostPopularTag();
 
     /**
      * Deletes tag with passed id.

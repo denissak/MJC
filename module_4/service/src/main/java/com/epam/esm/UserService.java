@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface UserService {
 
-    UserDto register (UserDto userDto);
-
     /**
      * Reads user with passed id.
      *

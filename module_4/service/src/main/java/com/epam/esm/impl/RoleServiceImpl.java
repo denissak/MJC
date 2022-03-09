@@ -27,14 +27,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto create(RoleEntity roleEntity) {
-  //      return roleMapper.convertToRoleDto(roleRepository.save(roleEntity));
-        return null;
+    public RoleDto create(RoleDto roleDto) {
+        RoleEntity roleEntity = roleMapper.convertToRole(roleDto);
+        return roleMapper.convertToRoleDto(roleRepository.save(roleEntity));
     }
 
     @Override
     public RoleDto findById(long roleId) {
-        return roleMapper.convertToRoleDto(roleRepository.findById(roleId));
+        return roleMapper.convertToRoleDto(roleRepository.findById(roleId).get());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
         List<RoleEntity> roleEntities = roleRepository.findAll();
         List<RoleDto> roleDtoList = new ArrayList<>();
         for (RoleEntity roleEntity : roleEntities) {
-            roleDtoList.add(roleMapper.convertToRoleDto(Optional.ofNullable(roleEntity)));
+            roleDtoList.add(roleMapper.convertToRoleDto(roleEntity));
         }
         return roleDtoList;
     }

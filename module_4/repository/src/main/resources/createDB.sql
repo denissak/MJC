@@ -107,9 +107,9 @@ VALUES ('order1', 100, now(), 1),
        ('order4', 400, now(), 4);
 
 INSERT INTO users (login, password, role_id)
-VALUES ('user1', '123', 1),
-       ('user2', '123', 2),
-       ('user3', '123', 3),
+VALUES ('user1', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 1),
+       ('user2', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 2),
+       ('user3', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 3),
        ('user4', '123', 2);
 
 INSERT INTO order_certificate_m2m (order_id, certificate_id)

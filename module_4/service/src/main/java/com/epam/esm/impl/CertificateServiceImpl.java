@@ -13,6 +13,9 @@ import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.CertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -61,7 +64,7 @@ public class CertificateServiceImpl implements CertificateService {
         List<TagEntity> tagEntities = certificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
         createdCertificateEntity.setTagEntities(tagEntities);
         addTagsToDataBase(createdCertificateEntity);
-        createdCertificateEntity = certificateRepository.create(createdCertificateEntity);
+        createdCertificateEntity = certificateRepository.save(createdCertificateEntity);
         return certificateMapper.convertToCertificateDto(createdCertificateEntity);
     }
 
@@ -73,7 +76,7 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public CertificateDto readById(Long certificateId) {
-       CertificateEntity certificate = certificateRepository.readById(certificateId);
+       CertificateEntity certificate = certificateRepository.findById(certificateId).get();
         if (certificate == null){
             throw NotFoundException.notFoundWithCertificateId(certificateId).get();
         }
@@ -87,12 +90,14 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public List<CertificateDto> readAll(int page, int size) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readAll(page, size);
-        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-        for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-        }
-        return certificateDtoList;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+//        List<CertificateEntity> certificateEntities = certificateRepository.readAll(page, size);
+//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
+//        for (CertificateEntity certificateEntity : certificateEntities) {
+//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
+//        }
+//        return certificateDtoList;
+        return certificateRepository.findAll(pageable).stream().map(certificateMapper::convertToCertificateDto).toList();
     }
 
     /**
@@ -107,12 +112,13 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
-        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-        for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-        }
-        return certificateDtoList;
+//        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
+//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
+//        for (CertificateEntity certificateEntity : certificateEntities) {
+//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
+//        }
+//        return certificateDtoList;
+        return null;
     }
 
     /**
@@ -125,16 +131,17 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto update(long id, CertificateDto certificateDto) {
-        CertificateValidator.validate(certificateDto);
-        CertificateDto currentCertificateDto = checkFields(certificateDto);
-        LocalDateTime now = dateTimeWrapper.wrapDateTime();
-        currentCertificateDto.setLastUpdateDate(now);
-        List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
-        certificateEntity.setTagEntities(requestTagEntities);
-        addTagsToDataBase(certificateEntity);
-        certificateRepository.update(id, certificateEntity);
-        return currentCertificateDto;
+//        CertificateValidator.validate(certificateDto);
+//        CertificateDto currentCertificateDto = checkFields(certificateDto);
+//        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+//        currentCertificateDto.setLastUpdateDate(now);
+//        List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+//        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
+//        certificateEntity.setTagEntities(requestTagEntities);
+//        addTagsToDataBase(certificateEntity);
+//       certificateRepository.update(id, certificateEntity);
+//        return currentCertificateDto;
+        return null;
     }
 
     /**
@@ -146,8 +153,8 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     @Override
     public void delete(Long certificateId) {
-        readById(certificateId);
-        certificateRepository.delete(certificateId);
+        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(readById(certificateId));
+        certificateRepository.delete(certificateEntity);
     }
 
     /**
@@ -164,7 +171,7 @@ public class CertificateServiceImpl implements CertificateService {
             for (TagEntity tagEntity : tagEntityList) {
                 TagEntity existedTag = tagRepository.readByName(tagEntity.getName());
                 if (existedTag == null) {
-                    tagRepository.create(tagEntity);
+                    tagRepository.save(tagEntity);
                 }
             }
         }
@@ -176,7 +183,7 @@ public class CertificateServiceImpl implements CertificateService {
      * @param certificateDto certificate which need to check
      */
     private CertificateDto checkFields(CertificateDto certificateDto) {
-        CertificateDto certificateInBase =certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId()));
+        CertificateDto certificateInBase =certificateMapper.convertToCertificateDto(certificateRepository.findById(certificateDto.getId()).get());
         if (certificateInBase == null){
             throw NotFoundException.notFoundWithCertificateId(certificateDto.getId()).get();
         }

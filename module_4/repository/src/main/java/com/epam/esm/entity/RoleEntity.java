@@ -1,9 +1,6 @@
 package com.epam.esm.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +8,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString (exclude = "users")
+@EqualsAndHashCode(exclude = "users")
 @Builder
 @Entity
 @Table(name = "roles")

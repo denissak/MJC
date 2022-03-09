@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.RoleService;
 import com.epam.esm.UserService;
 import com.epam.esm.dto.RoleDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -10,6 +11,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -48,16 +50,22 @@ public class RoleController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<RoleDto> readsAllRoles(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+    public CollectionModel<RoleDto> readsAllRoles(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                   @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<RoleDto> roleDtoList = roleService.findAll();
         return addLinksToRole(roleDtoList);
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public RoleDto createRole(@RequestBody RoleDto roleDto) {
+        return roleService.create(roleDto);
+    }
+
     private CollectionModel<RoleDto> addLinksToRole(List<RoleDto> roleDtoList) {
         for (final RoleDto roleDto : roleDtoList) {
             Link selfLink = linkTo(methodOn(RoleController.class)
-                    .roleService.findById(roleDto.getId())).withSelfRel();
+                    .readById(roleDto.getId())).withSelfRel();
             roleDto.add(selfLink);
         }
         Link link = linkTo(RoleController.class).withSelfRel();

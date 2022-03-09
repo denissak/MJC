@@ -10,6 +10,9 @@ import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,12 +45,12 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto create(TagDto tagDto) {
-        TagEntity tag = tagRepository.readByName(tagDto.getName());
-        if (tag != null) {
+        TagEntity tagExist = tagRepository.readByName(tagDto.getName());
+        if (tagExist != null) {
             throw DuplicateException.tagExists().get();
         }
         TagValidator.validate(tagDto);
-        TagEntity tagEntity = tagRepository.create(tagMapper.convertToTag(tagDto));
+        TagEntity tagEntity = tagRepository.save(tagMapper.convertToTag(tagDto));
         return tagMapper.convertToTagDto(tagEntity);
     }
 
@@ -59,7 +62,7 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto readById(Long tagId) {
-        TagEntity tag = tagRepository.readById(tagId);
+        TagEntity tag = tagRepository.findById(tagId).get();
         if (tag == null) {
             throw NotFoundException.notFoundWithTagId(tagId).get();
         }
@@ -73,18 +76,14 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public List<TagDto> readAll(int page, int size) {
-        List<TagEntity> tagEntityList = tagRepository.readAll(page, size);
-        List<TagDto> tagDtoList = new ArrayList<>(tagEntityList.size());
-        for (TagEntity tagEntity : tagEntityList) {
-            tagDtoList.add(tagMapper.convertToTagDto(tagEntity));
-        }
-        return tagDtoList;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).toList();
     }
 
-    @Override
-    public TagDto getMostPopularTag() {
-        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());
-    }
+//    @Override
+//    public TagDto getMostPopularTag() {
+//        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());
+//    }
 
     /**
      * Deletes tag with passed id.
@@ -94,7 +93,7 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void delete(Long tagId) {
-        readById(tagId);
-        tagRepository.delete(tagId);
+        TagEntity tagEntity = tagRepository.findById(tagId).get();
+        tagRepository.delete(tagEntity);
     }
 }

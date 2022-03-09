@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.epam.esm.UserService;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,10 +107,16 @@ public class UserController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+    public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                   @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<UserDto> userDtoList = userService.readAll(page, size);
         return addLinksToUser(userDtoList);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto register(@RequestBody UserDto userDto) {
+        return userService.create(userDto);
     }
 
     private CollectionModel<UserDto> addLinksToUser(List<UserDto> userDtoList) {

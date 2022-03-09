@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RoleService {
 
-    RoleDto create (RoleEntity roleEntity);
+    RoleDto create (RoleDto roleDto);
 
     RoleDto findById(long roleId);
 

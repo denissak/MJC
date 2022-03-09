@@ -16,6 +16,9 @@ import com.epam.esm.mapper.ReadOrderMapper;
 import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -56,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public OrderDto create(OrderDto orderDto) {
-        OrderEntity order = orderRepository.readByName(orderDto.getName());
+        OrderEntity order = orderRepository.findByName(orderDto.getName());
         if (order != null) {
             throw DuplicateException.tagExists().get();
         }
@@ -64,10 +67,10 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
-        orderRepository.create(orderEntity);
-        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
-            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
-        }
+        orderRepository.save(orderEntity);
+//        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
+//            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
+//        }
         return orderMapper.convertToOrderDTO(orderEntity);
     }
 
@@ -79,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderDto readById(Long orderId) {
-        OrderEntity orderEntity = orderRepository.readById(orderId);
+        OrderEntity orderEntity = orderRepository.findById(orderId).get();
         if (orderEntity == null) {
             throw NotFoundException.notFoundWithOrderId(orderId).get();
         }
@@ -93,12 +96,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<OrderDto> readAll(int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
-        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-        }
-        return orderDtoList;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+//        List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
+//        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
+//        for (OrderEntity orderEntity : orderEntityList) {
+//            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
+//        }
+//        return orderDtoList;
+        return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDTO).toList();
     }
 
     /**
@@ -109,8 +114,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void delete(Long orderId) {
-        readById(orderId);
-        orderRepository.delete(orderId);
+        OrderEntity orderEntity = orderMapper.convertToOrder(readById(orderId));
+        orderRepository.delete(orderEntity);
     }
 
     /**
@@ -121,12 +126,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<OrderDto> readAllOrdersByUserId(long userId, int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
-        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-        }
-        return orderDtoList;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+//        List<OrderEntity> orderEntityList = orderRepository.findAllById(userId, pageable);
+//        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
+//        for (OrderEntity orderEntity : orderEntityList) {
+//            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
+//        }
+//        return orderDtoList;
+        return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDTO).toList();
     }
 
     /**
@@ -137,11 +144,13 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
-        List<ReadOrderDto> readOrderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));
-        }
-        return readOrderDtoList;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+//        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
+//        List<ReadOrderDto> readOrderDtoList = new ArrayList<>(orderEntityList.size());
+//        for (OrderEntity orderEntity : orderEntityList) {
+//            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));
+//        }
+//        return readOrderDtoList;
+        return orderRepository.findAllById(userId, pageable).stream().map(readOrderMapper::convertToReadOrderDto).toList();
     }
 }

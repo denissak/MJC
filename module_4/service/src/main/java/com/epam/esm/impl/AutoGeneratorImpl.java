@@ -38,59 +38,59 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Transactional
     @Override
     public void createAutoCertificate() {
-        List<TagEntity> tagEntities = tagRepository.readAll(1, 1000);
-        Random random = new Random();
-        for (int i = 0; i < 10000; i++) {
-            LocalDateTime now = dateTimeWrapper.wrapDateTime();
-            List<TagEntity> tagEntitiesUse = new ArrayList<>();
-            int sizeTag = random.nextInt(5);
-            for (int j = 0; j <= sizeTag; j++) {
-                tagEntitiesUse.add(tagEntities.get(random.nextInt(1000)));
-            }
-            CertificateEntity certificateEntity = CertificateEntity.builder()
-                    .name("certificate" + i)
-                    .description("certificate" + i)
-                    .price((double) random.nextInt(500))
-                    .duration(random.nextInt(90))
-                    .createDate(now)
-                    .lastUpdateDate(now)
-                    .tagEntities(tagEntitiesUse)
-                    .build();
-            certificateRepository.createAuto(certificateEntity);
-        }
+//        List<TagEntity> tagEntities = tagRepository.readAll(1, 1000);
+//        Random random = new Random();
+//        for (int i = 0; i < 10000; i++) {
+//            LocalDateTime now = dateTimeWrapper.wrapDateTime();
+//            List<TagEntity> tagEntitiesUse = new ArrayList<>();
+//            int sizeTag = random.nextInt(5);
+//            for (int j = 0; j <= sizeTag; j++) {
+//                tagEntitiesUse.add(tagEntities.get(random.nextInt(1000)));
+//            }
+//            CertificateEntity certificateEntity = CertificateEntity.builder()
+//                    .name("certificate" + i)
+//                    .description("certificate" + i)
+//                    .price((double) random.nextInt(500))
+//                    .duration(random.nextInt(90))
+//                    .createDate(now)
+//                    .lastUpdateDate(now)
+//                    .tagEntities(tagEntitiesUse)
+//                    .build();
+//            certificateRepository.createAuto(certificateEntity);
+//        }
     }
 
     @Transactional
     @Override
     public void createAutoOrder() {
-        List<UserEntity> userEntityList = userRepository.readAll(1,1000);
-        List<CertificateEntity> certificateEntityList = certificateRepository.readAll(1, 10000);
-        Random random = new Random();
-        for (int i = 0; i < 1000; i++) {
-            LocalDateTime now = dateTimeWrapper.wrapDateTime();
-            List<CertificateEntity> certificateEntities = new ArrayList<>();
-            List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
-            int sizeCertificate = random.nextInt(5);
-            for (int j = 0; j < sizeCertificate; j++) {
-                certificateEntities.add(certificateEntityList.get(random.nextInt(10000)));
-                OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
-                        .orderEntity(null)
-                        .certificateEntity(certificateEntities.get(j))
-                        .build();
-                orderCertificateEntityList.add(orderCertificateEntity);
-            }
-            OrderEntity orderEntity = OrderEntity.builder()
-                    .name("order" + i)
-                    .cost((double) random.nextInt(500))
-                    .date(now)
-                    .userEntity(userEntityList.get(random.nextInt(1000)))
-                    .orderCertificateEntityList(orderCertificateEntityList)
-                    .build();
-            orderEntity = orderRepository.create(orderEntity);
-            for (CertificateEntity certificateEntity : certificateEntities) {
-                orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateEntity.getId());
-            }
-        }
+//        List<UserEntity> userEntityList = userRepository.readAll(1,1000);
+//        List<CertificateEntity> certificateEntityList = certificateRepository.readAll(1, 10000);
+//        Random random = new Random();
+//        for (int i = 0; i < 1000; i++) {
+//            LocalDateTime now = dateTimeWrapper.wrapDateTime();
+//            List<CertificateEntity> certificateEntities = new ArrayList<>();
+//            List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
+//            int sizeCertificate = random.nextInt(5);
+//            for (int j = 0; j < sizeCertificate; j++) {
+//                certificateEntities.add(certificateEntityList.get(random.nextInt(10000)));
+//                OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
+//                        .orderEntity(null)
+//                        .certificateEntity(certificateEntities.get(j))
+//                        .build();
+//                orderCertificateEntityList.add(orderCertificateEntity);
+//            }
+//            OrderEntity orderEntity = OrderEntity.builder()
+//                    .name("order" + i)
+//                    .cost((double) random.nextInt(500))
+//                    .date(now)
+//                    .userEntity(userEntityList.get(random.nextInt(1000)))
+//                    .orderCertificateEntityList(orderCertificateEntityList)
+//                    .build();
+//            orderEntity = orderRepository.create(orderEntity);
+//            for (CertificateEntity certificateEntity : certificateEntities) {
+//                orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateEntity.getId());
+//            }
+//        }
     }
 
     @Transactional
@@ -100,7 +100,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
             TagEntity tagEntity = TagEntity.builder()
                     .name("Tag " + i)
                     .build();
-            tagRepository.create(tagEntity);
+            tagRepository.save(tagEntity);
         }
     }
 
@@ -111,7 +111,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
             UserEntity userEntity = UserEntity.builder()
                     .login("User " + i)
                     .build();
-            userRepository.createAutoUser(userEntity);
+            userRepository.save(userEntity);
         }
     }
 }
