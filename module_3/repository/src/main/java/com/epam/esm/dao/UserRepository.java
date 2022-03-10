@@ -20,6 +20,9 @@ public interface UserRepository {
     /**
      * Reads all users according to passed parameters.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return entities which meet passed parameters
      */
     List<UserEntity> readAll(int page, int size);

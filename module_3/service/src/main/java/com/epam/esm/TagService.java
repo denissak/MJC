@@ -28,6 +28,9 @@ public interface TagService {
     /**
      * Reads all tags.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all tags.
      */
     List<TagDto> readAll(int page, int size);

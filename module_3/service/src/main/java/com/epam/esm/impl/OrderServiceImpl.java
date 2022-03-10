@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contains methods implementation for working mostly with {@code OrderDto}
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
         orderRepository.create(orderEntity);
-        for (CertificateDto certificateDto: orderDto.getCertificateDto()) {
+        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
             orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
         }
         return orderMapper.convertToOrderDTO(orderEntity);
@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto readById(Long orderId) {
         OrderEntity orderEntity = orderRepository.readById(orderId);
-        if (orderEntity == null){
+        if (orderEntity == null) {
             throw NotFoundException.notFoundWithOrderId(orderId).get();
         }
         return orderMapper.convertToOrderDTO(orderEntity);
@@ -85,16 +85,13 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Reads all users according to passed parameters.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return entities which meet passed parameters
      */
     @Override
     public List<OrderDto> readAll(int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
-        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-        }
-        return orderDtoList;
+        return orderRepository.readAll(page, size).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
     }
 
     /**
@@ -113,33 +110,25 @@ public class OrderServiceImpl implements OrderService {
      * Reads all orders by user.
      *
      * @param userId the id of user to be sorted
-     *
+     * @param page   numbers of page
+     * @param size   number of elements per page
      * @return orderDto which meet passed parameters
      */
     @Override
     public List<OrderDto> readAllOrdersByUserId(long userId, int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
-        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-        }
-        return orderDtoList;
+        return orderRepository.readAllOrdersByUserId(userId, page, size).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
     }
 
     /**
      * Reads cost and date orders by user.
      *
      * @param userId the id of user to be sorted
-     *
+     * @param page   numbers of page
+     * @param size   number of elements per page
      * @return readOrderDto which meet passed parameters
      */
     @Override
     public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size) {
-        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
-        List<ReadOrderDto> readOrderDtoList = new ArrayList<>(orderEntityList.size());
-        for (OrderEntity orderEntity : orderEntityList) {
-            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));
-        }
-        return readOrderDtoList;
+        return orderRepository.readAllOrdersByUserId(userId, page, size).stream().map(readOrderMapper::convertToReadOrderDto).collect(Collectors.toList());
     }
 }

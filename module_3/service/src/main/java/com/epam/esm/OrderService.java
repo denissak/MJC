@@ -29,6 +29,9 @@ public interface OrderService {
     /**
      * Reads all orders.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all orders
      */
     List<OrderDto> readAll(int page, int size);
@@ -44,6 +47,8 @@ public interface OrderService {
      * Reads all orders by user.
      *
      * @param userId the id of user to be sorted
+     * @param page numbers of page
+     * @param size number of elements per page
      *
      * @return orderDto which meet passed parameters
      */
@@ -53,6 +58,8 @@ public interface OrderService {
      * Reads cost and date orders by user.
      *
      * @param userId the id of user to be sorted
+     * @param page numbers of page
+     * @param size number of elements per page
      *
      * @return readOrderDto which meet passed parameters
      */

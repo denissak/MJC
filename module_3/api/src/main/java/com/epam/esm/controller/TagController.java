@@ -45,6 +45,8 @@ public class TagController {
     /**
      * Read all tagEntities.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all tagEntities
      */
     @GetMapping
@@ -55,6 +57,11 @@ public class TagController {
         return addLinksToTag(tagDtoList);
     }
 
+    /**
+     * Get the most widely used tag of a user with the highest cost of all orders.
+     *
+     * @return saved tag
+     */
     @GetMapping("/popular-tag")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getMostPopularTag() {
@@ -88,7 +95,7 @@ public class TagController {
     }
 
     private CollectionModel<TagDto> addLinksToTag(List<TagDto> tagDtoList) {
-        for (final TagDto tagDto : tagDtoList) {
+        for (TagDto tagDto : tagDtoList) {
             Link selfLink = linkTo(methodOn(TagController.class)
                     .readTagById(tagDto.getId())).withSelfRel();
             tagDto.add(selfLink);

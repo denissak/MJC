@@ -9,8 +9,8 @@ import com.epam.esm.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contains methods implementation for working mostly with {@code UserDto}
@@ -46,15 +46,13 @@ public class UserServiceImpl implements UserService {
     /**
      * Reads all users.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all users
      */
     @Override
     public List<UserDto> readAll(int page, int size) {
-        List<UserEntity> userEntities = userRepository.readAll(page, size);
-        List<UserDto> userDtoList = new ArrayList<>(userEntities.size());
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(userMapper.convertToUserDto(userEntity));
-        }
-        return userDtoList;
+        return userRepository.readAll(page, size).stream().map(userMapper::convertToUserDto).collect(Collectors.toList());
     }
 }

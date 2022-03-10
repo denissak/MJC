@@ -73,8 +73,8 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public CertificateDto readById(Long certificateId) {
-       CertificateEntity certificate = certificateRepository.readById(certificateId);
-        if (certificate == null){
+        CertificateEntity certificate = certificateRepository.readById(certificateId);
+        if (certificate == null) {
             throw NotFoundException.notFoundWithCertificateId(certificateId).get();
         }
         return certificateMapper.convertToCertificateDto(certificate);
@@ -83,16 +83,13 @@ public class CertificateServiceImpl implements CertificateService {
     /**
      * Reads all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates
      */
     @Override
     public List<CertificateDto> readAll(int page, int size) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readAll(page, size);
-        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-        for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-        }
-        return certificateDtoList;
+        return certificateRepository.readAll(page, size).stream().map(certificateMapper::convertToCertificateDto).collect(Collectors.toList());
     }
 
     /**
@@ -103,16 +100,21 @@ public class CertificateServiceImpl implements CertificateService {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page        numbers of page
+     * @param size        number of elements per page
+     *
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
-        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-        for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-        }
-        return certificateDtoList;
+    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue,
+                                                                   String name,
+                                                                   String description,
+                                                                   String sortBy,
+                                                                   String sortOrder,
+                                                                   int page,
+                                                                   int size) {
+        return certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size)
+                .stream().map(certificateMapper::convertToCertificateDto).collect(Collectors.toList());
     }
 
     /**
@@ -176,8 +178,8 @@ public class CertificateServiceImpl implements CertificateService {
      * @param certificateDto certificate which need to check
      */
     private CertificateDto checkFields(CertificateDto certificateDto) {
-        CertificateDto certificateInBase =certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId()));
-        if (certificateInBase == null){
+        CertificateDto certificateInBase = certificateMapper.convertToCertificateDto(certificateRepository.readById(certificateDto.getId()));
+        if (certificateInBase == null) {
             throw NotFoundException.notFoundWithCertificateId(certificateDto.getId()).get();
         }
         if (!Objects.equals(certificateDto.getName(), certificateInBase.getName()) && certificateDto.getName() != null) {

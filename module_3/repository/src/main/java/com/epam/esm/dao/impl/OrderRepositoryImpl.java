@@ -64,11 +64,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public OrderEntity readById(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderEntity> criteria = criteriaBuilder.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot)
-                .where(cb.equal(orderEntityRoot.get("id"), id));
+                .where(criteriaBuilder.equal(orderEntityRoot.get("id"), id));
         List<OrderEntity> orderEntityList = entityManager.createQuery(criteria).getResultList();
         if (orderEntityList.size() > 0) {
             return orderEntityList.get(0);
@@ -84,11 +84,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public OrderEntity readByName(String name) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderEntity> criteria = criteriaBuilder.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot)
-                .where(cb.equal(orderEntityRoot.get("name"), name));
+                .where(criteriaBuilder.equal(orderEntityRoot.get("name"), name));
         List<OrderEntity> orderEntityList = entityManager.createQuery(criteria).getResultList();
         if (orderEntityList.size() > 0) {
             return orderEntityList.get(0);
@@ -99,16 +99,19 @@ public class OrderRepositoryImpl implements OrderRepository {
     /**
      * Reads all orders.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all orders
      */
     @Override
     public List<OrderEntity> readAll(int page, int size) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderEntity> criteria = criteriaBuilder.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot);
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(cb.count(countQuery.from(OrderEntity.class)));
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(OrderEntity.class)));
         TypedQuery<OrderEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
@@ -117,18 +120,21 @@ public class OrderRepositoryImpl implements OrderRepository {
     /**
      * Reads all orders by user.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return OrderEntities which meet passed parameters
      */
     @Override
     public List<OrderEntity> readAllOrdersByUserId(long userId, int page, int size) { //TODO NEED TEST
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderEntity> criteria = criteriaBuilder.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot);
         Join<OrderEntity, UserEntity> users = orderEntityRoot.join(OrderEntity_.userEntity);
-        CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot).where(cb.equal(users.get(UserEntity_.id), userId));
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(cb.count(countQuery.from(OrderEntity.class)));
+        CriteriaQuery<OrderEntity> select = criteria.select(orderEntityRoot).where(criteriaBuilder.equal(users.get(UserEntity_.id), userId));
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(OrderEntity.class)));
         TypedQuery<OrderEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
@@ -141,11 +147,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public void delete(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<OrderEntity> criteria = cb.createQuery(OrderEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderEntity> criteria = criteriaBuilder.createQuery(OrderEntity.class);
         Root<OrderEntity> orderEntityRoot = criteria.from(OrderEntity.class);
         criteria.select(orderEntityRoot)
-                .where(cb.equal(orderEntityRoot.get("id"), id));
+                .where(criteriaBuilder.equal(orderEntityRoot.get("id"), id));
         OrderEntity orderEntity = entityManager.createQuery(criteria).getSingleResult();
         entityManager.remove(orderEntity);
     }

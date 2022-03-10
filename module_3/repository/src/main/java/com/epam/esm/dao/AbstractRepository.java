@@ -35,6 +35,9 @@ public interface AbstractRepository<T> {
     /**
      * Reads all entities according to passed parameters.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return entities which meet passed parameters
      */
     List<T> readAll(int page, int size);

@@ -38,11 +38,11 @@ public class UserRepositoryImpl implements UserRepository {
      */
     @Override
     public UserEntity readById(long userId) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteria = cb.createQuery(UserEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> criteria = criteriaBuilder.createQuery(UserEntity.class);
         Root<UserEntity> userEntityRoot = criteria.from(UserEntity.class);
         criteria.select(userEntityRoot)
-                .where(cb.equal(userEntityRoot.get("id"), userId));
+                .where(criteriaBuilder.equal(userEntityRoot.get("id"), userId));
         List<UserEntity> userEntityList = entityManager.createQuery(criteria).getResultList();
         if (userEntityList.size() > 0) {
             return userEntityList.get(0);
@@ -53,16 +53,19 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Reads all users according to passed parameters.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return entities which meet passed parameters
      */
     @Override
     public List<UserEntity> readAll(int page, int size) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteria = cb.createQuery(UserEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> criteria = criteriaBuilder.createQuery(UserEntity.class);
         Root<UserEntity> userEntityRoot = criteria.from(UserEntity.class);
         CriteriaQuery<UserEntity> select = criteria.select(userEntityRoot);
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(cb.count(countQuery.from(UserEntity.class)));
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(UserEntity.class)));
         TypedQuery<UserEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();

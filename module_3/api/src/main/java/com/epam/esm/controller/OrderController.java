@@ -31,6 +31,9 @@ public class OrderController {
     /**
      * Reads all orders.
      *
+     * @param page        numbers of page
+     * @param size        number of elements per page
+     *
      * @return all orders
      */
     @GetMapping
@@ -114,7 +117,7 @@ public class OrderController {
     }
 
     private CollectionModel<OrderDto> addLinksToOrder(List<OrderDto> orderDtoList) {
-        for (final OrderDto orderDto : orderDtoList) {
+        for (OrderDto orderDto : orderDtoList) {
             Link selfLink = linkTo(methodOn(OrderController.class)
                     .readOrderById(orderDto.getId())).withSelfRel();
             orderDto.add(selfLink);

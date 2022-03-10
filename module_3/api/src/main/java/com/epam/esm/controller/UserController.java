@@ -45,6 +45,9 @@ public class UserController {
     /**
      * Read all users.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all users
      */
     @GetMapping
@@ -56,7 +59,7 @@ public class UserController {
     }
 
     private CollectionModel<UserDto> addLinksToUser(List<UserDto> userDtoList) {
-        for (final UserDto userDto : userDtoList) {
+        for (UserDto userDto : userDtoList) {
             Link selfLink = linkTo(methodOn(UserController.class)
                     .readById(userDto.getId())).withSelfRel();
             userDto.add(selfLink);

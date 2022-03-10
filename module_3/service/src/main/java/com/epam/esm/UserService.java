@@ -20,6 +20,9 @@ public interface UserService {
     /**
      * Reads all users.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all users
      */
     List<UserDto> readAll(int page, int size);

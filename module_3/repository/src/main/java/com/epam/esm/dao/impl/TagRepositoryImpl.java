@@ -64,11 +64,11 @@ public class TagRepositoryImpl implements TagRepository {
      */
     @Override
     public TagEntity readById(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TagEntity> criteria = criteriaBuilder.createQuery(TagEntity.class);
         Root<TagEntity> tagEntity = criteria.from(TagEntity.class);
         criteria.select(tagEntity)
-                .where(cb.equal(tagEntity.get("id"), id));
+                .where(criteriaBuilder.equal(tagEntity.get("id"), id));
         List<TagEntity> entityList = entityManager.createQuery(criteria).getResultList();
         if (entityList.size() > 0) {
             return entityList.get(0);
@@ -85,11 +85,11 @@ public class TagRepositoryImpl implements TagRepository {
      */
     @Override
     public TagEntity readByName(String name) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TagEntity> criteria = criteriaBuilder.createQuery(TagEntity.class);
         Root<TagEntity> tagEntity = criteria.from(TagEntity.class);
         criteria.select(tagEntity)
-                .where(cb.equal(tagEntity.get("name"), name));
+                .where(criteriaBuilder.equal(tagEntity.get("name"), name));
         List<TagEntity> resultList = entityManager.createQuery(criteria).getResultList();
         if (resultList.size() > 0) {
             return resultList.get(0);
@@ -100,16 +100,19 @@ public class TagRepositoryImpl implements TagRepository {
     /**
      * Reads all tagEntities.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all tagEntities
      */
     @Override
     public List<TagEntity> readAll(int page, int size) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TagEntity> criteria = criteriaBuilder.createQuery(TagEntity.class);
         Root<TagEntity> tagEntity = criteria.from(TagEntity.class);
         CriteriaQuery<TagEntity> select = criteria.select(tagEntity);
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(cb.count(countQuery.from(TagEntity.class)));
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(TagEntity.class)));
         TypedQuery<TagEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
@@ -117,7 +120,6 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public TagEntity getMostPopularTag() {
-//        TagEntity tagEntity = entityManager.createNativeQuery(MOST_POPULAR_TAG, TagEntity.class).getResultList().get(0);
         return (TagEntity) entityManager.createNativeQuery(MOST_POPULAR_TAG, TagEntity.class).getSingleResult();
     }
 
@@ -128,11 +130,11 @@ public class TagRepositoryImpl implements TagRepository {
      */
     @Override
     public void delete(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TagEntity> criteria = cb.createQuery(TagEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TagEntity> criteria = criteriaBuilder.createQuery(TagEntity.class);
         Root<TagEntity> tagEntityRoot = criteria.from(TagEntity.class);
         criteria.select(tagEntityRoot)
-                .where(cb.equal(tagEntityRoot.get("id"), id));
+                .where(criteriaBuilder.equal(tagEntityRoot.get("id"), id));
         TagEntity tagEntity = entityManager.createQuery(criteria).getResultList().get(0);
         entityManager.remove(tagEntity);
     }

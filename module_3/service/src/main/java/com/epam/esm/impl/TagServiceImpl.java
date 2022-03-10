@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contains methods implementation for working mostly with {@code TagDto}
@@ -69,16 +69,14 @@ public class TagServiceImpl implements TagService {
     /**
      * Reads all tagEntities.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all tagEntities.
      */
     @Override
     public List<TagDto> readAll(int page, int size) {
-        List<TagEntity> tagEntityList = tagRepository.readAll(page, size);
-        List<TagDto> tagDtoList = new ArrayList<>(tagEntityList.size());
-        for (TagEntity tagEntity : tagEntityList) {
-            tagDtoList.add(tagMapper.convertToTagDto(tagEntity));
-        }
-        return tagDtoList;
+        return tagRepository.readAll(page, size).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());
     }
 
     @Override

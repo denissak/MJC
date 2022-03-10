@@ -30,6 +30,8 @@ public class CertificateController {
     /**
      * Reads all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates
      */
     @GetMapping
@@ -63,6 +65,9 @@ public class CertificateController {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page        numbers of page
+     * @param size        number of elements per page
+     *
      * @return all certificates from search terms
      */
     @GetMapping("/search")
@@ -114,7 +119,7 @@ public class CertificateController {
     }
 
     private CollectionModel<CertificateDto> addLinksToCertificate(List<CertificateDto> certificateDtoList) {
-        for (final CertificateDto certificateDto : certificateDtoList) {
+        for (CertificateDto certificateDto : certificateDtoList) {
             Link selfLink = linkTo(methodOn(CertificateController.class)
                     .readCertificate(certificateDto.getId())).withSelfRel();
             certificateDto.add(selfLink);

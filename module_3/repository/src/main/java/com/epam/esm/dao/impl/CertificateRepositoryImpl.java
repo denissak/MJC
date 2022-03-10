@@ -56,11 +56,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      */
     @Override
     public CertificateEntity readById(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CertificateEntity> criteria = criteriaBuilder.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         criteria.select(certificateEntityRoot)
-                .where(cb.equal(certificateEntityRoot.get("id"), id));
+                .where(criteriaBuilder.equal(certificateEntityRoot.get("id"), id));
         List<CertificateEntity> certificateEntityList = entityManager.createQuery(criteria).getResultList();
         if (certificateEntityList.size() > 0) {
             return certificateEntityList.get(0);
@@ -76,11 +76,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      */
     @Override
     public CertificateEntity readByName(String name) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CertificateEntity> criteria = criteriaBuilder.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         criteria.select(certificateEntityRoot)
-                .where(cb.equal(certificateEntityRoot.get("name"), name));
+                .where(criteriaBuilder.equal(certificateEntityRoot.get("name"), name));
         List<CertificateEntity> certificateEntityList = entityManager.createQuery(criteria).getResultList();
         if (certificateEntityList.size() > 0) {
             return certificateEntityList.get(0);
@@ -102,16 +102,19 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     /**
      * Reads all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all certificates
      */
     @Override
     public List<CertificateEntity> readAll(int page, int size) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CertificateEntity> criteria = criteriaBuilder.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         CriteriaQuery<CertificateEntity> select = criteria.select(certificateEntityRoot);
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(cb.count(countQuery.from(CertificateEntity.class)));
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(CertificateEntity.class)));
         TypedQuery<CertificateEntity> typedQuery = entityManager.createQuery(select);
         paginationHandler.setPageToQuery(typedQuery, page, size);
         return typedQuery.getResultList();
@@ -125,6 +128,8 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates from search terms
      */
     @Override
@@ -142,11 +147,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
      */
     @Override
     public void delete(Long id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CertificateEntity> criteria = cb.createQuery(CertificateEntity.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CertificateEntity> criteria = criteriaBuilder.createQuery(CertificateEntity.class);
         Root<CertificateEntity> certificateEntityRoot = criteria.from(CertificateEntity.class);
         criteria.select(certificateEntityRoot)
-                .where(cb.equal(certificateEntityRoot.get("id"), id));
+                .where(criteriaBuilder.equal(certificateEntityRoot.get("id"), id));
         CertificateEntity certificateEntity = entityManager.createQuery(criteria).getResultList().get(0);
         entityManager.remove(certificateEntity);
     }

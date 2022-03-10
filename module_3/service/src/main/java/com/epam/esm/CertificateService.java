@@ -28,6 +28,9 @@ public interface CertificateService {
     /**
      * Reads all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all certificates
      */
     List<CertificateDto> readAll(int page, int size);
@@ -49,6 +52,9 @@ public interface CertificateService {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page numbers of page
+     * @param size number of elements per page
+     *
      * @return all certificates from search terms
      */
     List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size);
