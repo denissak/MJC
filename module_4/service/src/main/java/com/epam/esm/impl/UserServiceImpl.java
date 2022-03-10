@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         /*for (UserEntity userEntity : userEntities) {
             userDtoList.add(userMapper.convertToUserDto(userEntity));
         }*/
-        return userRepository.findAll(pageable).stream().map(userMapper::convertToUserDto).toList();
+        return userRepository.findAll(pageable).stream().map(userMapper::convertToUserDto).collect(Collectors.toList());
     }
 
     @Override
