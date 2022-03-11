@@ -97,7 +97,7 @@ public class CertificateServiceImpl implements CertificateService {
 //            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
 //        }
 //        return certificateDtoList;
-        return certificateRepository.findAll(pageable).stream().map(certificateMapper::convertToCertificateDto).toList();
+        return certificateRepository.findAll(pageable).stream().map(certificateMapper::convertToCertificateDto).collect(Collectors.toList());
     }
 
     /**

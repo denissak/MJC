@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contains methods implementation for working mostly with {@code TagDto}
@@ -77,7 +78,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDto> readAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).toList();
+        return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());
     }
 
 //    @Override

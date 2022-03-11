@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Contains methods implementation for working mostly with {@code OrderDto}
@@ -103,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
 //            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
 //        }
 //        return orderDtoList;
-        return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDTO).toList();
+        return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
     }
 
     /**
@@ -133,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 //            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
 //        }
 //        return orderDtoList;
-        return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDTO).toList();
+        return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
     }
 
     /**
@@ -151,6 +152,6 @@ public class OrderServiceImpl implements OrderService {
 //            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));
 //        }
 //        return readOrderDtoList;
-        return orderRepository.findAllById(userId, pageable).stream().map(readOrderMapper::convertToReadOrderDto).toList();
+        return orderRepository.findAllById(userId, pageable).stream().map(readOrderMapper::convertToReadOrderDto).collect(Collectors.toList());
     }
 }
