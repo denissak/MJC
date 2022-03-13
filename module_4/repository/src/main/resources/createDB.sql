@@ -78,6 +78,20 @@ CREATE TABLE order_certificate_m2m
         ON UPDATE NO ACTION
 );
 
+CREATE TABLE order_certificate_m2m
+(
+    order_id       BIGINT NOT NULL,
+    certificate_id BIGINT NOT NULL,
+    FOREIGN KEY (order_id)
+        REFERENCES orders (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    FOREIGN KEY (certificate_id)
+        REFERENCES gift_certificate (id)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+);
+
 INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date)
 VALUES ('cert1', 'nice', 5, 90, now(), now()),
        ('cert2', 'bad', 7, 90, now(), now()),

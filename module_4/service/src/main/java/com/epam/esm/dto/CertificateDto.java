@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "name")
+@EqualsAndHashCode(exclude = "tags")
 @ToString(exclude = "tags")
 public class CertificateDto extends RepresentationModel<CertificateDto> {
 

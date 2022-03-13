@@ -2,13 +2,9 @@ package com.epam.esm.impl;
 
 import com.epam.esm.OrderService;
 import com.epam.esm.dao.OrderRepository;
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
-import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.entity.TagEntity;
-import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.OrderMapper;
@@ -25,9 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 //        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
 //            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
 //        }
-        return orderMapper.convertToOrderDTO(orderEntity);
+        return orderMapper.convertToOrderDto(orderEntity);
     }
 
     /**
@@ -87,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
         if (orderEntity == null) {
             throw NotFoundException.notFoundWithOrderId(orderId).get();
         }
-        return orderMapper.convertToOrderDTO(orderEntity);
+        return orderMapper.convertToOrderDto(orderEntity);
     }
 
     /**
@@ -104,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
 //            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
 //        }
 //        return orderDtoList;
-        return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
+        return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDto).collect(Collectors.toList());
     }
 
     /**
@@ -134,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
 //            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
 //        }
 //        return orderDtoList;
-        return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDTO).collect(Collectors.toList());
+        return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDto).collect(Collectors.toList());
     }
 
     /**

@@ -17,14 +17,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findAllById(Long orderId, Pageable pageable);
 
 
-
-//    /**
-//     * Reads all orders by user.
-//     *
-//     * @return OrderEntities which meet passed parameters
-//     */
-//    List<OrderEntity> readAllOrdersByUserId(long userId, int page, int size);
-
 //    /**
 //     * Attach certificate to the order
 //     *

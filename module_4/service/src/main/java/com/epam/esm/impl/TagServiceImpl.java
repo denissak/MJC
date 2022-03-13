@@ -81,10 +81,10 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());
     }
 
-//    @Override
-//    public TagDto getMostPopularTag() {
-//        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());
-//    }
+    @Override
+    public TagDto getMostPopularTag() {
+        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());
+    }
 
     /**
      * Deletes tag with passed id.
