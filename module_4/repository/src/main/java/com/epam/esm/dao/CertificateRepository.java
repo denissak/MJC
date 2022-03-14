@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Contains methods for working mostly with {@code Certificate} entity.
  */
-public interface CertificateRepository extends JpaRepository<CertificateEntity, Long> {
+public interface CertificateRepository extends JpaRepository<CertificateEntity, Long>, CertificateFilterRepository {
 
-    CertificateEntity readByName(String certficateName);
+    CertificateEntity readByName(String certificateName);
 
 
 

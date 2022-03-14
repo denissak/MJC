@@ -112,13 +112,12 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
-//        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
-//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-//        for (CertificateEntity certificateEntity : certificateEntities) {
-//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-//        }
-//        return certificateDtoList;
-        return null;
+        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
+        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
+        for (CertificateEntity certificateEntity : certificateEntities) {
+            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
+        }
+        return certificateDtoList;
     }
 
     /**
@@ -131,17 +130,16 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public CertificateDto update(long id, CertificateDto certificateDto) {
-//        CertificateValidator.validate(certificateDto);
-//        CertificateDto currentCertificateDto = checkFields(certificateDto);
-//        LocalDateTime now = dateTimeWrapper.wrapDateTime();
-//        currentCertificateDto.setLastUpdateDate(now);
-//        List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
-//        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
-//        certificateEntity.setTagEntities(requestTagEntities);
-//        addTagsToDataBase(certificateEntity);
-//       certificateRepository.update(id, certificateEntity);
-//        return currentCertificateDto;
-        return null;
+        CertificateValidator.validate(certificateDto);
+        CertificateDto currentCertificateDto = checkFields(certificateDto);
+        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+        currentCertificateDto.setLastUpdateDate(now);
+        List<TagEntity> requestTagEntities = currentCertificateDto.getTags().stream().map(tagDto -> tagMapper.convertToTag(tagDto)).collect(Collectors.toList());
+        CertificateEntity certificateEntity = certificateMapper.convertToCertificate(currentCertificateDto);
+        certificateEntity.setTagEntities(requestTagEntities);
+        addTagsToDataBase(certificateEntity);
+        certificateRepository.save(certificateEntity);
+        return currentCertificateDto;
     }
 
     /**

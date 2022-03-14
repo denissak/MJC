@@ -74,7 +74,7 @@ public class CertificateController {
                                                                      @RequestParam(required = false) String description,
                                                                      @RequestParam(required = false) String sortBy,
                                                                      @RequestParam(required = false) String sortOrder,
-                                                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                     @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                      @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         List<CertificateDto> certificateDtoList =
                 certificateService.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);

@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
  * Contains methods for working mostly with {@code Tag} entity.
  */
 
-public interface TagRepository extends JpaRepository<TagEntity, Long> {
+public interface TagRepository extends JpaRepository<TagEntity, Long>, PopularTagRepository {
 
         String MOST_POPULAR_TAG = "SELECT tag.id, tag.name\n" +
             "FROM tag\n" +
@@ -32,8 +32,8 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
      *
      * @return TagEntity which meet passed parameters
      */
-    @Query(value = MOST_POPULAR_TAG,
-            nativeQuery = true)
-    TagEntity getMostPopularTag();
+//    @Query(value = MOST_POPULAR_TAG,
+//            nativeQuery = true)
+//    TagEntity getMostPopularTag();
 
 }
