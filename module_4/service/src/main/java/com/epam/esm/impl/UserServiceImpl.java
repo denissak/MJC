@@ -62,11 +62,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public UserDto create(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setRoleDto(RoleDto.builder()
-                .id(2L)
-                .name("USER")
-                .build());
+//        userDto.setRoleDto(RoleDto.builder()
+//                .id(2L)
+//                .name("USER")
+//                .build());
         UserEntity userEntity = userMapper.convertToUser(userDto);
+        userEntity.setRoleEntity(RoleEntity.builder()
+                        .id(2L)
+                        .name("USER")
+                        .build());
         return userMapper.convertToUserDto(userRepository.save(userEntity));
     }
 

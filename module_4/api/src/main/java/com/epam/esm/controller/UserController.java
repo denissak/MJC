@@ -37,7 +37,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Controller for working with users.
  */
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -55,7 +54,7 @@ public class UserController {
      * @param id id of tag to be read
      * @return tag with passed id
      */
-    @GetMapping("/{id}")
+    @GetMapping("user/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto readById(@PathVariable long id) {
         Link link = linkTo(UserController.class).withSelfRel();
@@ -105,7 +104,7 @@ public class UserController {
      *
      * @return all users
      */
-    @GetMapping
+    @GetMapping("user")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                   @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
@@ -113,7 +112,7 @@ public class UserController {
         return addLinksToUser(userDtoList);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto register(@RequestBody UserDto userDto) {
         return userService.create(userDto);
