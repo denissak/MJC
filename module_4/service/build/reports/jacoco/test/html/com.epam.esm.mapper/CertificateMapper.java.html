@@ -14,8 +14,8 @@ public interface CertificateMapper {
     @Mapping(source = &quot;tagEntities&quot;, target = &quot;tags&quot;)
     CertificateDto convertToCertificateDto(CertificateEntity certificateEntity);
 
-    @InheritInverseConfiguration
-    @Mapping(target = &quot;tagEntities&quot;, ignore = true)
+//    @InheritInverseConfiguration
+//    @Mapping(target = &quot;tagEntities&quot;, ignore = true)
     CertificateEntity convertToCertificate(CertificateDto certificateDto);
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

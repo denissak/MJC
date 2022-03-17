@@ -91,12 +91,6 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public List<CertificateDto> readAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-//        List<CertificateEntity> certificateEntities = certificateRepository.readAll(page, size);
-//        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-//        for (CertificateEntity certificateEntity : certificateEntities) {
-//            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-//        }
-//        return certificateDtoList;
         return certificateRepository.findAll(pageable).stream().map(certificateMapper::convertToCertificateDto).collect(Collectors.toList());
     }
 

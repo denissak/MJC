@@ -92,12 +92,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> readAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-//        List<OrderEntity> orderEntityList = orderRepository.readAll(page, size);
-//        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-//        for (OrderEntity orderEntity : orderEntityList) {
-//            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-//        }
-//        return orderDtoList;
         return orderRepository.findAll(pageable).stream().map(orderMapper::convertToOrderDto).collect(Collectors.toList());
     }
 
@@ -122,12 +116,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> readAllOrdersByUserId(long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-//        List<OrderEntity> orderEntityList = orderRepository.findAllById(userId, pageable);
-//        List<OrderDto> orderDtoList = new ArrayList<>(orderEntityList.size());
-//        for (OrderEntity orderEntity : orderEntityList) {
-//            orderDtoList.add(orderMapper.convertToOrderDTO(orderEntity));
-//        }
-//        return orderDtoList;
         return orderRepository.findAllById(userId, pageable).stream().map(orderMapper::convertToOrderDto).collect(Collectors.toList());
     }
 
@@ -140,12 +128,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-//        List<OrderEntity> orderEntityList = orderRepository.readAllOrdersByUserId(userId, page, size);
-//        List<ReadOrderDto> readOrderDtoList = new ArrayList<>(orderEntityList.size());
-//        for (OrderEntity orderEntity : orderEntityList) {
-//            readOrderDtoList.add(readOrderMapper.convertToReadOrderDto(orderEntity));
-//        }
-//        return readOrderDtoList;
         return orderRepository.findAllById(userId, pageable).stream().map(readOrderMapper::convertToReadOrderDto).collect(Collectors.toList());
     }
 }

@@ -3,7 +3,6 @@ package com.epam.esm.impl;
 import com.epam.esm.UserService;
 import com.epam.esm.dao.RoleRepository;
 import com.epam.esm.dao.UserRepository;
-import com.epam.esm.dto.RoleDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.RoleEntity;
 import com.epam.esm.entity.UserEntity;
@@ -11,7 +10,6 @@ import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.RoleMapper;
 import com.epam.esm.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,10 +59,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public UserDto create(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        userDto.setRoleDto(RoleDto.builder()
-//                .id(2L)
-//                .name("USER")
-//                .build());
         UserEntity userEntity = userMapper.convertToUser(userDto);
         userEntity.setRoleEntity(RoleEntity.builder()
                         .id(2L)
@@ -97,10 +90,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<UserDto> readAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-//        List<UserDto> userDtoList = new ArrayList<>();
-        /*for (UserEntity userEntity : userEntities) {
-            userDtoList.add(userMapper.convertToUserDto(userEntity));
-        }*/
         return userRepository.findAll(pageable).stream().map(userMapper::convertToUserDto).collect(Collectors.toList());
     }
 

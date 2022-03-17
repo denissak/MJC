@@ -19,7 +19,7 @@ public interface OrderMapper {
     @Mapping(source = "userEntity", target = "userDto")
     OrderDto convertToOrderDto(OrderEntity orderEntity);
 
-    @InheritInverseConfiguration
+//    @InheritInverseConfiguration
 //    @Mapping(target = "certificateEntities", ignore = true)
 //    @Mapping(target = "userEntity", ignore = true)
     OrderEntity convertToOrder(OrderDto orderDto);

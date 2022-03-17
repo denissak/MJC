@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.validation</a> &gt; <span class="el_source">OrderValidator.java</span></div><h1>OrderValidator.java</h1><pre class="source lang-java linenums">package com.epam.esm.validation;
 
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
-<span class="nc" id="L11">public class OrderValidator {</span>
+<span class="nc" id="L8">public class OrderValidator {</span>
 
     private static final int MAX_LENGTH_NAME = 40;
     private static final int MIN_LENGTH_NAME = 1;
-//    private static final int MAX_LENGTH_DESCRIPTION = 50;
-//    private static final int MAX_DURATION = 366;
-//    private static final int MIN_DURATION = 1;
 
     public static void validate(OrderDto orderDto) throws ValidationException {
-<span class="nc" id="L20">        validateName(orderDto.getName());</span>
-//        validateDescription(certificateDto.getDescription());
-<span class="nc" id="L22">        validatePrice(orderDto.getCost());</span>
-//        validateDuration(certificateDto.getDuration());
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L14">        validateName(orderDto.getName());</span>
+<span class="nc" id="L15">        validatePrice(orderDto.getCost());</span>
+<span class="nc" id="L16">    }</span>
 
     private static void validateName(String name) throws ValidationException {
-<span class="nc bnc" id="L27" title="All 6 branches missed.">        if (name == null || name.length() &lt; MIN_LENGTH_NAME || name.length() &gt; MAX_LENGTH_NAME) {</span>
-<span class="nc" id="L28">            throw new ValidationException(&quot;Incorrect certificate name&quot;);</span>
+<span class="nc bnc" id="L19" title="All 6 branches missed.">        if (name == null || name.length() &lt; MIN_LENGTH_NAME || name.length() &gt; MAX_LENGTH_NAME) {</span>
+<span class="nc" id="L20">            throw new ValidationException(&quot;Incorrect certificate name&quot;);</span>
         }
-<span class="nc" id="L30">    }</span>
-
-//    private static void validateDescription(String description) throws ValidationException {
-//        if (description == null || description.length() &gt; MAX_LENGTH_DESCRIPTION) {
-//            throw new ValidationException(&quot;Incorrect certificate description&quot;);
-//        }
-//    }
+<span class="nc" id="L22">    }</span>
 
     private static void validatePrice(Double cost) throws ValidationException {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (cost &lt; 0) {</span>
-<span class="nc" id="L40">            throw new ValidationException(&quot;Incorrect cost&quot;);</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (cost &lt; 0) {</span>
+<span class="nc" id="L26">            throw new ValidationException(&quot;Incorrect cost&quot;);</span>
         }
-<span class="nc" id="L42">    }</span>
-
-//    private static void validateDuration(int duration) throws ValidationException {
-//        if (duration &lt; MIN_DURATION || duration &gt; MAX_DURATION) {
-//            throw new ValidationException(&quot;Incorrect certificate duration&quot;);
-//        }
-//    }
+<span class="nc" id="L28">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

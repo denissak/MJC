@@ -7,23 +7,23 @@ import org.springframework.hateoas.RepresentationModel;
 import java.time.LocalDateTime;
 import java.util.List;
 
-<span class="pc" id="L10">@Data</span>
-<span class="pc" id="L11">@Builder</span>
-<span class="fc" id="L12">@AllArgsConstructor</span>
+<span class="nc" id="L10">@Data</span>
+<span class="nc" id="L11">@Builder</span>
+<span class="nc" id="L12">@AllArgsConstructor</span>
 <span class="nc" id="L13">@NoArgsConstructor</span>
-<span class="pc bpc" id="L14" title="9 of 14 branches missed.">@EqualsAndHashCode(of = &quot;name&quot;)</span>
+<span class="nc bnc" id="L14" title="All 62 branches missed.">@EqualsAndHashCode(exclude = &quot;tags&quot;)</span>
 <span class="nc" id="L15">@ToString(exclude = &quot;tags&quot;)</span>
 public class CertificateDto extends RepresentationModel&lt;CertificateDto&gt; {
 
-<span class="fc" id="L18">    private Long id;</span>
-<span class="fc" id="L19">    private String name;</span>
-<span class="fc" id="L20">    private String description;</span>
-<span class="fc" id="L21">    private Double price;</span>
-<span class="fc" id="L22">    private Integer duration;</span>
+<span class="nc" id="L18">    private Long id;</span>
+<span class="nc" id="L19">    private String name;</span>
+<span class="nc" id="L20">    private String description;</span>
+<span class="nc" id="L21">    private Double price;</span>
+<span class="nc" id="L22">    private Integer duration;</span>
     @JsonFormat(pattern = &quot;yyyy-MM-dd'T'HH:mm:ss[.SSS]&quot;)
-<span class="fc" id="L24">    private LocalDateTime lastUpdateDate;</span>
+<span class="nc" id="L24">    private LocalDateTime lastUpdateDate;</span>
     @JsonFormat(pattern = &quot;yyyy-MM-dd'T'HH:mm:ss[.SSS]&quot;)
-<span class="fc" id="L26">    private LocalDateTime createDate;</span>
-<span class="fc" id="L27">    private List&lt;TagDto&gt; tags;</span>
+<span class="nc" id="L26">    private LocalDateTime createDate;</span>
+<span class="nc" id="L27">    private List&lt;TagDto&gt; tags;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
