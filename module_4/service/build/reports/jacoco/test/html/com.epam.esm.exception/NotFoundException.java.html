@@ -21,14 +21,33 @@ public class NotFoundException extends RuntimeException {
 <span class="nc" id="L21">        return () -&gt; new NotFoundException(message, id);</span>
     }
 
+    public static Supplier&lt;NotFoundException&gt; notFoundUser() {
+<span class="nc" id="L25">        String message = String.format(&quot;There is no one user &quot;);</span>
+<span class="nc" id="L26">        return () -&gt; new NotFoundException(message);</span>
+    }
+
     public static Supplier&lt;NotFoundException&gt; notFoundWithOrderId(long id) {
-<span class="nc" id="L25">        String message = String.format(&quot;There is no order with id = %s&quot;, id);</span>
-<span class="nc" id="L26">        return () -&gt; new NotFoundException(message, id);</span>
+<span class="nc" id="L30">        String message = String.format(&quot;There is no order with id = %s&quot;, id);</span>
+<span class="nc" id="L31">        return () -&gt; new NotFoundException(message, id);</span>
+    }
+
+    public static Supplier&lt;NotFoundException&gt; notFoundOrderWithUserId(long id) {
+<span class="nc" id="L35">        String message = String.format(&quot;There is no order with user id = %s&quot;, id);</span>
+<span class="nc" id="L36">        return () -&gt; new NotFoundException(message, id);</span>
+    }
+
+    public static Supplier&lt;NotFoundException&gt; notFoundWithRoleId(long id) {
+<span class="nc" id="L40">        String message = String.format(&quot;There is no role with id = %s&quot;, id);</span>
+<span class="nc" id="L41">        return () -&gt; new NotFoundException(message, id);</span>
     }
 
     public NotFoundException(String message, long id) {
-<span class="nc" id="L30">        super(message);</span>
-<span class="nc" id="L31">        this.id = id;</span>
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L45">        super(message);</span>
+<span class="nc" id="L46">        this.id = id;</span>
+<span class="nc" id="L47">    }</span>
+
+    public NotFoundException(String message) {
+<span class="nc" id="L50">        super(message);</span>
+<span class="nc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

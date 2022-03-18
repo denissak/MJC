@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = &quot;spring&quot;, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface TagMapper {
-<span class="nc" id="L13">    TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);</span>
+<span class="fc" id="L13">    TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);</span>
 
     TagDto convertToTagDto(TagEntity tagEntity);
 

@@ -6,7 +6,6 @@ import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.DuplicateException;
-import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.validation.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +37,7 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * Creates and saves the passed tag.
+     * Create and save the passed tag.
      *
      * @param tagDto the tag to be saved
      * @return saved tag
@@ -56,7 +54,7 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * Reads tag with passed id.
+     * Read tag with passed id.
      *
      * @param tagId id of tag to be read
      * @return tag with passed id
@@ -64,15 +62,14 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto readById(Long tagId) {
         TagEntity tag = tagRepository.findById(tagId).get();
-        if (tag == null) {
-            throw NotFoundException.notFoundWithTagId(tagId).get();
-        }
         return tagMapper.convertToTagDto(tag);
     }
 
     /**
-     * Reads all tagEntities.
+     * Read all tags.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all tagEntities.
      */
     @Override
@@ -81,6 +78,11 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());
     }
 
+    /**
+     * Read most popular tag by max cost order.
+     *
+     * @return Tag which meet passed parameters
+     */
     @Override
     public TagDto getMostPopularTag() {
         return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());

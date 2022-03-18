@@ -7,13 +7,10 @@ import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.*;
-import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.*;
 import com.epam.esm.util.DateTimeWrapper;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -22,13 +19,10 @@ import org.springframework.data.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -41,7 +35,6 @@ class OrderServiceImplTest {
     private static final Long USER_ID = 1L;
     private static final Long CERTIFICATE_ID_1 = 1L;
     private static final Long TAG_ID_1 = 1L;
-    private static final Long INVALID_ID = -1L;
     private OrderEntity orderEntity;
     private OrderDto orderDto;
     private UserEntity userEntity;
@@ -50,14 +43,12 @@ class OrderServiceImplTest {
     private CertificateDto certificateDto;
     private TagEntity tagEntity;
     private TagDto tagDto;
-//    private List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
     private List<CertificateEntity> certificateEntityList = new ArrayList<>();
     private List<CertificateDto> certificateDtoList = new ArrayList<>();
     private List<OrderEntity> orderEntityList = new ArrayList<>();
     private List<OrderDto> orderDtoList = new ArrayList<>();
     private Pageable pageable;
     private Page<OrderEntity> orderEntityPage;
-//    private OrderCertificateEntity orderCertificateEntity;
 
     @Mock
     private OrderRepository orderRepository;
@@ -85,7 +76,7 @@ class OrderServiceImplTest {
     @BeforeEach
     public void setUp() {
 
-        orderServiceImpl = new OrderServiceImpl(orderRepository, orderMapper, dateTimeWrapper, readOrderMapper);
+        orderServiceImpl = new OrderServiceImpl(orderRepository, orderMapper, dateTimeWrapper, readOrderMapper, certificateMapper, userMapper);
 
         userEntity = UserEntity.builder()
                 .id(USER_ID)
@@ -117,12 +108,6 @@ class OrderServiceImplTest {
                 .tagEntities(List.of(tagEntity))
                 .build();
 
-//        orderCertificateEntity = OrderCertificateEntity.builder()
-//                .certificateEntity(certificateEntity)
-//                .orderEntity(orderEntity)
-//                .build();
-//
-//        orderCertificateEntityList.add(orderCertificateEntity);
         certificateEntityList.add(certificateEntity);
 
         tagDto = TagDto.builder()
@@ -142,7 +127,6 @@ class OrderServiceImplTest {
                 .build();
 
         certificateDtoList.add(certificateDto);
-
 
         userDto = UserDto.builder()
                 .id(USER_ID)
@@ -216,9 +200,4 @@ class OrderServiceImplTest {
         assertEquals(expected, actual);
         verify(orderRepository).findAllById(USER_ID, pageable);
     }
-//
-//    @Test
-//    void testReadByIdWithInvalidId() {
-//        assertThrows(NotFoundException.class, () -> orderServiceImpl.readById(INVALID_ID));
-//    }
 }

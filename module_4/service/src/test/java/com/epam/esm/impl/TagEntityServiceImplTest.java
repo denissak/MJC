@@ -5,24 +5,18 @@ import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.TagRepository;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.TagEntity;
-import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.TagMapper;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.*;
-import org.springframework.security.access.method.P;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -106,13 +100,8 @@ public class TagEntityServiceImplTest {
         verify(tagRepository).findAll(pageable);
     }
 
-//    @Test
-//    void readException() {
-//        Assertions.assertThrows(NotFoundException.class, () -> tagServiceImpl.readById(TAG_ID_1));
-//    }
-
     @Test
-    void testDeleteCertificate() {
+    void testDeleteTag() {
         when(tagRepository.findById(TAG_ID_1)).thenReturn(Optional.ofNullable(tagEntity));
         tagServiceImpl.delete(TAG_ID_1);
         verify(tagRepository).delete(tagEntity);

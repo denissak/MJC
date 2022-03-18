@@ -60,7 +60,6 @@ class RoleServiceImplTest {
 
         roleEntityPage = new PageImpl<>(roleEntityList);
         roleDtoPage = new PageImpl<>(roleDtoList);
-
     }
 
     @Test

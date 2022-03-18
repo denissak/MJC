@@ -9,8 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@EqualsAndHashCode(exclude = {"orderCertificateEntityList", "userEntity"})
-//@ToString(exclude = {"orderCertificateEntityList", "userEntity"})
 @EqualsAndHashCode(exclude = {"certificateEntities", "userEntity"})
 @ToString(exclude = {"certificateEntities", "userEntity"})
 @Builder
@@ -27,8 +25,6 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
-    //    @OneToMany(mappedBy = "orderEntity")
-//    private List<OrderCertificateEntity> orderCertificateEntityList;
     @ManyToMany
     @JoinTable(
             name = "order_certificate_m2m",

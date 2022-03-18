@@ -4,12 +4,22 @@ import java.util.function.Supplier;
 
 public class ValidationException extends RuntimeException {
 
+    private String message;
+
     public static Supplier&lt;ValidationException&gt; incorrectField(String message) {
-<span class="nc" id="L8">        return () -&gt; new ValidationException(message);</span>
+<span class="nc" id="L10">        return () -&gt; new ValidationException(message);</span>
+    }
+
+    public static Supplier&lt;ValidationException&gt; incorrectField() {
+<span class="nc" id="L14">        return ValidationException::new;</span>
     }
 
     public ValidationException(String message) {
-<span class="nc" id="L12">        super(message);</span>
-<span class="nc" id="L13">    }</span>
+<span class="nc" id="L18">        super(message);</span>
+<span class="nc" id="L19">    }</span>
+
+    public ValidationException() {
+<span class="nc" id="L22">        super(&quot;Validation failed&quot;);</span>
+<span class="nc" id="L23">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

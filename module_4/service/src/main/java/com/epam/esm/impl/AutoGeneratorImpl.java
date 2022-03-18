@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Methods for database auto-generation
+ */
 @Service
 public class AutoGeneratorImpl implements AutoGenerator {
 
@@ -35,6 +38,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
         this.dateTimeWrapper = dateTimeWrapper;
     }
 
+    /**
+     * Auto-create Certificates in DataBase
+     */
     @Transactional
     @Override
     public void createAutoCertificate() {
@@ -60,6 +66,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
         }
     }
 
+    /**
+     * Auto-create Orders in DataBase
+     */
     @Transactional
     @Override
     public void createAutoOrder() {
@@ -82,70 +91,11 @@ public class AutoGeneratorImpl implements AutoGenerator {
                     .build();
             orderRepository.save(orderEntity);
         }
-
-//        List<UserEntity> userEntityList = userRepository.readAll(1,1000);
-//        List<CertificateEntity> certificateEntityList = certificateRepository.readAll(1, 10000);
-//        Random random = new Random();
-//        for (int i = 0; i < 1000; i++) {
-//            LocalDateTime now = dateTimeWrapper.wrapDateTime();
-//            List<CertificateEntity> certificateEntities = new ArrayList<>();
-//            List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
-//            int sizeCertificate = random.nextInt(5);
-//            for (int j = 0; j < sizeCertificate; j++) {
-//                certificateEntities.add(certificateEntityList.get(random.nextInt(10000)));
-//                OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
-//                        .orderEntity(null)
-//                        .certificateEntity(certificateEntities.get(j))
-//                        .build();
-//                orderCertificateEntityList.add(orderCertificateEntity);
-//            }
-//            OrderEntity orderEntity = OrderEntity.builder()
-//                    .name("order" + i)
-//                    .cost((double) random.nextInt(500))
-//                    .date(now)
-//                    .userEntity(userEntityList.get(random.nextInt(1000)))
-//                    .orderCertificateEntityList(orderCertificateEntityList)
-//                    .build();
-//            orderEntity = orderRepository.create(orderEntity);
-//            for (CertificateEntity certificateEntity : certificateEntities) {
-//                orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateEntity.getId());
-//            }
-//        }
     }
 
-//    @Transactional
-//    @Override
-//    public void createAutoOrder() {
-//        List<UserEntity> userEntityList = userRepository.readAll(1,1000);
-//        List<CertificateEntity> certificateEntityList = certificateRepository.readAll(1, 10000);
-//        Random random = new Random();
-//        for (int i = 0; i < 1000; i++) {
-//            LocalDateTime now = dateTimeWrapper.wrapDateTime();
-//            List<CertificateEntity> certificateEntities = new ArrayList<>();
-//            List<OrderCertificateEntity> orderCertificateEntityList = new ArrayList<>();
-//            int sizeCertificate = random.nextInt(5);
-//            for (int j = 0; j < sizeCertificate; j++) {
-//                certificateEntities.add(certificateEntityList.get(random.nextInt(10000)));
-//                OrderCertificateEntity orderCertificateEntity = OrderCertificateEntity.builder()
-//                        .orderEntity(null)
-//                        .certificateEntity(certificateEntities.get(j))
-//                        .build();
-//                orderCertificateEntityList.add(orderCertificateEntity);
-//            }
-//            OrderEntity orderEntity = OrderEntity.builder()
-//                    .name("order" + i)
-//                    .cost((double) random.nextInt(500))
-//                    .date(now)
-//                    .userEntity(userEntityList.get(random.nextInt(1000)))
-//                    .orderCertificateEntityList(orderCertificateEntityList)
-//                    .build();
-//            orderEntity = orderRepository.create(orderEntity);
-//            for (CertificateEntity certificateEntity : certificateEntities) {
-//                orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateEntity.getId());
-//            }
-//        }
-//    }
-
+    /**
+     * Auto-create Tags in DataBase
+     */
     @Transactional
     @Override
     public void createAutoTag() {
@@ -157,6 +107,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
         }
     }
 
+    /**
+     * Auto-create Users in DataBase
+     */
     @Transactional
     @Override
     public void createAutoUser() {

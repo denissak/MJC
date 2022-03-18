@@ -10,7 +10,7 @@ import java.util.List;
 public interface TagService {
 
     /**
-     * Creates and saves the passed tag.
+     * Create and save the passed tag.
      *
      * @param tagDto the tag to be saved
      * @return saved tag
@@ -18,7 +18,7 @@ public interface TagService {
     TagDto create(TagDto tagDto);
 
     /**
-     * Reads tag with passed id.
+     * Read tag with passed id.
      *
      * @param tagId id of tag to be read
      * @return tag with passed id
@@ -26,16 +26,23 @@ public interface TagService {
     TagDto readById(Long tagId);
 
     /**
-     * Reads all tags.
+     * Read all tags.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all tags.
      */
     List<TagDto> readAll(int page, int size);
 
+    /**
+     * Read most popular tag by max cost order.
+     *
+     * @return TagEntity which meet passed parameters
+     */
     TagDto getMostPopularTag();
 
     /**
-     * Deletes tag with passed id.
+     * Delete tag with passed id.
      *
      * @param tagId the id of tag to be deleted
      */

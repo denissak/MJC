@@ -10,7 +10,7 @@ import java.util.List;
 public interface CertificateService {
 
     /**
-     * Creates and saves the passed certificate.
+     * Create and save the passed certificate.
      *
      * @param certificateDto the certificate to be saved
      * @return saved certificate
@@ -18,7 +18,7 @@ public interface CertificateService {
     CertificateDto create(CertificateDto certificateDto);
 
     /**
-     * Reads certificate with passed id.
+     * Read certificate with passed id.
      *
      * @param certificateId the id of certificate to be read
      * @return certificate with passed id
@@ -26,14 +26,16 @@ public interface CertificateService {
     CertificateDto readById(Long certificateId);
 
     /**
-     * Reads all certificates.
+     * Read all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates
      */
     List<CertificateDto> readAll(int page, int size);
 
     /**
-     * Updates certificate fields with passed id
+     * Update certificate fields with passed id
      *
      * @param id             certificate id which needs to be updated
      * @param certificateDto certificate entity which contains fields with new
@@ -54,7 +56,7 @@ public interface CertificateService {
     List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size);
 
     /**
-     * Deletes certificate with passed id.
+     * Delete certificate with passed id.
      *
      * @param certificateId the id of certificate to be deleted
      */

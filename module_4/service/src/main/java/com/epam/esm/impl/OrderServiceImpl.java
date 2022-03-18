@@ -4,11 +4,13 @@ import com.epam.esm.OrderService;
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
+import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.OrderEntity;
 import com.epam.esm.exception.DuplicateException;
-import com.epam.esm.exception.NotFoundException;
+import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.ReadOrderMapper;
+import com.epam.esm.mapper.UserMapper;
 import com.epam.esm.util.DateTimeWrapper;
 import com.epam.esm.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +37,22 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final ReadOrderMapper readOrderMapper;
     private final DateTimeWrapper dateTimeWrapper;
+    private final CertificateMapper certificateMapper;
+    private final UserMapper userMapper;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper,
-                            DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper) {
+                            DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper, CertificateMapper certificateMapper, UserMapper userMapper) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.dateTimeWrapper = dateTimeWrapper;
         this.readOrderMapper = readOrderMapper;
+        this.certificateMapper = certificateMapper;
+        this.userMapper = userMapper;
     }
 
     /**
-     * Creates and saves the passed order.
+     * Create and save the passed order.
      *
      * @param orderDto the order to be saved
      * @return saved order
@@ -56,21 +62,21 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto create(OrderDto orderDto) {
         OrderEntity order = orderRepository.findByName(orderDto.getName());
         if (order != null) {
-            throw DuplicateException.tagExists().get();
+            throw DuplicateException.orderExists().get();
         }
         OrderValidator.validate(orderDto);
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
+        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
+        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateDto -> certificateMapper.convertToCertificate(certificateDto)).collect(Collectors.toList());
+        orderEntity.setCertificateEntities(certificateEntityList);
         orderRepository.save(orderEntity);
-//        for (CertificateDto certificateDto : orderDto.getCertificateDto()) {
-//            orderRepository.setCertificatesOnOrder(orderEntity.getId(), certificateDto.getId());
-//        }
         return orderMapper.convertToOrderDto(orderEntity);
     }
 
     /**
-     * Reads order with passed id.
+     * Read order with passed id.
      *
      * @param orderId the id of order to be read
      * @return order with passed id
@@ -78,15 +84,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto readById(Long orderId) {
         OrderEntity orderEntity = orderRepository.findById(orderId).get();
-        if (orderEntity == null) {
-            throw NotFoundException.notFoundWithOrderId(orderId).get();
-        }
         return orderMapper.convertToOrderDto(orderEntity);
     }
 
     /**
-     * Reads all users according to passed parameters.
+     * Read all orders according to passed parameters.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return entities which meet passed parameters
      */
     @Override
@@ -96,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Deletes orders with passed id.
+     * Delete orders with passed id.
      *
      * @param orderId the id of order to be deleted
      */
@@ -108,9 +113,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Reads all orders by user.
+     * Read all orders by user.
      *
      * @param userId the id of user to be sorted
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return orderDto which meet passed parameters
      */
     @Override
@@ -123,6 +130,8 @@ public class OrderServiceImpl implements OrderService {
      * Reads cost and date orders by user.
      *
      * @param userId the id of user to be sorted
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return readOrderDto which meet passed parameters
      */
     @Override

@@ -32,11 +32,11 @@ public class TagServiceImpl implements TagService {
     TagMapper tagMapper;
 
     @Autowired
-<span class="nc" id="L35">    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {</span>
-<span class="nc" id="L36">        this.tagRepository = tagRepository;</span>
-<span class="nc" id="L37">        this.tagMapper = tagMapper;</span>
-<span class="nc" id="L38">        this.certificateRepository = certificateRepository;</span>
-<span class="nc" id="L39">    }</span>
+<span class="fc" id="L35">    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, CertificateRepository certificateRepository) {</span>
+<span class="fc" id="L36">        this.tagRepository = tagRepository;</span>
+<span class="fc" id="L37">        this.tagMapper = tagMapper;</span>
+<span class="fc" id="L38">        this.certificateRepository = certificateRepository;</span>
+<span class="fc" id="L39">    }</span>
 
     /**
      * Creates and saves the passed tag.
@@ -46,13 +46,13 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto create(TagDto tagDto) {
-<span class="nc" id="L49">        TagEntity tagExist = tagRepository.readByName(tagDto.getName());</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (tagExist != null) {</span>
+<span class="fc" id="L49">        TagEntity tagExist = tagRepository.readByName(tagDto.getName());</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (tagExist != null) {</span>
 <span class="nc" id="L51">            throw DuplicateException.tagExists().get();</span>
         }
-<span class="nc" id="L53">        TagValidator.validate(tagDto);</span>
-<span class="nc" id="L54">        TagEntity tagEntity = tagRepository.save(tagMapper.convertToTag(tagDto));</span>
-<span class="nc" id="L55">        return tagMapper.convertToTagDto(tagEntity);</span>
+<span class="fc" id="L53">        TagValidator.validate(tagDto);</span>
+<span class="fc" id="L54">        TagEntity tagEntity = tagRepository.save(tagMapper.convertToTag(tagDto));</span>
+<span class="fc" id="L55">        return tagMapper.convertToTagDto(tagEntity);</span>
     }
 
     /**
@@ -63,11 +63,8 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagDto readById(Long tagId) {
-<span class="nc" id="L66">        TagEntity tag = tagRepository.findById(tagId).get();</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (tag == null) {</span>
-<span class="nc" id="L68">            throw NotFoundException.notFoundWithTagId(tagId).get();</span>
-        }
-<span class="nc" id="L70">        return tagMapper.convertToTagDto(tag);</span>
+<span class="fc" id="L66">        TagEntity tag = tagRepository.findById(tagId).get();</span>
+<span class="fc" id="L67">        return tagMapper.convertToTagDto(tag);</span>
     }
 
     /**
@@ -77,13 +74,13 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public List&lt;TagDto&gt; readAll(int page, int size) {
-<span class="nc" id="L80">        Pageable pageable = PageRequest.of(page, size, Sort.by(&quot;id&quot;).ascending());</span>
-<span class="nc" id="L81">        return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());</span>
+<span class="fc" id="L77">        Pageable pageable = PageRequest.of(page, size, Sort.by(&quot;id&quot;).ascending());</span>
+<span class="fc" id="L78">        return tagRepository.findAll(pageable).stream().map(tagMapper::convertToTagDto).collect(Collectors.toList());</span>
     }
 
     @Override
     public TagDto getMostPopularTag() {
-<span class="nc" id="L86">        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());</span>
+<span class="fc" id="L83">        return tagMapper.convertToTagDto(tagRepository.getMostPopularTag());</span>
     }
 
     /**
@@ -94,8 +91,8 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void delete(Long tagId) {
-<span class="nc" id="L97">        TagEntity tagEntity = tagRepository.findById(tagId).get();</span>
-<span class="nc" id="L98">        tagRepository.delete(tagEntity);</span>
-<span class="nc" id="L99">    }</span>
+<span class="fc" id="L94">        TagEntity tagEntity = tagRepository.findById(tagId).get();</span>
+<span class="fc" id="L95">        tagRepository.delete(tagEntity);</span>
+<span class="fc" id="L96">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

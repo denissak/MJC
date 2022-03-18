@@ -9,13 +9,13 @@ import com.epam.esm.exception.ValidationException;
     private static final int MIN_LENGTH_NAME = 3;
 
     public static void validate(TagDto tag) throws ValidationException {
-<span class="nc" id="L12">        validateName(tag.getName());</span>
-<span class="nc" id="L13">    }</span>
+<span class="fc" id="L12">        validateName(tag.getName());</span>
+<span class="fc" id="L13">    }</span>
 
     public static void validateName(String name) throws ValidationException {
-<span class="nc bnc" id="L16" title="All 4 branches missed.">        if (name.length() &lt; MIN_LENGTH_NAME || name.length() &gt; MAX_LENGTH_NAME) {</span>
+<span class="pc bpc" id="L16" title="2 of 4 branches missed.">        if (name.length() &lt; MIN_LENGTH_NAME || name.length() &gt; MAX_LENGTH_NAME) {</span>
 <span class="nc" id="L17">            throw new ValidationException(&quot;Incorrect tag name&quot;);</span>
         }
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L19">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

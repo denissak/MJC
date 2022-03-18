@@ -9,8 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(exclude = {"tagEntities", "orderCertificateEntityList"})
-//@ToString(exclude = {"tagEntities", "orderCertificateEntityList"})
 @EqualsAndHashCode(exclude = {"tagEntities", "orderEntities"})
 @ToString(exclude = {"tagEntities", "orderEntities"})
 @Builder
@@ -33,8 +31,6 @@ public class CertificateEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<TagEntity> tagEntities;
-    //    @OneToMany(mappedBy = "certificateEntity", fetch = FetchType.LAZY)
-//    private List<OrderCertificateEntity> orderCertificateEntityList;
     @ManyToMany(mappedBy = "certificateEntities")
     private List<OrderEntity> orderEntities;
 }

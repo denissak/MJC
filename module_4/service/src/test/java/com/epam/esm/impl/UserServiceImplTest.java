@@ -4,12 +4,9 @@ import com.epam.esm.UserService;
 import com.epam.esm.dao.RoleRepository;
 import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.RoleDto;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.RoleEntity;
-import com.epam.esm.entity.TagEntity;
 import com.epam.esm.entity.UserEntity;
-import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.RoleMapper;
 import com.epam.esm.mapper.RoleMapperImpl;
 import com.epam.esm.mapper.UserMapper;
@@ -28,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -119,8 +115,10 @@ class UserServiceImplTest {
         verify(userRepository).findAll(pageable);
     }
 
-//    @Test
-//    void readException() {
-//        Assertions.assertThrows(NotFoundException.class, () -> userServiceImpl.readById(USER_ID_1));
-//    }
+    @Test
+    void testDeleteUser() {
+        when(userRepository.findById(USER_ID_1)).thenReturn(Optional.ofNullable(userEntity));
+        userServiceImpl.delete(USER_ID_1);
+        verify(userRepository).delete(userEntity);
+    }
 }

@@ -7,8 +7,6 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.TagEntity;
-import com.epam.esm.entity.UserEntity;
-import com.epam.esm.exception.NotFoundException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.CertificateMapperImpl;
 import com.epam.esm.mapper.TagMapper;
@@ -35,7 +33,6 @@ public class CertificateEntityServiceImplTest {
 
     private static final Long CERTIFICATE_ID_1 = 1L;
     private static final Long TAG_ID_1 = 1111L;
-    private static final Long INVALID_ID = -1L;
     private static final String ANY_STRING = "";
     private static final Integer ANY_INTEGER = 1;
     private static final String[] ANY_MASSIVE = new String[1];
@@ -134,21 +131,11 @@ public class CertificateEntityServiceImplTest {
         verify(certificateRepository).findAll(pageable);
     }
 
-//    @Test
-//    void testReadByIdWithInvalidId() {
-//        assertThrows(NotFoundException.class, () -> certificateServiceImpl.readById(INVALID_ID));
-//    }
-
     @Test
     void testReadCertificateById() {
         when(certificateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(certificateEntity));
         certificateServiceImpl.readById(certificateEntity.getId());
     }
-
-//    @Test
-//    void testUpdateNotFoundException() {
-//        assertThrows(NotFoundException.class, () -> certificateServiceImpl.update(CERTIFICATE_ID_1, certificateDto));
-//    }
 
     @Test
     void testDeleteCertificate() {

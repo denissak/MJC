@@ -2,6 +2,8 @@ package com.epam.esm.controller;
 
 import com.epam.esm.TagService;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -28,7 +30,7 @@ public class TagController {
     }
 
     /**
-     * Reads tag with passed id.
+     * Read tag with passed id.
      *
      * @param id id of tag to be read
      * @return tag with passed id
@@ -36,15 +38,21 @@ public class TagController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TagDto readTagById(@PathVariable long id) {
-        Link link = linkTo(TagController.class).withSelfRel();
-        TagDto tagDto = tagService.readById(id);
-        tagDto.add(link);
-        return tagDto;
+        try {
+            Link link = linkTo(TagController.class).withSelfRel();
+            TagDto tagDto = tagService.readById(id);
+            tagDto.add(link);
+            return tagDto;
+        } catch (RuntimeException e) {
+            throw NotFoundException.notFoundWithTagId(id).get();
+        }
     }
 
     /**
      * Read all tagEntities.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all tagEntities
      */
     @GetMapping
@@ -55,6 +63,11 @@ public class TagController {
         return addLinksToTag(tagDtoList);
     }
 
+    /**
+     * Read most popular tag by max cost order.
+     *
+     * @return TagDto which meet passed parameters
+     */
     @GetMapping("/popular-tag")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getMostPopularTag() {
@@ -65,7 +78,7 @@ public class TagController {
     }
 
     /**
-     * Creates and saves the passed tag.
+     * Create and save the passed tag.
      *
      * @param tagDto the tag to be saved
      * @return saved tag
@@ -73,18 +86,26 @@ public class TagController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto createTag(@RequestBody TagDto tagDto) {
-        return tagService.create(tagDto);
+        try {
+            return tagService.create(tagDto);
+        } catch (RuntimeException e) {
+            throw DuplicateException.tagExists().get();
+        }
     }
 
     /**
-     * Deletes tag with passed id.
+     * Delete tag with passed id.
      *
      * @param id the id of tag to be deleted
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
-        tagService.delete(id);
+        try {
+            tagService.delete(id);
+        } catch (RuntimeException e) {
+            throw NotFoundException.notFoundWithTagId(id).get();
+        }
     }
 
     private CollectionModel<TagDto> addLinksToTag(List<TagDto> tagDtoList) {

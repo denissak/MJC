@@ -2,7 +2,6 @@ package com.epam.esm.mapper;
 
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.UserEntity;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,7 +17,5 @@ public interface UserMapper {
     @Mapping(source = "roleEntity", target = "roleDto")
     UserDto convertToUserDto(UserEntity userEntity);
 
-//    @InheritInverseConfiguration
-//    @Mapping(target = "roleEntity", ignore = true)
     UserEntity convertToUser(UserDto userDto);
 }

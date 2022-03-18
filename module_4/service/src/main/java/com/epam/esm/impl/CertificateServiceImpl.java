@@ -25,6 +25,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Contains methods implementation for working mostly with {@code CertificateDto}
+ * entity.
+ */
 @Service
 public class CertificateServiceImpl implements CertificateService {
 
@@ -44,7 +48,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     /**
-     * Creates and saves the passed certificate.
+     * Create and save the passed certificate.
      *
      * @param certificateDto the certificate to be saved
      * @return saved certificate
@@ -69,7 +73,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     /**
-     * Reads certificate with passed id.
+     * Read certificate with passed id.
      *
      * @param certificateId the id of certificate to be read
      * @return certificate with passed id
@@ -77,15 +81,14 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public CertificateDto readById(Long certificateId) {
        CertificateEntity certificate = certificateRepository.findById(certificateId).get();
-        if (certificate == null){
-            throw NotFoundException.notFoundWithCertificateId(certificateId).get();
-        }
         return certificateMapper.convertToCertificateDto(certificate);
     }
 
     /**
-     * Reads all certificates.
+     * Read all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates
      */
     @Override
@@ -102,20 +105,24 @@ public class CertificateServiceImpl implements CertificateService {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates from search terms
      */
     @Override
-    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
-        List<CertificateEntity> certificateEntities = certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder, page, size);
-        List<CertificateDto> certificateDtoList = new ArrayList<>(certificateEntities.size());
-        for (CertificateEntity certificateEntity : certificateEntities) {
-            certificateDtoList.add(certificateMapper.convertToCertificateDto(certificateEntity));
-        }
-        return certificateDtoList;
+    public List<CertificateDto> readCertificateWithDifferentParams(String[] tagValue,
+                                                                   String name,
+                                                                   String description,
+                                                                   String sortBy,
+                                                                   String sortOrder,
+                                                                   int page,
+                                                                   int size) {
+        return certificateRepository.readCertificateWithDifferentParams(tagValue, name, description, sortBy, sortOrder,
+                page, size).stream().map(certificateMapper::convertToCertificateDto).collect(Collectors.toList());
     }
 
     /**
-     * Updates certificate fields with passed id
+     * Update certificate fields with passed id
      *
      * @param id             certificate id which needs to be updated
      * @param certificateDto certificate entity which contains fields with new
@@ -137,7 +144,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     /**
-     * Deletes certificate with passed id.
+     * Delete certificate with passed id.
      *
      * @param certificateId the id of certificate to be deleted
      */

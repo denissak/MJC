@@ -3,7 +3,8 @@ package com.epam.esm.controller;
 import com.epam.esm.OrderService;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
-import com.sun.istack.NotNull;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -30,8 +31,10 @@ public class OrderController {
     }
 
     /**
-     * Reads all orders.
+     * Read all orders.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all orders
      */
     @GetMapping
@@ -43,7 +46,7 @@ public class OrderController {
     }
 
     /**
-     * Reads order with passed id.
+     * Read order with passed id.
      *
      * @param id the id of order to be read
      * @return order with passed id
@@ -51,16 +54,22 @@ public class OrderController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDto readOrderById(@PathVariable long id) {
-        Link link = linkTo(OrderController.class).withSelfRel();
-        OrderDto orderDto = orderService.readById(id);
-        orderDto.add(link);
-        return orderDto;
+        try {
+            Link link = linkTo(OrderController.class).withSelfRel();
+            OrderDto orderDto = orderService.readById(id);
+            orderDto.add(link);
+            return orderDto;
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundWithOrderId(id).get();
+        }
     }
 
     /**
-     * Reads orders with passed user id.
+     * Read orders with passed user id.
      *
      * @param id the id of order to be read
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return order with passed id
      */
     @GetMapping("user/{id}")
@@ -68,14 +77,20 @@ public class OrderController {
     public CollectionModel<OrderDto> readOrderByUserId(@PathVariable long id,
                                                        @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                        @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
-        List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id, page, size);
-        return addLinksToOrder(orderDtoList);
+        try {
+            List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id, page, size);
+            return addLinksToOrder(orderDtoList);
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundOrderWithUserId(id).get();
+        }
     }
 
     /**
-     * Reads cost and date orders with passed user id.
+     * Read cost and date orders with passed user id.
      *
      * @param id the id of order to be read
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return order with passed id
      */
     @GetMapping("user/{id}/status-order")
@@ -83,35 +98,47 @@ public class OrderController {
     public CollectionModel<ReadOrderDto> readCostAndDateByUserId(@PathVariable long id,
                                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                                  @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
-        List<ReadOrderDto> readOrderDtoList = orderService.readCostAndDateOrderByUserId(id, page, size);
-        for (final ReadOrderDto readOrderDto : readOrderDtoList) {
-            Link selfLink = linkTo(methodOn(OrderController.class).readOrderById(readOrderDto.getId())).withSelfRel();
-            readOrderDto.add(selfLink);
+        try {
+            List<ReadOrderDto> readOrderDtoList = orderService.readCostAndDateOrderByUserId(id, page, size);
+            for (final ReadOrderDto readOrderDto : readOrderDtoList) {
+                Link selfLink = linkTo(methodOn(OrderController.class).readOrderById(readOrderDto.getId())).withSelfRel();
+                readOrderDto.add(selfLink);
+            }
+            Link link = linkTo(OrderController.class).withSelfRel();
+            return CollectionModel.of(readOrderDtoList, link);
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundOrderWithUserId(id).get();
         }
-        Link link = linkTo(OrderController.class).withSelfRel();
-        return CollectionModel.of(readOrderDtoList, link);
     }
 
     /**
-     * Creates and saves the passed order.
+     * Create and save the passed order.
      *
      * @param orderDto the order to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createCertificate(@RequestBody OrderDto orderDto) {
-        return orderService.create(orderDto);
+    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+        try {
+            return orderService.create(orderDto);
+        } catch (RuntimeException e){
+            throw DuplicateException.orderExists().get();
+        }
     }
 
     /**
-     * Deletes order with passed id.
+     * Delete order with passed id.
      *
      * @param id the id of order to be deleted
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCertificate(@PathVariable long id) {
-        orderService.delete(id);
+    public void deleteOrder(@PathVariable long id) {
+        try {
+            orderService.delete(id);
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundWithOrderId(id).get();
+        }
     }
 
     private CollectionModel<OrderDto> addLinksToOrder(List<OrderDto> orderDtoList) {
