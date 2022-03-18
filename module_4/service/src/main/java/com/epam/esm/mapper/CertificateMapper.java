@@ -14,5 +14,6 @@ public interface CertificateMapper {
     @Mapping(source = "tagEntities", target = "tags")
     CertificateDto convertToCertificateDto(CertificateEntity certificateEntity);
 
+    @Mapping(source = "tags", target = "tagEntities")
     CertificateEntity convertToCertificate(CertificateDto certificateDto);
 }

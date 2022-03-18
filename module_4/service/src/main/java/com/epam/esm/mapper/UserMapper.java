@@ -17,5 +17,6 @@ public interface UserMapper {
     @Mapping(source = "roleEntity", target = "roleDto")
     UserDto convertToUserDto(UserEntity userEntity);
 
+    @Mapping(source = "roleDto", target = "roleEntity")
     UserEntity convertToUser(UserDto userDto);
 }
