@@ -10,9 +10,9 @@ pipeline {
                 git branch: 'module6', credentialsId: '*****', url: 'https://github.com/denissak/MJC.git'
             }
         }
-        stage('Build project') {
+        stage('BuildProject') {
             steps {
-                    bat './gradlew'
+                    bat './gradlew api:clean api:build'
             }
         }
         stage('SonarQube analysis') {
