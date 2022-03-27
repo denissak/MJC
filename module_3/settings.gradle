@@ -1,4 +1,0 @@
-rootProject.name = 'module_3'
-include 'repository'
-include 'service'
-include 'api'

@@ -1,0 +1,4 @@
+rootProject.name = 'module_6'
+include 'repository'
+include 'service'
+include 'api'
