@@ -15,28 +15,6 @@ pipeline {
                     bat './gradlew api:clean api:build'
             }
         }
-        stage('SonarQube analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonarqube';
-                    withSonarQubeEnv(credentialsId: '****') {
-                        bat "${scannerHome}/bin/sonar-scanner \
-      -D sonar.projectName=SonarQubeMJCDemo \
-      -D sonar.projectKey=SonarQubeMJCDemo \
-      -D sonar.projectVersion=1.0 \
-      -D sonar.sourceEncoding=UTF-8 \
-      -D sonar.core.codeCoveragePlugin=jacoco \
-      -D sonar.coverage.jacoco.xmlReportPaths=service/build/reports/jacoco.xml \
-      -D sonar.host.url=http://localhost:9000/"
-                    }
-                }
-            }
-        }
-        stage('JaCoCo Coverage') {
-            steps {
-                jacoco classPattern: 'service/build/classes/java/main/com/epam/esm/impl', execPattern: 'service/build/jacoco/**.exec', sourcePattern: 'service/src/main/java'
-            }
-        }
         stage('Deploy project') {
             steps {
                 deploy adapters: [tomcat9(credentialsId: '*****',
