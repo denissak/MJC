@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Build project') {
             steps {
-                    bat './gradlew api:clean api:build'
+                    bat './gradlew'
             }
         }
         stage('SonarQube analysis') {
