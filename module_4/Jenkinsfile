@@ -13,7 +13,7 @@ pipeline {
         stage('Build project') {
             steps {
                 withGradle {
-                    bat './gradlew clean build'
+                    bat './gradlew api:clean api:build'
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy project') {
             steps {
                 deploy adapters: [tomcat9(credentialsId: '*****',
-                        path: '', url: 'http://localhost:8082')], contextPath: 'mjc', war: '**/*.war'
+                        path: '', url: 'http://localhost:8090')], contextPath: 'mjc', war: '**/*.war'
             }
         }
     }
