@@ -1,5 +1,4 @@
 plugins {
-    id "org.sonarqube" version "3.3"
     id 'jacoco'
 }
 
@@ -11,48 +10,3 @@ dependencies {
 
 test.finalizedBy jacocoTestReport
 jacocoTestReport.dependsOn test
-
-jacoco {
-    toolVersion = "0.8.7"
-    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
-}
-
-
-jacocoTestReport {
-    group = "Reporting"
-    reports {
-        xml.enabled true
-        csv.enabled false
-        html.destination file("${buildDir}/reports/coverage")
-        xml.destination file("${buildDir}/reports/jacoco.xml")
-    }
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.5
-            }
-        }
-
-        rule {
-            enabled = false
-            element = 'CLASS'
-            includes = ['org.gradle.*']
-
-            limit {
-                counter = 'LINE'
-                value = 'TOTALCOUNT'
-                maximum = 0.3
-            }
-        }
-    }
-}
-
-test {
-    jacoco {
-        destinationFile = layout.buildDirectory.file('jacoco/jacocoTest.exec').get().asFile
-        classDumpDir = layout.buildDirectory.dir('jacoco/classpathdumps').get().asFile
-    }
-}

@@ -14,14 +14,6 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java-library'
 
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = true
-    }
-
     repositories {
         mavenCentral()
     }
