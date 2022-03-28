@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = "spring")
 public interface ReadOrderMapper {
-
     ReadOrderMapper INSTANCE = Mappers.getMapper(ReadOrderMapper.class);
 
     ReadOrderDto convertToReadOrderDto(OrderEntity orderEntity);
-
 }

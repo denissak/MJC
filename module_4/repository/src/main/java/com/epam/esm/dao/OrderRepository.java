@@ -1,7 +1,6 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.entity.UserEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,17 +11,20 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
+    /**
+     * Reads OrderEntity with passed name.
+     *
+     * @param orderName the name of entity to be read
+     * @return entity with passed name
+     */
     OrderEntity findByName(String orderName);
 
-    List<OrderEntity> findAllById(Long orderId, Pageable pageable);
-
-
-//    /**
-//     * Attach certificate to the order
-//     *
-//     * @param orderId         tag id which needs to set in m2m table
-//     * @param certificateId certificate id which need to set in m2m table
-//     */
-//    void setCertificatesOnOrder(Long orderId, Long certificateId);
-
+    /**
+     * Reads OrderEntity with passed id.
+     *
+     * @param userId the user with passed
+     * @param pageable pagination options
+     * @return orders with passed user id
+     */
+    List<OrderEntity> findAllById(Long userId, Pageable pageable);
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-03-14T18:53:10+0300",
+    date = "2022-03-28T20:03:34+0300",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.1.jar, environment: Java 11.0.13 (Oracle Corporation)"
 )
 @Component
@@ -48,6 +48,7 @@ public class UserMapperImpl implements UserMapper {
 
         UserEntityBuilder userEntity = UserEntity.builder();
 
+        userEntity.roleEntity( roleMapper.convertToRole( userDto.getRoleDto() ) );
         userEntity.id( userDto.getId() );
         userEntity.login( userDto.getLogin() );
         userEntity.password( userDto.getPassword() );

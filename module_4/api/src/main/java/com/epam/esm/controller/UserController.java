@@ -5,28 +5,20 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.epam.esm.UserService;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.exception.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -40,16 +32,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UserController {
 
     private final UserService userService;
-    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public UserController(UserService userService, UserDetailsService userDetailsService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userDetailsService = userDetailsService;
     }
 
     /**
-     * Reads user with passed id.
+     * Read user with passed id.
      *
      * @param id id of tag to be read
      * @return tag with passed id
@@ -57,12 +47,19 @@ public class UserController {
     @GetMapping("user/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto readById(@PathVariable long id) {
-        Link link = linkTo(UserController.class).withSelfRel();
-        UserDto userDto = userService.readById(id);
-        userDto.add(link);
-        return userDto;
+        try {
+            Link link = linkTo(UserController.class).withSelfRel();
+            UserDto userDto = userService.readById(id);
+            userDto.add(link);
+            return userDto;
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundWithUserId(id).get();
+        }
     }
 
+    /**
+     * Refresh token.
+     */
     @GetMapping("/token/refresh")
     @ResponseStatus(HttpStatus.OK)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -95,13 +92,15 @@ public class UserController {
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         } else {
-            throw new RuntimeException(); // TODO Custom ex
+            throw RefreshTokenException.refreshTokenFailed().get();
         }
     }
 
     /**
      * Read all users.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all users
      */
     @GetMapping("user")
@@ -111,11 +110,34 @@ public class UserController {
         List<UserDto> userDtoList = userService.readAll(page, size);
         return addLinksToUser(userDtoList);
     }
-
+    /**
+     * Registration new.
+     *
+     * @param userDto the user that try registration
+     */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto register(@RequestBody UserDto userDto) {
-        return userService.create(userDto);
+        try {
+            return userService.create(userDto);
+        } catch (RuntimeException e){
+            throw DuplicateException.userExists().get();
+        }
+    }
+
+    /**
+     * Delete user with passed id.
+     *
+     * @param id the id of user to be deleted
+     */
+    @DeleteMapping("user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTag(@PathVariable long id) {
+        try {
+            userService.delete(id);
+        } catch (RuntimeException e) {
+            throw NotFoundException.notFoundWithTagId(id).get();
+        }
     }
 
     private CollectionModel<UserDto> addLinksToUser(List<UserDto> userDtoList) {
@@ -127,5 +149,4 @@ public class UserController {
         Link link = linkTo(UserController.class).withSelfRel();
         return CollectionModel.of(userDtoList, link);
     }
-
 }

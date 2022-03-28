@@ -1,10 +1,7 @@
 package com.epam.esm.entity;
 
 import lombok.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,8 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-
-    public static final String val = "2";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

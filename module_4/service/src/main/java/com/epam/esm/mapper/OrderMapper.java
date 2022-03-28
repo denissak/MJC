@@ -2,7 +2,6 @@ package com.epam.esm.mapper;
 
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.entity.OrderEntity;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,8 +18,5 @@ public interface OrderMapper {
     @Mapping(source = "userEntity", target = "userDto")
     OrderDto convertToOrderDto(OrderEntity orderEntity);
 
-    @InheritInverseConfiguration
-//    @Mapping(target = "certificateEntities", ignore = true)
-//    @Mapping(target = "userEntity", ignore = true)
     OrderEntity convertToOrder(OrderDto orderDto);
 }

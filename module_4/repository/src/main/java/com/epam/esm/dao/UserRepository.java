@@ -8,27 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
 
+    /**
+     * Reads UserEntity with passed name.
+     *
+     * @param login the name of entity to be read
+     * @return user with passed login
+     */
     UserEntity findByLogin(String login);
-
-
-//    /**
-//     * Reads user with passed id.
-//     *
-//     * @param userId the id of entity to be read
-//     * @return entity with passed id
-//     */
-//    UserEntity readById(long userId);
-//
-//    /**
-//     * Reads all users according to passed parameters.
-//     *
-//     * @return entities which meet passed parameters
-//     */
-//    List<UserEntity> readAll(int page, int size);
-//
-//    UserEntity readByName(String login);
-//
-//    void createAutoUser(UserEntity userEntity);
-//
-//    UserEntity create(UserEntity userEntity);
 }

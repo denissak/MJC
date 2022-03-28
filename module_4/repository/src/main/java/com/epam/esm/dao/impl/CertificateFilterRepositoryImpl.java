@@ -24,6 +24,19 @@ public class CertificateFilterRepositoryImpl implements CertificateFilterReposit
         this.search = search;
     }
 
+    /**
+     * Search by specified certificate values
+     *
+     * @param tagValue    tag name
+     * @param name        whole or partial certificate name
+     * @param description whole or partial certificate description
+     * @param sortBy      Sort target field (name or date)
+     * @param sortOrder   Sort type (asc or desc)
+     * @param page        numbers of page
+     * @param size        number of elements per page
+     * @return all certificates from search terms
+     */
+
     @Override
     public List<CertificateEntity> readCertificateWithDifferentParams(String[] tagValue, String name, String description, String sortBy, String sortOrder, int page, int size) {
                 return entityManager.createNativeQuery(search.buildSearchCertificate(tagValue, name, description, sortBy, sortOrder), CertificateEntity.class)

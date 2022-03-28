@@ -10,7 +10,7 @@ public class DefaultAdvice {
 
     @ExceptionHandler(DuplicateException.class)
     public ResponseEntity<?> handleException(DuplicateException e) {
-        ResponseError response = new ResponseError(e.getMessage(), StatusError.ENTITY_DUBLICATE);
+        ResponseError response = new ResponseError(e.getMessage(), StatusError.ENTITY_DUPLICATE);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -24,5 +24,17 @@ public class DefaultAdvice {
     public ResponseEntity<?> handleException(ValidationException e) {
         ResponseError response = new ResponseError(e.getMessage(), StatusError.ENTITY_VALIDATION);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<?> handleException(AuthorizationException e) {
+        ResponseError response = new ResponseError(e.getMessage(), StatusError.USER_UNAUTHORIZATION);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<?> handleException(RefreshTokenException e) {
+        ResponseError response = new ResponseError(e.getMessage(), StatusError.USER_UNAUTHORIZATION);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }

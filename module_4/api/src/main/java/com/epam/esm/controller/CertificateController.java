@@ -2,8 +2,8 @@ package com.epam.esm.controller;
 
 import com.epam.esm.CertificateService;
 import com.epam.esm.dto.CertificateDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.epam.esm.exception.DuplicateException;
+import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -30,8 +30,10 @@ public class CertificateController {
     }
 
     /**
-     * Reads all certificates.
+     * Read all certificates.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates
      */
     @GetMapping
@@ -43,7 +45,7 @@ public class CertificateController {
     }
 
     /**
-     * Reads certificate with passed id.
+     * Read certificate with passed id.
      *
      * @param id the id of certificate to be read
      * @return certificate with passed id
@@ -51,10 +53,14 @@ public class CertificateController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto readCertificate(@PathVariable long id) {
-        Link link = linkTo(CertificateController.class).withSelfRel();
-        CertificateDto certificateDto = certificateService.readById(id);
-        certificateDto.add(link);
-        return certificateDto;
+        try {
+            Link link = linkTo(CertificateController.class).withSelfRel();
+            CertificateDto certificateDto = certificateService.readById(id);
+            certificateDto.add(link);
+            return certificateDto;
+        } catch (RuntimeException e) {
+            throw NotFoundException.notFoundWithCertificateId(id).get();
+        }
     }
 
     /**
@@ -65,6 +71,8 @@ public class CertificateController {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all certificates from search terms
      */
     @GetMapping("/search")
@@ -82,14 +90,18 @@ public class CertificateController {
     }
 
     /**
-     * Creates and saves the passed certificate.
+     * Create and save the passed certificate.
      *
      * @param certificateDto the certificate to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CertificateDto createCertificate(@RequestBody CertificateDto certificateDto) {
-        return certificateService.create(certificateDto);
+        try {
+            return certificateService.create(certificateDto);
+        } catch (RuntimeException e) {
+            throw DuplicateException.certificateExists().get();
+        }
     }
 
     /**
@@ -101,18 +113,26 @@ public class CertificateController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto updateCertificate(@PathVariable long id, @RequestBody CertificateDto certificateDto) {
-        return certificateService.update(id, certificateDto);
+        try {
+            return certificateService.update(id, certificateDto);
+        } catch (RuntimeException e) {
+            throw NotFoundException.notFoundWithCertificateId(id).get();
+        }
     }
 
     /**
-     * Deletes certificate with passed id.
+     * Delete certificate with passed id.
      *
      * @param id the id of certificate to be deleted
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCertificate(@PathVariable long id) {
-        certificateService.delete(id);
+        try {
+            certificateService.delete(id);
+        } catch (RuntimeException e){
+            throw NotFoundException.notFoundWithCertificateId(id).get();
+        }
     }
 
     private CollectionModel<CertificateDto> addLinksToCertificate(List<CertificateDto> certificateDtoList) {

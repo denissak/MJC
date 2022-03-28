@@ -2,7 +2,6 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.PopularTagRepository;
 import com.epam.esm.entity.TagEntity;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +30,12 @@ public class PopularTagRepositoryImpl implements PopularTagRepository {
     public PopularTagRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+    /**
+     * Read most popular tag by max cost order.
+     *
+     * @return TagEntity which meet passed parameters
+     */
 
     @Override
     public TagEntity getMostPopularTag() {

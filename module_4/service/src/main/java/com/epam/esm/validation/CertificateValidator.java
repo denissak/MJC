@@ -4,8 +4,6 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
 public class CertificateValidator {
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderService {
 
     /**
-     * Creates and saves the passed order.
+     * Create and save the passed order.
      *
      * @param orderDto the order to be saved
      * @return saved order
@@ -19,7 +19,7 @@ public interface OrderService {
     OrderDto create(OrderDto orderDto);
 
     /**
-     * Reads order with passed id.
+     * Read order with passed id.
      *
      * @param orderId the id of order to be read
      * @return order with passed id
@@ -29,31 +29,35 @@ public interface OrderService {
     /**
      * Reads all orders.
      *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return all orders
      */
     List<OrderDto> readAll(int page, int size);
 
     /**
-     * Deletes orders with passed id.
+     * Delete order with passed id.
      *
      * @param orderId the id of order to be deleted
      */
     void delete(Long orderId);
 
     /**
-     * Reads all orders by user.
+     * Read all orders by user.
      *
      * @param userId the id of user to be sorted
-     *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return orderDto which meet passed parameters
      */
-    List<OrderDto> readAllOrdersByUserId (long userId, int page, int size);
+    List<OrderDto> readAllOrdersByUserId(long userId, int page, int size);
 
     /**
-     * Reads cost and date orders by user.
+     * Read cost and date orders by user.
      *
      * @param userId the id of user to be sorted
-     *
+     * @param page numbers of page
+     * @param size number of elements per page
      * @return readOrderDto which meet passed parameters
      */
     List<ReadOrderDto> readCostAndDateOrderByUserId(long userId, int page, int size);

@@ -21,13 +21,32 @@ public class NotFoundException extends RuntimeException {
         return () -> new NotFoundException(message, id);
     }
 
+    public static Supplier<NotFoundException> notFoundUser() {
+        String message = String.format("There is no one user ");
+        return () -> new NotFoundException(message);
+    }
+
     public static Supplier<NotFoundException> notFoundWithOrderId(long id) {
         String message = String.format("There is no order with id = %s", id);
+        return () -> new NotFoundException(message, id);
+    }
+
+    public static Supplier<NotFoundException> notFoundOrderWithUserId(long id) {
+        String message = String.format("There is no order with user id = %s", id);
+        return () -> new NotFoundException(message, id);
+    }
+
+    public static Supplier<NotFoundException> notFoundWithRoleId(long id) {
+        String message = String.format("There is no role with id = %s", id);
         return () -> new NotFoundException(message, id);
     }
 
     public NotFoundException(String message, long id) {
         super(message);
         this.id = id;
+    }
+
+    public NotFoundException(String message) {
+        super(message);
     }
 }
