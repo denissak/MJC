@@ -1,6 +1,6 @@
 plugins{
     id 'war'
-    id 'org.springframework.boot' version '2.6.3'
+    id 'org.springframework.boot' version '2.6.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
@@ -27,6 +27,9 @@ allprojects {
     }
 
     dependencies {
+//        implementation project(':service')
+//
+//        implementation project(':api')
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -36,7 +39,10 @@ allprojects {
         implementation 'org.mapstruct:mapstruct:1.4.2.Final'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+        implementation ('org.springframework.boot:spring-boot-starter-hateoas') {
+            exclude module: "spring-boot-starter-tomcat"
+        }
+//        implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.6.4'
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat
 //        providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:2.6.4'
         // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper

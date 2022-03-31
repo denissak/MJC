@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.impl.RoleServiceImplTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-03-31T07:09:49" hostname="DESKTOP-CE4U664" time="0.066">
+<testsuite name="com.epam.esm.impl.RoleServiceImplTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-03-31T16:00:51" hostname="DESKTOP-CE4U664" time="0.052">
   <properties/>
-  <testcase name="create()" classname="com.epam.esm.impl.RoleServiceImplTest" time="0.06"/>
-  <testcase name="findAll()" classname="com.epam.esm.impl.RoleServiceImplTest" time="0.002"/>
+  <testcase name="create()" classname="com.epam.esm.impl.RoleServiceImplTest" time="0.047"/>
+  <testcase name="findAll()" classname="com.epam.esm.impl.RoleServiceImplTest" time="0.001"/>
   <testcase name="findById()" classname="com.epam.esm.impl.RoleServiceImplTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
