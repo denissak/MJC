@@ -3,9 +3,9 @@ plugins {
     id 'application'
 }
 
-war {
-    baseName = 'mjc'
-}
+//war {
+//    baseName = 'mjc'
+//}
 
 dependencies {
     implementation project(':service')
