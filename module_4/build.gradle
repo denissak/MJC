@@ -38,9 +38,9 @@ allprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         implementation 'org.springframework.boot:spring-boot-starter-hateoas'
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat
-        implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.6.4'
+//        providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:2.6.4'
         // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
-        implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.75'
+//        implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.75'
 
 
     }
