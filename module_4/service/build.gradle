@@ -6,6 +6,7 @@ dependencies {
 
     implementation project(':repository')
     implementation 'org.springframework:spring-tx:5.3.15'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 test.finalizedBy jacocoTestReport
