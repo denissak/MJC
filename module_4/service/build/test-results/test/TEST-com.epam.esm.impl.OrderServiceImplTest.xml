@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.impl.OrderServiceImplTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-04-03T10:37:06" hostname="DESKTOP-CE4U664" time="0.072">
+<testsuite name="com.epam.esm.impl.OrderServiceImplTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-04-03T16:34:30" hostname="DESKTOP-CE4U664" time="0.065">
   <properties/>
-  <testcase name="create()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.056"/>
+  <testcase name="create()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.052"/>
   <testcase name="readAllOrdersByUserId()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.002"/>
   <testcase name="delete()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.002"/>
-  <testcase name="readById()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.002"/>
+  <testcase name="readById()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.001"/>
   <testcase name="readCostAndDateOrderByUserId()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.002"/>
-  <testcase name="readAll()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.004"/>
+  <testcase name="readAll()" classname="com.epam.esm.impl.OrderServiceImplTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
