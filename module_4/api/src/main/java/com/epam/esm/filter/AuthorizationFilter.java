@@ -34,7 +34,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login") || request.getServletPath().equals("user/token/refresh") || request.getServletPath().equals("/actuator")) {
+        if (request.getServletPath().equals("/login") || request.getServletPath().equals("user/token/refresh") || request.getServletPath().equals("/actuator") || request.getServletPath().equals("/user")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
