@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.impl.CertificateEntityServiceImplTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-03-31T18:12:19" hostname="DESKTOP-CE4U664" time="0.963">
+<testsuite name="com.epam.esm.impl.CertificateEntityServiceImplTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-04-03T10:37:05" hostname="DESKTOP-CE4U664" time="0.966">
   <properties/>
-  <testcase name="update()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.938"/>
-  <testcase name="testDeleteCertificate()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.003"/>
+  <testcase name="update()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.942"/>
+  <testcase name="testDeleteCertificate()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.002"/>
   <testcase name="testReadCertificateById()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.002"/>
-  <testcase name="testReadAllCertificates()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.006"/>
+  <testcase name="testReadAllCertificates()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.005"/>
   <testcase name="testCreate()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.006"/>
   <testcase name="readCertificateWithDifferentParams()" classname="com.epam.esm.impl.CertificateEntityServiceImplTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>

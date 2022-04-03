@@ -3,26 +3,15 @@ plugins {
     id 'application'
 }
 
-//war {
-//    baseName = 'mjc'
-//}
-
 dependencies {
     implementation project(':service')
-//    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.auth0:java-jwt:3.18.3'
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.3'
     implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
     implementation ('org.springframework.boot:spring-boot-starter-web') {
         exclude module: "spring-boot-starter-tomcat"
     }
-
-
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.4'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-
-
 }
