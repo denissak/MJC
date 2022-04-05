@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.impl.UserServiceImplTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-04-05T17:45:18" hostname="DESKTOP-CE4U664" time="0.056">
+<testsuite name="com.epam.esm.impl.UserServiceImplTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-04-05T18:17:42" hostname="DESKTOP-CE4U664" time="0.055">
   <properties/>
-  <testcase name="readById()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.05"/>
-  <testcase name="testDeleteUser()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.002"/>
+  <testcase name="readById()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.051"/>
+  <testcase name="testDeleteUser()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.001"/>
   <testcase name="readAll()" classname="com.epam.esm.impl.UserServiceImplTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

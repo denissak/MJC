@@ -11,6 +11,14 @@ sonarqube {
     }
 }
 
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = true
+    }
+}
+
 dependencies {
 
     implementation project(':repository')
