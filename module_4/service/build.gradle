@@ -1,11 +1,24 @@
 plugins {
+    id "org.sonarqube" version "2.7"
     id 'jacoco'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "project"
+        property "sonar.projectKey", "org.sonarqube:my:project"
+        property "sonar.jacoco.reportPath", "{project.buildDir}/jacoco/test.exec"
+    }
 }
 
 dependencies {
 
     implementation project(':repository')
     implementation 'org.springframework:spring-tx:5.3.15'
+}
+
+test {
+    ignoreFailures = true
 }
 
 test.finalizedBy jacocoTestReport

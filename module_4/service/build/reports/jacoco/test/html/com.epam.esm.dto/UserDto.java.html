@@ -5,8 +5,8 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 <span class="pc bpc" id="L11" title="23 of 38 branches missed.">@Data</span>
 <span class="pc" id="L12">@Builder</span>
@@ -20,7 +20,7 @@ public class UserDto extends RepresentationModel&lt;UserDto&gt; implements UserD
 
     @Override
     public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
-<span class="nc" id="L23">        return List.of(roleDto);</span>
+<span class="nc" id="L23">        return Arrays.asList(roleDto);</span>
     }
 
     @Override
