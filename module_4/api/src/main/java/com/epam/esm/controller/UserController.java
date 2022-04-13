@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Controller for working with users.
  */
-@RestController
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -110,6 +113,20 @@ public class UserController {
         List<UserDto> userDtoList = userService.readAll(page, size);
         return addLinksToUser(userDtoList);
     }
+
+//    @GetMapping("/register")
+//    @ResponseStatus(HttpStatus.OK)
+//    public String register() {
+//        return "/web/page/register.html";
+//    }
+
+    @RequestMapping("/register")
+    public ModelAndView register() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/register");
+        return modelAndView;
+    }
+
     /**
      * Registration new.
      *
