@@ -134,7 +134,7 @@ public class UserController {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(@RequestBody UserDto userDto) {
+    public UserDto register(UserDto userDto) {
         try {
             return userService.create(userDto);
         } catch (RuntimeException e){
