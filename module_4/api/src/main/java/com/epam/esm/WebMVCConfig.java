@@ -1,3 +1,4 @@
+/*
 package com.epam.esm;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -21,3 +22,4 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/js/");
     }
 }
+*/

@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Controller for working with users.
  */
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -114,27 +112,48 @@ public class UserController {
         return addLinksToUser(userDtoList);
     }
 
-//    @GetMapping("/register")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String register() {
-//        return "/web/page/register.html";
+//    @RequestMapping("/register")
+//    public ModelAndView register() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("registration");
+//        return modelAndView;
 //    }
 
-    @RequestMapping("/register")
-    public ModelAndView register() {
+    @RequestMapping("/login")
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/register");
+        modelAndView.setViewName("/login");
         return modelAndView;
     }
+
+//    @PostMapping("/login")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserDto login(UserDto userDto) {
+//        try {
+//            return userService.create(userDto);
+//        } catch (RuntimeException e){
+//            throw DuplicateException.userExists().get();
+//        }
+//    }
 
     /**
      * Registration new.
      *
      * @param userDto the user that try registration
      */
+//    @PostMapping("/register")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserDto register(UserDto userDto) {
+//        try {
+//            return userService.create(userDto);
+//        } catch (RuntimeException e){
+//            throw DuplicateException.userExists().get();
+//        }
+//    }
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(UserDto userDto) {
+    public UserDto register(/*@RequestBody */UserDto userDto) {
         try {
             return userService.create(userDto);
         } catch (RuntimeException e){
