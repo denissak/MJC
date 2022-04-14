@@ -43,10 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/user/**", "/role/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/order/**").hasAnyAuthority("ADMIN", "USER");
-        http.authorizeRequests().antMatchers(POST,   "/order/**").hasAuthority("USER");
-        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/order/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/order/**", "/role/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/order/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
+        http.authorizeRequests().antMatchers(POST,   "/orders/**").hasAuthority("USER");
+        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(PUT, "/certificate/**").hasAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);
