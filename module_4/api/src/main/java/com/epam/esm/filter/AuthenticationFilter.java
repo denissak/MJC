@@ -62,10 +62,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         tokens.put("accessToken", accessToken);
         tokens.put("refreshToken", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.addCookie(new Cookie("Authorization", "Bearer "+accessToken));
+//        response.addCookie(new Cookie("Authorization", "Bearer "+accessToken));
 
         request.getSession().setAttribute("Authorization", "Bearer "+accessToken);
-        response.setHeader("Authorization", "Bearer "+accessToken);
+//        response.setHeader("Authorization", "Bearer "+accessToken);
 
 //        Cookie cookie = new Cookie("Authorization", "Bearer "+accessToken);
 //        Session session = new Session();

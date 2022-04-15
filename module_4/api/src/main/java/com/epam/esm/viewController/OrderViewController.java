@@ -22,7 +22,8 @@ public class OrderViewController {
         Session session = new Session();
         var asd = session.getCookie();
 //        response.setHeader("Authorization", asd);
-        modelAndView.setViewName("order");
+//        modelAndView.setViewName("order", );
+        servletRequest.getSession().getAttribute("Authorization");
         return modelAndView;
     }
 }
