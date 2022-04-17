@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <div class="title">Login</div>
-    <form action="/login" method="POST">
+    <form action="/signin" method="POST">
         <div class="user-details">
             <div class="input-box">
                 <span class="details">Login Name</span>
@@ -18,9 +18,14 @@
                 <span class="details">Password</span>
                 <input type="password" name="password" placeholder="Enter your password" required>
             </div>
+            <div class="input-box">
+                <span class="details">test</span>
+                <input class="test" type="text" name="test" value="" required>
+            </div>
         </div>
         <div class="button">
             <input type="submit" value="Sign In">
+<!--            <a th:href="@{/mainpage}">Show all user</a>-->
         </div>
     </form>
 </div>

@@ -4,6 +4,7 @@ AJS.toInit(function () {
         e.preventDefault();
         var options = AJS.$(this).closest('form');
         var dashboardNames = AJS.$('#select2-example').val();
+        var login = $('.test').value;
         var filterJQLId = parseInt(options.find('.select option:selected').val());
         var isDark = AJS.$('#checkbox-isDark').prop('checked');
         var token = AJS.$('meta[name=token]').attr("content");
@@ -11,6 +12,7 @@ AJS.toInit(function () {
         if (dashboardNames == null) {
             dashboardNames = [""];
         }
+        console.log(options)
         var data = {
             id: $('.project-dashboard-save-button').attr('rowId'),
             dashboardNames: dashboardNames,

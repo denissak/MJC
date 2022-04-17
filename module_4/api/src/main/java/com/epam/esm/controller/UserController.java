@@ -12,13 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -29,7 +33,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Controller for working with users.
  */
-@RestController
+@RestController("/rest")
 public class UserController {
 
     private final UserService userService;
@@ -119,17 +123,41 @@ public class UserController {
 //        return modelAndView;
 //    }
 
-    @RequestMapping("/login")
+   /* @RequestMapping("/login")
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/login");
         return modelAndView;
-    }
+    }*/
 
-//    @PostMapping("/login")
+   /* @PostMapping("/login")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto login(UserDto userDto) {
+        try {
+            return userService.create(userDto);
+        } catch (RuntimeException e){
+            throw DuplicateException.userExists().get();
+        }
+    }*/
+
+//    @PostMapping("/signin")
 //    @ResponseStatus(HttpStatus.CREATED)
 //    public UserDto login(UserDto userDto) {
 //        try {
+//            /*User user = (User) authentication.getPrincipal();
+//            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+//            String accessToken = JWT.create()
+//                    .withSubject(user.getUsername())
+//                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+//                    .withIssuer(request.getRequestURL().toString())
+//                    .withClaim("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+//                    .sign(algorithm);
+//            String refreshToken = JWT.create()
+//                    .withSubject(user.getUsername())
+//                    .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+//                    .withIssuer(request.getRequestURL().toString())
+//                    .sign(algorithm);
+//            response.addCookie(new Cookie("accessToken", accessToken));*/
 //            return userService.create(userDto);
 //        } catch (RuntimeException e){
 //            throw DuplicateException.userExists().get();

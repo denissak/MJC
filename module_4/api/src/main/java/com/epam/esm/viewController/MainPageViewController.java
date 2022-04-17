@@ -7,11 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MainPageViewController {
-    @RequestMapping("/mainpage")
+    /*@RequestMapping("/mainpage")
     public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("mainpage");
         return modelAndView;
-    }
+    }*/
 }

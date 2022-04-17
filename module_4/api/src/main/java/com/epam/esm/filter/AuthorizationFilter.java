@@ -17,8 +17,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -34,13 +36,19 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login") || request.getServletPath().equals("/register")) {
+        if (request.getServletPath().equals("/login") || request.getServletPath().equals("/register") || request.getServletPath().startsWith("/css") || request.getServletPath().equals("/favicon.ico")) {
             filterChain.doFilter(request, response);
         } else {
+            String token = null;
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (request.getCookies() != null) {
+                token = Arrays.stream(request.getCookies()).collect(Collectors.toMap(cookie -> cookie.getName(), cookie-> cookie.getValue())).get("accessToken");
+            } else if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                token = authorizationHeader.substring("Bearer ".length());
+            }
+            if (!token.equals(null)) {
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
+//                    String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
@@ -57,7 +65,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     Map<String, String> error = new HashMap<>();
                     error.put("errorMessage", e.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    filterChain.doFilter(request, response); // TODO NEEDED?
+//                    new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             } else {
                 filterChain.doFilter(request, response);

@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,17 +62,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
         tokens.put("refreshToken", refreshToken);
+        Arrays.stream(request.getCookies()).collect(Collectors.toMap(cookie -> cookie.getName(), cookie-> cookie.getValue())).get("accessToken");
         response.setContentType(APPLICATION_JSON_VALUE);
 //        response.addCookie(new Cookie("Authorization", "Bearer "+accessToken));
-
-        request.getSession().setAttribute("Authorization", "Bearer "+accessToken);
-//        response.setHeader("Authorization", "Bearer "+accessToken);
-
+        response.addCookie(new Cookie("accessToken", accessToken));
+//        request.getSession().setAttribute("Authorization", "Bearer "+accessToken);
+        response.setHeader("Authorization", "Bearer "+accessToken);
 //        Cookie cookie = new Cookie("Authorization", "Bearer "+accessToken);
 //        Session session = new Session();
 //        session.getCookie();
 
-
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+            response.sendRedirect("signin2");
+//        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

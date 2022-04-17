@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class OrderViewController {
 
-    @RequestMapping("/order")
+  /*  @RequestMapping("/order")
     public ModelAndView getOrder(HttpServletRequest servletRequest, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
 //        servletRequest.getSession().s;
@@ -25,5 +25,5 @@ public class OrderViewController {
 //        modelAndView.setViewName("order", );
         servletRequest.getSession().getAttribute("Authorization");
         return modelAndView;
-    }
+    }*/
 }
