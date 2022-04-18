@@ -21,7 +21,6 @@ public class LoginViewController {
     @RequestMapping("/mainpage")
     public String login(Model model, Authentication authentication) {
 //        ModelAndView modelAndView = new ModelAndView();
-
 //        modelAndView.setViewName("mainpage");
         return "mainpage";
     }
@@ -29,7 +28,6 @@ public class LoginViewController {
     public String order(Model model, Authentication authentication) {
 //        model.addAttribute("orders", orderList);
 //        ModelAndView modelAndView = new ModelAndView();
-
 //        modelAndView.setViewName("mainpage");
         return "order";
     }
