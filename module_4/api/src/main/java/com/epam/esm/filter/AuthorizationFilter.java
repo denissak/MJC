@@ -36,7 +36,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login") || request.getServletPath().equals("/register") || request.getServletPath().startsWith("/css") || request.getServletPath().equals("/favicon.ico")) {
+        if (request.getServletPath().equals("/login") ||
+                request.getServletPath().equals("/register") ||
+                request.getServletPath().startsWith("/css") ||
+                request.getServletPath().startsWith("/static/images") ||
+                request.getServletPath().startsWith("/static/js") ||
+                request.getServletPath().equals("/favicon.ico") ||
+                request.getServletPath().equals("/mainpage")) {
             filterChain.doFilter(request, response);
         } else {
             String token = null;
