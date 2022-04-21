@@ -18,6 +18,9 @@ public class UserEntity {
     private Long id;
     private String login;
     private String password;
+    private String name;
+    private String surname;
+    private String email;
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity roleEntity;

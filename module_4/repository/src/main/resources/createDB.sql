@@ -5,11 +5,18 @@ DROP TABLE orders;
 DROP TABLE order_certificate_m2m;
 DROP TABLE users;
 
+ALTER TABLE public.users ADD COLUMN name VARCHAR (50);
+ALTER TABLE public.users ADD COLUMN surname VARCHAR (50);
+ALTER TABLE public.users ADD COLUMN email VARCHAR (50);
+
 CREATE TABLE users
 (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(40)  NOT NULL,
     password VARCHAR(255) NOT NULL,
+    name     VARCHAR(50) NOT NULL,
+    surname  VARCHAR(50) NOT NULL,
+    email    varchar(50) NOT NULL,
     role_id  BIGINT       NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE NO ACTION
 );

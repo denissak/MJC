@@ -116,72 +116,15 @@ public class UserController {
         return addLinksToUser(userDtoList);
     }
 
-//    @RequestMapping("/register")
-//    public ModelAndView register() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("registration");
-//        return modelAndView;
-//    }
-
-   /* @RequestMapping("/login")
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/login");
-        return modelAndView;
-    }*/
-
-   /* @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto login(UserDto userDto) {
-        try {
-            return userService.create(userDto);
-        } catch (RuntimeException e){
-            throw DuplicateException.userExists().get();
-        }
-    }*/
-
-//    @PostMapping("/signin")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public UserDto login(UserDto userDto) {
-//        try {
-//            /*User user = (User) authentication.getPrincipal();
-//            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-//            String accessToken = JWT.create()
-//                    .withSubject(user.getUsername())
-//                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-//                    .withIssuer(request.getRequestURL().toString())
-//                    .withClaim("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-//                    .sign(algorithm);
-//            String refreshToken = JWT.create()
-//                    .withSubject(user.getUsername())
-//                    .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-//                    .withIssuer(request.getRequestURL().toString())
-//                    .sign(algorithm);
-//            response.addCookie(new Cookie("accessToken", accessToken));*/
-//            return userService.create(userDto);
-//        } catch (RuntimeException e){
-//            throw DuplicateException.userExists().get();
-//        }
-//    }
-
     /**
      * Registration new.
      *
      * @param userDto the user that try registration
      */
-//    @PostMapping("/register")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public UserDto register(UserDto userDto) {
-//        try {
-//            return userService.create(userDto);
-//        } catch (RuntimeException e){
-//            throw DuplicateException.userExists().get();
-//        }
-//    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(/*@RequestBody */UserDto userDto) {
+    public UserDto register(/*@RequestBody*/ UserDto userDto) {
         try {
             return userService.create(userDto);
         } catch (RuntimeException e){

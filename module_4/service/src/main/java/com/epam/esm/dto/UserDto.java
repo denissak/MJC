@@ -17,6 +17,9 @@ public class UserDto extends RepresentationModel<UserDto> implements UserDetails
     private Long id;
     private String login;
     private String password;
+    private String name;
+    private String surname;
+    private String email;
     private RoleDto roleDto;
 
     @Override
