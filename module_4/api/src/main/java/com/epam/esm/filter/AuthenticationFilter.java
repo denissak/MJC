@@ -72,7 +72,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 //        Session session = new Session();
 //        session.getCookie();
 
-            response.sendRedirect("signin2");
+            response.sendRedirect("mainpage");
 //        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

@@ -1,33 +1,24 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div class="container">
-    <div class="title">Login</div>
-    <form action="/signin" method="POST">
-        <div class="user-details">
-            <div class="input-box">
-                <span class="details">Login Name</span>
-                <input type="text" name="username" placeholder="Enter your login" required>
-            </div>
-            <div class="input-box">
-                <span class="details">Password</span>
-                <input type="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <div class="input-box">
-                <span class="details">test</span>
-                <input class="test" type="text" name="test" value="" required>
-            </div>
-        </div>
-        <div class="button">
-            <input type="submit" value="Sign In">
-<!--            <a th:href="@{/mainpage}">Show all user</a>-->
-        </div>
+<div class="login-form" th:fragment="login-fragment">
+    <!--cancel-btn-->
+    <a href="#" class="form-cancel">
+        <span class="material-icons">cancel</span>
+    </a>
+    <!--heading-->
+    <strong>Log In</strong>
+    <!--inputs--->
+    <form action="signin" method="post">
+        <input type="text" name="username" placeholder="Enter your login" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <!--submit btn-->
+        <input type="submit" value="Log In">
     </form>
+    <!--forget and signup-btn-->
+    <div class="form-btns">
+        <a href="#" class="forget">Forget Your Password?</a>
+        <a href="#" class="sign-up-btn">Create Account</a>
+    </div>
 </div>
 </body>
 </html>

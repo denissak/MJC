@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Certificate shop</title>
     <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
+    <!--JQuery-->
+    <script th:src="@{/js/JQuery.js}"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -25,7 +27,7 @@
     <div class="navigation">
         <!--- logo ---->
         <a href="#" class="logo">
-            <img src="/static/images/logo.png"/>
+            <img th:src="@{/images/logo.png}" src="/static/images/logo.png"/>
         </a>
         <!--- menu---->
         <ul class="menu">
@@ -33,7 +35,7 @@
                 <a href="#">Home</a>
             </li>
             <li>
-                <a href="#">Home2</a>
+                <a href="#">Certificate</a>
                 <span class="sale-lable">Sale</span>
             </li>
             <li>
@@ -88,50 +90,10 @@
 <!---Login and signup form--->
 <div class="form">
     <!--login--->
-    <div class="login-form">
-        <!--cancel-btn-->
-        <a href="#" class="form-cancel">
-            <span class="material-icons">cancel</span>
-        </a>
-        <!--heading-->
-        <strong>Log In</strong>
-        <!--inputs--->
-        <form action="signin" method="post">
-            <input type="text" name="username" placeholder="Enter your login" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <!--submit btn-->
-            <input type="submit" value="Log In">
-        </form>
-        <!--forget and signup-btn-->
-        <div class="form-btns">
-            <a href="#" class="forget">Forget Your Password?</a>
-            <a href="#" class="sign-up-btn">Create Account</a>
-        </div>
-    </div>
+    <div th:replace="login :: login-fragment"></div>
 
     <!--sign-up--->
-    <div class="signup-form">
-        <!--cancel-btn-->
-        <a href="#" class="form-cancel">
-            <span class="material-icons">cancel</span>
-        </a>
-        <!--heading-->
-        <strong>Sign Up</strong>
-        <!--inputs--->
-        <form action="register" method="post">
-            <input type="text" name="name" placeholder="Enter your name" required>
-            <input type="text" name="surname" placeholder="Enter your surname" required>
-            <input type="text" name="username" placeholder="Enter your login" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <input type="text" name="address" placeholder="Enter your address" required>
-            <!--submit btn-->
-            <input type="submit" value="Sign Up">
-        </form>
-        <!--forget and signup-btn-->
-        <div class="form-btns">
-            <a href="#" class="already-account">Already have account?</a>
-        </div>
-    </div>
+    <div th:replace="registration :: registration-fragment"></div>
 </div>
 
 <!--Category List-->
@@ -145,7 +107,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img src="/static/images/feature_1.jpg">
+                <img th:src="@{/images/feature_1.jpg}" >
             </a>
         </div>
         <!--text-->
@@ -155,7 +117,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img src="/static/images/feature_2.jpg">
+                <img th:src="@{/images/feature_2.jpg}">
             </a>
         </div>
         <!--text-->
@@ -165,7 +127,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img src="/static/images/cat_3.avif">
+                <img th:src="@{/images/cat_3.avif}" src="/static/images/cat_3.avif">
             </a>
         </div>
         <!--text-->
@@ -175,7 +137,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img src="/static/images/feature_4.jpg"/>
+                <img th:src="@{/images/feature_4.jpg}" src="/static/images/feature_4.jpg"/>
             </a>
         </div>
         <!--text-->
@@ -185,7 +147,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img src="/static/images/feature_5.jpg">
+                <img th:src="@{/images/feature_5.jpg}" src="/static/images/feature_5.jpg">
             </a>
         </div>
         <!--text-->
@@ -218,7 +180,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>
         </div>
 
 
@@ -243,7 +205,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-2.png"/>
+            <img th:src="@{/images/p-2.png}" src="/static/images/p-2.png"/>
         </div>
 
 
@@ -268,7 +230,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-3.png"/>
+            <img th:src="@{/images/p-3.png}" src="/static/images/p-3.png"/>
         </div>
 
 
@@ -293,7 +255,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-4.png"/>
+            <img th:src="@{/images/p-4.png}" src="/static/images/p-4.png"/>
         </div>
 
 
@@ -318,7 +280,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-5.png"/>
+            <img th:src="@{/images/p-5.png}" src="/static/images/p-5.png"/>
         </div>
 
 
@@ -343,7 +305,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-6.png"/>
+            <img th:src="@{/images/p-6.png}" src="/static/images/p-6.png"/>
         </div>
 
 
@@ -368,7 +330,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-7.png"/>
+            <img th:src="@{/images/p-7.png}" src="/static/images/p-7.png"/>
         </div>
 
 
@@ -393,7 +355,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-8.png"/>
+            <img th:src="@{/images/p-8.png}" src="/static/images/p-8.png"/>
         </div>
 
 
@@ -418,7 +380,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>
         </div>
 
 
@@ -443,7 +405,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" rc="/static/images/p-1.png"/>
         </div>
 
 
@@ -468,7 +430,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img src="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>
         </div>
 
 
@@ -491,7 +453,7 @@
                     <span class="material-icons">shopping_cart</span>
                 </div>
             </a>
-            <img src="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>
         </div>
 
 
@@ -503,8 +465,7 @@
     </div>
 </div>
 
-<!--JQuery-->
-<script src="/static/js/JQuery.js"></script>
+
 <!--script-->
 <script type="text/javascript">
     /*----For Search bar----------------*/

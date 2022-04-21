@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -39,8 +40,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login") ||
                 request.getServletPath().equals("/register") ||
                 request.getServletPath().startsWith("/css") ||
-                request.getServletPath().startsWith("/static/images") ||
-                request.getServletPath().startsWith("/static/js") ||
+                request.getServletPath().startsWith("/images") ||
+                request.getServletPath().startsWith("/js") ||
                 request.getServletPath().equals("/favicon.ico") ||
                 request.getServletPath().equals("/mainpage")) {
             filterChain.doFilter(request, response);
@@ -52,7 +53,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             } else if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 token = authorizationHeader.substring("Bearer ".length());
             }
-            if (!token.equals(null)) {
+            if (!Objects.equals(token,null)) {
                 try {
 //                    String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
