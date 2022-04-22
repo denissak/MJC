@@ -24,11 +24,11 @@ public class LoginViewController {
 //        modelAndView.setViewName("mainpage");
         return "mainpage";
     }
-    @RequestMapping("/order")
+    @RequestMapping("/cart")
     public String order(Model model, Authentication authentication) {
 //        model.addAttribute("orders", orderList);
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.setViewName("mainpage");
-        return "order";
+        return "cart";
     }
 }

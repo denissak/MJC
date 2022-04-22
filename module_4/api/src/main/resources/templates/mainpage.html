@@ -6,6 +6,7 @@
     <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
     <!--JQuery-->
     <script th:src="@{/js/JQuery.js}"></script>
+<!--    <script th:src="@{/js/main.js}"></script>-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -62,7 +63,7 @@
                     <span class="material-icons">person</span>
                 </div>
             </a>
-            <a href="#">
+            <a href="#" class="cart" id="cart-icon">
                 <!--- cart icon---->
                 <div class="shopping-cart">
                     <span class="material-icons">shopping_cart</span>
@@ -85,6 +86,13 @@
             <span class="material-icons">cancel</span>
         </a>
     </div>
+</div>
+
+
+<!--- search---->
+<div class="cart-bar">
+    <!--- cart input---->
+    <div th:replace="cart :: cart-fragment"></div>
 </div>
 
 <!---Login and signup form--->
@@ -212,7 +220,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -237,7 +245,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -262,7 +270,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -287,7 +295,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -312,7 +320,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -337,7 +345,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -362,7 +370,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -387,7 +395,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -412,7 +420,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -437,7 +445,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 
@@ -460,7 +468,7 @@
         <!--details-->
         <div class="product-details">
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$0</span>
         </div>
     </div>
 </div>
@@ -475,6 +483,15 @@
 
     $(document).on('click', '.search-cancel', function () {
         $('.search-bar').removeClass('search-bar-active')
+    });
+
+    /*----For cart----------------*/
+    $(document).on('click', '.cart', function () {
+        $('.cart-form').addClass('cart-active')
+    });
+
+    $(document).on('click', '.cart-cancel', function () {
+        $('.cart-form').removeClass('cart-active')
     });
 
     /*----login-sign-up-form----------------*/
@@ -501,5 +518,6 @@
         });
     });
 </script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

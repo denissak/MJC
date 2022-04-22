@@ -42,8 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/images/**", "/js/**", "/mainpage").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/order/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
+        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/cart/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
         http.authorizeRequests().antMatchers(POST,   "/orders/**").hasAuthority("USER");
         http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**").hasAuthority("ADMIN");
