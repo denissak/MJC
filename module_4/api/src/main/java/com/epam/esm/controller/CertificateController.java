@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with certificates.
  */
 @RestController
-@RequestMapping("/certificate")
+@RequestMapping("/certificates")
 public class CertificateController {
 
     private final CertificateService certificateService;

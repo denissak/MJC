@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with tags.
  */
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;

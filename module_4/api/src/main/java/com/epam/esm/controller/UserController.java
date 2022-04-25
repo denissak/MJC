@@ -33,7 +33,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * Controller for working with users.
  */
-@RestController("/rest")
+@RestController()
 public class UserController {
 
     private final UserService userService;
@@ -49,7 +49,7 @@ public class UserController {
      * @param id id of tag to be read
      * @return tag with passed id
      */
-    @GetMapping("user/{id}")
+    @GetMapping("users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto readById(@PathVariable long id) {
         try {
@@ -108,7 +108,7 @@ public class UserController {
      * @param size number of elements per page
      * @return all users
      */
-    @GetMapping("user")
+    @GetMapping("users")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<UserDto> readsAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                   @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
@@ -137,7 +137,7 @@ public class UserController {
      *
      * @param id the id of user to be deleted
      */
-    @DeleteMapping("user/{id}")
+    @DeleteMapping("users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         try {

@@ -42,12 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/images/**", "/js/**", "/mainpage").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/cart/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
+        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**", "/certificate/**", "/certificate/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/certificates/**", "/cart/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
         http.authorizeRequests().antMatchers(POST,   "/orders/**").hasAuthority("USER");
-        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificate/**", "/orders/**", "/role/**").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers(PUT, "/certificate/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificates/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificates/**", "/orders/**", "/role/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(PUT, "/certificates/**").hasAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);
         http.addFilterBefore(new AuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);

@@ -6,7 +6,6 @@
     <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
     <!--JQuery-->
     <script th:src="@{/js/JQuery.js}"></script>
-<!--    <script th:src="@{/js/main.js}"></script>-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -115,7 +114,7 @@
         <!--category-box-->
         <div class="category-box">
             <a href="#">
-                <img th:src="@{/images/feature_1.jpg}" >
+                <img th:src="@{/images/feature_1.jpg}">
             </a>
         </div>
         <!--text-->
@@ -177,9 +176,16 @@
     <!--product-box-1-->
     <div class="product-box">
 
+<!--        <div class="certificate-link">-->
+<!--            <div th:replace="certificate :: certificate-fragment"></div>-->
+<!--        </div>-->
 
+        <!--        <div th:replace="certificate :: certificate-fragment">-->
         <!--img-->
         <div class="product-img">
+<!--            <div class="certificate-link">-->
+<!--                <div th:replace="certificate :: certificate-fragment" class=""></div>-->
+<!--            </div>-->
             <a href="#" class="add-cart">
                 <!--add-cart-->
                 <div class="shopping-cart">
@@ -192,10 +198,14 @@
         </div>
         <!--details-->
         <div class="product-details">
+<!--            <div class="certificate-link">-->
+<!--                <div th:replace="certificate :: certificate-fragment" class=""></div>-->
+<!--            </div>-->
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">PRICE CERTIFICATE</span>
+            <span class="p-price">$13</span>
         </div>
     </div>
+    <!--    </div>-->
 
     <!--product-box-2-->
     <div class="product-box">
@@ -492,6 +502,15 @@
         $('.cart-form').removeClass('cart-active')
     });
 
+    /*----For certificate----------------*/
+    $(document).on('click', '.product-box', function () {
+        $('.certificate-form').addClass('certificate-active')
+    });
+
+    $(document).on('click', '.certificate-cancel', function () {
+        $('.certificate-form').removeClass('certificate-active')
+    });
+
     /*----login-sign-up-form----------------*/
     $(document).on('click', '.user,.already-account', function () {
         $('.form').addClass('login-active').removeClass('sign-up-active')
@@ -506,11 +525,11 @@
     });
 
     /*--For-Product-SLider----------------*/
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#autoWidth').lightSlider({
-            autoWidth:true,
-            loop:true,
-            onSliderLoad: function() {
+            autoWidth: true,
+            loop: true,
+            onSliderLoad: function () {
                 $('#autoWidth').removeClass('cS-hidden');
             }
         });
