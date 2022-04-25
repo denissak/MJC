@@ -30,6 +30,12 @@ function ready() {
         var input = quantityInputs[i];
         input.addEventListener("change", quantityChanged);
     }
+    // Add To Cart
+    var addCart = document.getElementsByClassName("shopping-cart")
+    for (var i = 0; i < addCart.length; i++){
+        var button = addCart[i];
+        button.addEventListener("click", addCartClicked);
+    }
 }
 
 //Remove Items From Cart
@@ -48,6 +54,47 @@ function quantityChanged(event){
     updatetotal()
 }
 
+//Add To Cart
+function addCartClicked(event) {
+    var button = event.target;
+    var shopProducts = button.parentElement;
+    var title = shopProducts.getElementsByClassName("p-name")[0].innerText;
+    var price = shopProducts.getElementsByClassName("p-price")[0].innerText;
+    var productImage = shopProducts.getElementsByClassName("product-picture")[0].src;
+    addProductToCart(title, price, productImage);
+    updatetotal();
+}
+
+function addProductToCart(title, price, productImage) {
+    var cartShopBox = document.createElement("div");
+    cartShopBox.classList.add("product-img");
+    var cartItems = document.getElementsByClassName("product-box")[0];
+    var cartItemsNames = document.getElementsByClassName("p-name")[0];
+    for (var i = 0; i < cartItemsNames.length; i++) {
+        if (cartItemsNames[i].innerText == title) {
+            alert("You have already add this item to cart");
+            return;
+        }
+    }
+
+var cartBoxContent =
+            `<img th:src="@{/images/feature_2.jpg}" alt="" class="cart-image">
+            <div class="detail-box">
+                <div class="cart-product-title">
+                    Certificate 1
+                </div>
+                <div class="cart-price">
+                    $10.12
+                </div>
+                <input type="number" value="1" class="cart-quantity">
+            </div>
+            <!--Remove cart-->
+                <span class="material-icons cart-remove-icon">delete</span>`;
+cartShopBox.innerHTML = cartBoxContent;
+cartItems.append(cartShopBox);
+cartShopBox.getElementsByClassName("cart-remove-icon")[0].addEventListener("click", removeCartItem);
+cartShopBox.getElementsByClassName("cart-quantity")[0].addEventListener("change", quantityChanged);
+}
 //Update Total
 function updatetotal(){
     var cartContent = document.getElementsByClassName("cart-content")[0];
