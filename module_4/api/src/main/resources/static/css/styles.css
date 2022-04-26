@@ -705,3 +705,30 @@ nav {
         opacity: 1;
     }
 }
+
+.product-container#blur.active{
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+
+    #cert {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        padding: 50px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        background: #ffffff;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.5s;
+    }
+
+    #cert.active {
+        top: 50%;
+        visibility: visible;
+        opacity: 1;
+        transition: 0.5s;
+    }
