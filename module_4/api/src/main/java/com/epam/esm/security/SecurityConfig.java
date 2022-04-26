@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setFilterProcessesUrl("/signin");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/images/**", "/js/**", "/mainpage").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**", "/certificate/**", "/certificate/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/images/**", "/js/**", "/mainpage", "/certificate/**").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**", "/certificates/**", "/certificate/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/certificates/**", "/cart/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
         http.authorizeRequests().antMatchers(POST,   "/orders/**").hasAuthority("USER");
         http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificates/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");

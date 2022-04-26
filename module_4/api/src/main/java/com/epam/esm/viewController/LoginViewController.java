@@ -31,4 +31,12 @@ public class LoginViewController {
 //        modelAndView.setViewName("mainpage");
         return "cart";
     }
+
+    @RequestMapping("/certificate")
+    public String certificate(Model model, Authentication authentication) {
+//        model.addAttribute("orders", orderList);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("mainpage");
+        return "certificate";
+    }
 }

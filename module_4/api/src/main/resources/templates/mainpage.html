@@ -80,13 +80,19 @@
     <div class="search-input">
         <!---input---->
         <input type="text" placeholder="Search For Product"/>
+        <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <input type="submit" value="Search">
         <!---cancel button---->
         <a href="#" class="search-cancel">
             <span class="material-icons">cancel</span>
         </a>
     </div>
 </div>
-
 
 <!--- search---->
 <div class="cart-bar">
@@ -174,38 +180,32 @@
 <!--product-container-->
 <div class="product-container">
     <!--product-box-1-->
-    <div class="product-box">
-
-<!--        <div class="certificate-link">-->
-<!--            <div th:replace="certificate :: certificate-fragment"></div>-->
-<!--        </div>-->
-
-        <!--        <div th:replace="certificate :: certificate-fragment">-->
+<!--    <div th:replace="certificate :: certificate-fragment">-->
+    <div class="product-box" th:href="@{certificate}">
         <!--img-->
-        <div class="product-img">
-<!--            <div class="certificate-link">-->
-<!--                <div th:replace="certificate :: certificate-fragment" class=""></div>-->
-<!--            </div>-->
-            <a href="#" class="add-cart">
-                <!--add-cart-->
-                <div class="shopping-cart">
-                    <span class="material-icons">shopping_cart</span>
-                    <!--- number-of-product-cart---->
-                    <!--<span class="num-cart-product">0</span>-->
-                </div>
-            </a>
-            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png" class="product-picture"/>
+        <div class="product-wrapper" >
+            <div class="product-img" >
+                <a href="#" class="add-cart">
+                    <!--add-cart-->
+                        <span class="material-icons shopping-cart">shopping_cart</span>
+                        <!--- number-of-product-cart---->
+                </a>
+                <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png" class="product-picture"/>
+            </div>
         </div>
         <!--details-->
         <div class="product-details">
-<!--            <div class="certificate-link">-->
-<!--                <div th:replace="certificate :: certificate-fragment" class=""></div>-->
-<!--            </div>-->
             <a href="#" class="p-name">Certificate Name</a>
-            <span class="p-price">$13</span>
+            <span class="p-price" >$13</span>
         </div>
+<!--        <a href="certificate" class="btn-buy">Переход по ссылке</a>-->
+        <a th:href="certificate" class="btn-buy">Переход по ссылке</a>
+<!--        <button onclick="document.location='certificate'">Переход по ссылке</button>-->
+<!--        <form action="certificate.html" target="_blank">-->
+<!--            <button type="button" class="btn-buy">Buy Now</button>-->
+<!--        </form>-->
+<!--    </div>-->
     </div>
-    <!--    </div>-->
 
     <!--product-box-2-->
     <div class="product-box">
@@ -421,7 +421,7 @@
                     <!--<span class="num-cart-product">0</span>-->
                 </div>
             </a>
-            <img th:src="@{/images/p-1.png}" rc="/static/images/p-1.png"/>
+            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>
         </div>
 
 
@@ -503,7 +503,7 @@
     });
 
     /*----For certificate----------------*/
-    $(document).on('click', '.product-box', function () {
+    $(document).on('click', '.btn-buy', function () {
         $('.certificate-form').addClass('certificate-active')
     });
 
