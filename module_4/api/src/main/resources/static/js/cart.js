@@ -1,4 +1,4 @@
-export class CartItem {
+class  CartItem {
     constructor(title, price, imgSrc) {
         this.title = title;
         this.price = price;
@@ -19,3 +19,4 @@ export class CartItem {
     }
 
 }
+module.exports = CartItem;
