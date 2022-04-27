@@ -434,7 +434,7 @@ nav {
 }
 
 .product-container {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -534,6 +534,7 @@ nav {
     background: #ffffff;
     box-shadow: -2px 0 4px hsl(0 4% 15% / 10%);
     transition: 0.3s;
+    z-index: 100; //TODO panel frontback
 }
 
 

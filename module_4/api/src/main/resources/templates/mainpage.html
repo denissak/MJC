@@ -115,11 +115,8 @@
 <div class="category-heading">
     <h2>Categories</h2>
 </div>
-
-
-<!--<div th:each="tag : ${tags}">-->
-    <ul id="autoWidth" class="cs-hidden">
-            <div th:each="tag : ${tags}">
+<ul id="autoWidth" class="cs-hidden">
+    <div th:each="tag : ${tags}">
         <!--1------>
         <li class="item">
             <!--category-box-->
@@ -132,53 +129,8 @@
             <span th:text="${tag.name}"></span>
 
         </li>
-
-
-<!--            <li class="item">-->
-<!--                &lt;!&ndash;category-box&ndash;&gt;-->
-<!--                <div class="category-box">-->
-<!--                    <a href="#">-->
-<!--                        <img th:src="@{/images/feature_2.jpg}">-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;text&ndash;&gt;-->
-<!--                <span>Food</span>-->
-<!--            </li>-->
-<!--            <li class="item">-->
-<!--                &lt;!&ndash;category-box&ndash;&gt;-->
-<!--                <div class="category-box">-->
-<!--                    <a href="#">-->
-<!--                        <img th:src="@{/images/cat_3.avif}" src="/static/images/cat_3.avif">-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;text&ndash;&gt;-->
-<!--                <span>Entertainment</span>-->
-<!--            </li>-->
-<!--            <li class="item">-->
-<!--                &lt;!&ndash;category-box&ndash;&gt;-->
-<!--                <div class="category-box">-->
-<!--                    <a href="#">-->
-<!--                        <img th:src="@{/images/feature_4.jpg}" src="/static/images/feature_4.jpg"/>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;text&ndash;&gt;-->
-<!--                <span>Flowers</span>-->
-<!--            </li>-->
-<!--            <li class="item">-->
-<!--                &lt;!&ndash;category-box&ndash;&gt;-->
-<!--                <div class="category-box">-->
-<!--                    <a href="#">-->
-<!--                        <img th:src="@{/images/feature_5.jpg}" src="/static/images/feature_5.jpg">-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;text&ndash;&gt;-->
-<!--                <span>SPA</span>-->
-<!--            </li>-->
-            </div>
-    </ul>
-
-<!--</div>-->
-
+    </div>
+</ul>
 
 <!--Certificates-->
 <section class="certificates">
@@ -523,23 +475,9 @@
         $('.form').removeClass('login-active').removeClass('sign-up-active')
     });
 
-    /*--For-Product-SLider----------------*/
-//     $(document).ready(function () {
-//         $('#adaptive').lightSlider({
-//             adaptiveHeight:true,
-//             auto:true,
-//             item:1,
-//             slideMargin:0,
-//             loop: true,
-// /*            onSliderLoad: function () {
-//                 $('#autoWidth').removeClass('cS-hidden');
-//             }*/
-//         });
-//     });
-
     $(document).ready(function () {
         $('#autoWidth').lightSlider({
-            autoWidth:true,
+            autoWidth: true,
             loop: true,
             onSliderLoad: function () {
                 $('#autoWidth').removeClass('cS-hidden');
