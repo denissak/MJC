@@ -24,5 +24,6 @@ public class CertificateDto extends RepresentationModel<CertificateDto> {
     private LocalDateTime lastUpdateDate;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]")
     private LocalDateTime createDate;
+    private String image;
     private List<TagDto> tags;
 }

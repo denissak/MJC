@@ -9,6 +9,7 @@ ALTER TABLE public.users ADD COLUMN name VARCHAR (50);
 ALTER TABLE public.users ADD COLUMN surname VARCHAR (50);
 ALTER TABLE public.users ADD COLUMN email VARCHAR (50);
 ALTER TABLE public.tag ADD COLUMN image VARCHAR (50);
+ALTER TABLE public.gift_certificate ADD COLUMN image VARCHAR (50);
 
 CREATE TABLE users
 (

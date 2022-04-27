@@ -6,7 +6,6 @@ class CartItem {
     }
 
     init() {
-        // cartItem.classList.add("cart-box", "")
         const cartItemTitle = document.createElement('div');
         cartItemTitle.classList.add("cart-product-title");
         const cartItemPrice = document.createElement('div');
@@ -34,7 +33,6 @@ class CartItem {
         cartItemImage.src = this.imgSrc;
         cartItemPrice.textContent = this.price;
 
-        // cartItem.append(cartItemTitle, cartItemImage, cartItemPrice);
         return cartItem;
     }
 

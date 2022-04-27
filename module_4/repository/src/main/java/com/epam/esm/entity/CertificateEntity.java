@@ -24,6 +24,7 @@ public class CertificateEntity {
     private Integer duration;
     private LocalDateTime lastUpdateDate;
     private LocalDateTime createDate;
+    private String image;
     @ManyToMany
     @JoinTable(
             name = "gift_certificate_m2m_tag",

@@ -24,6 +24,8 @@ public class LoginViewController {
     public String mainpage(Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                            @RequestParam(value = "size", defaultValue = "18", required = false) int size) {
         model.addAttribute("tags", tagService.readAll(page, size));
+        model.addAttribute("certificates", certificateService.readAll(0,28));
+//        model.addAttribute("certificatesSearch", certificateService.readCertificateWithDifferentParams(page,size));
         return "mainpage";
     }
 
