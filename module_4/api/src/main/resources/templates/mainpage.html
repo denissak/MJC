@@ -16,7 +16,7 @@
     <!--- social link and phone number---->
     <div class="social-call">
         <div class="social">
-            <a href="#"><span class="material-icons">groups</span></a>
+            <a href="javascript:void(0);"><span class="material-icons">groups</span></a>
         </div>
         <!--- phone number ---->
         <div class="phone">
@@ -28,43 +28,43 @@
 
     <div class="navigation">
         <!--- logo ---->
-        <a href="#" class="logo">
-            <img th:src="@{/images/logo.png}" src="/static/images/logo.png"/>
+        <a href="javascript:void(0);" class="logo">
+            <img th:src="@{/img/logo.png}" src="/static/images/logo.png"/>
         </a>
         <!--- menu---->
         <ul class="menu">
             <li>
-                <a href="#">Home</a>
+                <a href="javascript:void(0);">Home</a>
             </li>
             <li>
-                <a href="#">Certificate</a>
+                <a href="javascript:void(0);">Certificate</a>
                 <span class="sale-lable">Sale</span>
             </li>
             <li>
-                <a href="#">Home3</a>
+                <a href="javascript:void(0);">Home3</a>
             </li>
             <li>
-                <a href="#">Home4</a>
+                <a href="javascript:void(0);">Home4</a>
             </li>
             <li>
-                <a href="#">Home5</a>
+                <a href="javascript:void(0);">Home5</a>
             </li>
         </ul>
         <!--- right menu---->
         <div class="right-menu">
             <!--- search---->
-            <a href="#" class="search">
+            <a href="javascript:void(0);" class="search">
                 <div class="search-icon">
                     <span class="material-icons">search</span>
                 </div>
             </a>
-            <a href="#" class="user">
+            <a href="javascript:void(0);" class="user">
                 <!--- user icon---->
                 <div class="user-icon">
                     <span class="material-icons">person</span>
                 </div>
             </a>
-            <a href="#" class="cart" id="cart-icon">
+            <a href="javascript:void(0);" class="cart" id="cart-icon">
                 <!--- cart icon---->
                 <div class="shopping-cart">
                     <span class="material-icons">shopping_cart</span>
@@ -90,7 +90,7 @@
         </select>
         <input type="submit" value="Search">
         <!---cancel button---->
-        <a href="#" class="search-cancel">
+        <a href="javascript:void(0);" class="search-cancel">
             <span class="material-icons">cancel</span>
         </a>
     </div>
@@ -121,8 +121,8 @@
         <li class="item">
             <!--category-box-->
             <div class="category-box">
-                <a href="#">
-                    <img th:src="@{'/images/tags/' + ${tag.image}}">
+                <a href="javascript:void(0);">
+                    <img th:src="@{'/img/tags/' + ${tag.image}}">
                 </a>
             </div>
             <!--text-->
@@ -148,289 +148,20 @@
         <!--img-->
         <div class="product-wrapper">
             <div class="product-img">
-                <a href="#" class="add-cart">
+                <a href="javascript:void(0);" class="add-cart">
                     <!--add-cart-->
                     <span class="material-icons shopping-cart">shopping_cart</span>
                     <!--- number-of-product-cart---->
                 </a>
-<!--                <img th:src="@{'/images/certificates/' + ${certificate.image}}" class="product-picture"/>-->
-                <img th:src="@{'/images/certificates/' + ${certificate.image}}" class="product-picture"/>
+                <img th:src="@{'/img/certificates/' + ${certificate.image}}" class="product-picture"/>
             </div>
         </div>
         <!--details-->
         <div class="product-details">
-            <a href="#" class="p-name" th:text="${certificate.name}">Certificate Name</a>
+            <a href="javascript:void(0);" class="p-name" th:text="${certificate.name}">Certificate Name</a>
             <span class="p-price" th:text="'$' + ${certificate.price}"></span>
         </div>
     </div>
-
-<!--    &lt;!&ndash;product-box-2&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-wrapper">-->
-<!--            <div class="product-img">-->
-<!--                <a href="#" class="add-cart">-->
-<!--                    &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                    <span class="material-icons shopping-cart">shopping_cart</span>-->
-<!--                </a>-->
-<!--                <img th:src="@{/images/p-2.png}" src="/static/images/p-2.png" class="product-picture"/>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$31</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-3&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-3.png}" src="/static/images/p-3.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-4&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-4.png}" src="/static/images/p-4.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-5&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-5.png}" src="/static/images/p-5.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-6&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-6.png}" src="/static/images/p-6.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-7&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-7.png}" src="/static/images/p-7.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-8&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-8.png}" src="/static/images/p-8.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-9&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-10&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-11&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                    &lt;!&ndash;<span class="num-cart-product">0</span>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash;product-box-12&ndash;&gt;-->
-<!--    <div class="product-box">-->
-
-
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-img">-->
-<!--            <a href="#" class="add-cart">-->
-<!--                &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                <div class="shopping-cart">-->
-<!--                    <span class="material-icons">shopping_cart</span>-->
-<!--                </div>-->
-<!--            </a>-->
-<!--            <img th:src="@{/images/p-1.png}" src="/static/images/p-1.png"/>-->
-<!--        </div>-->
-
-
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="#" class="p-name">Certificate Name</a>-->
-<!--            <span class="p-price">$0</span>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
 
 
@@ -484,6 +215,17 @@
                 $('#autoWidth').removeClass('cS-hidden');
             }
         });
+    });
+
+// for-fix-menu-when-scrolling
+
+    $(window).scroll(function (){
+       if ($(document).scrollTop() > 50) {
+           $('.navigation').addClass('fix-nav');
+       }
+       else {
+           $('.navigation').removeClass('fix-nav');
+       }
     });
 
 

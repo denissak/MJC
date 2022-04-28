@@ -71,10 +71,15 @@ const clickHandler = ({currentTarget}) => {
     cartContainer.append(cardItem);
     updateTotal();
 }
-const card = document.body.querySelector(".product-box");
 
-if (card) {
-    card.addEventListener('click', clickHandler);
+const cards = document.body.querySelectorAll(".product-box");
+// const cards = document.body.querySelectorAll(".add-cart"); //TODO
+
+if (cards) {
+    for (var i = 0; i < cards.length; i++){
+        var card = cards[i];
+        card.addEventListener('click', clickHandler);
+    }
 }
 
 function updateTotal() {
@@ -84,10 +89,8 @@ function updateTotal() {
     for (var i = 0; i < cartBoxes.length; i++){
         var cartBox = cartBoxes[i];
         var priceElement = cartBox.querySelector(".cart-price");
-        // var quantityElement = cartBox.querySelector(".cart-quantity");
         var price = parseFloat(priceElement.innerText.replace("$", ""));
-        // var quantity = 1 /*quantityElement.value*/;
-        total = total + price /*(price * quantity)*/;
+        total = total + price;
 
         total = Math.round(total * 100) / 100;
         document.querySelector(".total-price").innerText = "$" + total;

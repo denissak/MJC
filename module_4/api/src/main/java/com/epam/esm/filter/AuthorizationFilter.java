@@ -40,7 +40,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login") ||
                 request.getServletPath().equals("/register") ||
                 request.getServletPath().startsWith("/css") ||
-                request.getServletPath().startsWith("/images") ||
+                request.getServletPath().startsWith("/img") ||
                 request.getServletPath().startsWith("/js") ||
                 request.getServletPath().equals("/favicon.ico") ||
                 request.getServletPath().equals("/mainpage")) {
