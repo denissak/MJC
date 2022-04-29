@@ -76,7 +76,7 @@ const cards = document.body.querySelectorAll(".product-box");
 // const cards = document.body.querySelectorAll(".add-cart"); //TODO
 
 if (cards) {
-    for (var i = 0; i < cards.length; i++){
+    for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
         card.addEventListener('click', clickHandler);
     }
@@ -86,7 +86,7 @@ function updateTotal() {
     var cartContent = document.querySelector(".cart-content");
     var cartBoxes = cartContent.querySelectorAll(".cart-box");
     var total = 0;
-    for (var i = 0; i < cartBoxes.length; i++){
+    for (var i = 0; i < cartBoxes.length; i++) {
         var cartBox = cartBoxes[i];
         var priceElement = cartBox.querySelector(".cart-price");
         var price = parseFloat(priceElement.innerText.replace("$", ""));
@@ -94,6 +94,24 @@ function updateTotal() {
 
         total = Math.round(total * 100) / 100;
         document.querySelector(".total-price").innerText = "$" + total;
+    }
+}
+
+//Remove Items From Cart
+function removeCartItem(event) {
+    var buttonClicked = event.target;
+    buttonClicked.parentElement.remove();
+    updateTotal();
+}
+
+
+//Remove Items From Cart
+function remove() {
+    var removeCartButtons = document.querySelectorAll(".cart-remove-icon");
+    console.log(removeCartButtons);
+    for (var i = 0; i < removeCartButtons.length; i++) {
+        var button = removeCartButtons[i];
+        button.addEventListener("click", removeCartItem);
     }
 }
 
