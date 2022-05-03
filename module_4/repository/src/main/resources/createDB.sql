@@ -5,20 +5,29 @@ DROP TABLE orders;
 DROP TABLE order_certificate_m2m;
 DROP TABLE users;
 
-ALTER TABLE public.users ADD COLUMN name VARCHAR (50);
-ALTER TABLE public.users ADD COLUMN surname VARCHAR (50);
-ALTER TABLE public.users ADD COLUMN email VARCHAR (50);
-ALTER TABLE public.tag ADD COLUMN image VARCHAR (50);
-ALTER TABLE public.gift_certificate ADD COLUMN image VARCHAR (50);
+ALTER TABLE public.users
+    ADD COLUMN name VARCHAR(50);
+ALTER TABLE public.users
+    ADD COLUMN surname VARCHAR(50);
+ALTER TABLE public.users
+    ADD COLUMN email VARCHAR(50);
+ALTER TABLE public.tag
+    ADD COLUMN image VARCHAR(50);
+ALTER TABLE public.gift_certificate
+    ADD COLUMN image VARCHAR(50);
+ALTER TABLE public.gift_certificate
+    ALTER COLUMN image TYPE VARCHAR(200);
+ALTER TABLE public.tag
+    ALTER COLUMN image TYPE VARCHAR(200);
 
 CREATE TABLE users
 (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(40)  NOT NULL,
     password VARCHAR(255) NOT NULL,
-    name     VARCHAR(50) NOT NULL,
-    surname  VARCHAR(50) NOT NULL,
-    email    varchar(50) NOT NULL,
+    name     VARCHAR(50)  NOT NULL,
+    surname  VARCHAR(50)  NOT NULL,
+    email    varchar(50)  NOT NULL,
     role_id  BIGINT       NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE NO ACTION
 );
@@ -37,19 +46,20 @@ CREATE TABLE orders
 CREATE TABLE gift_certificate
 (
     id               BIGSERIAL PRIMARY KEY,
-    name             VARCHAR(40) NOT NULL,
+    name             VARCHAR(40)  NOT NULL,
     description      VARCHAR(150) NOT NULL,
-    price            NUMERIC     NOT NULL,
-    duration         INT         NOT NULL,
+    price            NUMERIC      NOT NULL,
+    duration         INT          NOT NULL,
     create_date      TIMESTAMP,
-    last_update_date TIMESTAMP
+    last_update_date TIMESTAMP,
+    image            VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE tag
 (
-    id   BIGSERIAL PRIMARY KEY,
-    name VARCHAR(40) NOT NULL,
-    image VARCHAR(50) NOT NULL
+    id    BIGSERIAL PRIMARY KEY,
+    name  VARCHAR(40)  NOT NULL,
+    image VARCHAR(150) NOT NULL
 );
 
 CREATE TABLE roles
@@ -153,34 +163,124 @@ VALUES ('Food'), /*1*/
        ('SPA'); /*18*/
 
 INSERT INTO gift_certificate_m2m_tag (gift_certificate_id, tag_id)
-VALUES (1, 4), (1, 6), (1, 7), (1, 8), (1, 10), (1, 11), (1, 18),
-        (2, 1), (2, 4), (2, 10),
-        (3, 6), (3, 7), (3, 16),
-        (4, 4), (4, 5), (4, 10),
-        (5, 4), (5, 5), (5, 6),
-        (6, 4), (6, 8), (6, 15),
-        (7, 7), (7, 11), (7, 18),
-        (8, 7), (8, 9), (8, 10), (8, 11), (8, 13),
-        (9, 4), (9, 5), (9, 6), (9, 7), (9, 8), (9, 10),
-        (10, 6), (10, 8), (10, 9), (10, 10), (10, 15),
-        (11, 2), (11, 6), (11, 7), (11, 8), (11, 9), (11, 10), (11, 12), (11, 13), (11, 14), (11, 15),
-        (12, 3), (12, 5), (12, 7),
-        (13, 6), (13, 7), (13, 8), (13, 11),
-        (14, 6), (14, 9), (14, 10), (14, 16), (14, 17),
-        (15, 6), (15, 7), (15, 8), (15, 12),
-        (16, 6), (16, 7), (16, 11),
-        (17, 2), (17, 6), (17, 7), (17, 8), (17, 10),
-        (18, 6), (18, 7), (18, 10), (18, 15),
-        (19, 6), (19, 8), (19, 10), (19, 14),
-        (20, 1), (20, 5), (20, 6), (20, 7),
-        (21, 2), (21, 6), (21, 7), (21, 8), (21, 10),
-        (22, 7), (22, 11), (22, 18),
-        (23, 9), (23, 17),
-        (24, 15),
-        (25, 4), (25, 6), (25, 7), (25, 8),
-        (26, 4), (26, 6), (26, 7), (26, 8), (26, 10),
-        (27, 6), (26, 7), (26, 8), (26, 10), (26, 15),
-        (28, 2), (28, 6), (28, 7), (28, 8), (28, 9), (28, 10);
+VALUES (1, 4),
+       (1, 6),
+       (1, 7),
+       (1, 8),
+       (1, 10),
+       (1, 11),
+       (1, 18),
+       (2, 1),
+       (2, 4),
+       (2, 10),
+       (3, 6),
+       (3, 7),
+       (3, 16),
+       (4, 4),
+       (4, 5),
+       (4, 10),
+       (5, 4),
+       (5, 5),
+       (5, 6),
+       (6, 4),
+       (6, 8),
+       (6, 15),
+       (7, 7),
+       (7, 11),
+       (7, 18),
+       (8, 7),
+       (8, 9),
+       (8, 10),
+       (8, 11),
+       (8, 13),
+       (9, 4),
+       (9, 5),
+       (9, 6),
+       (9, 7),
+       (9, 8),
+       (9, 10),
+       (10, 6),
+       (10, 8),
+       (10, 9),
+       (10, 10),
+       (10, 15),
+       (11, 2),
+       (11, 6),
+       (11, 7),
+       (11, 8),
+       (11, 9),
+       (11, 10),
+       (11, 12),
+       (11, 13),
+       (11, 14),
+       (11, 15),
+       (12, 3),
+       (12, 5),
+       (12, 7),
+       (13, 6),
+       (13, 7),
+       (13, 8),
+       (13, 11),
+       (14, 6),
+       (14, 9),
+       (14, 10),
+       (14, 16),
+       (14, 17),
+       (15, 6),
+       (15, 7),
+       (15, 8),
+       (15, 12),
+       (16, 6),
+       (16, 7),
+       (16, 11),
+       (17, 2),
+       (17, 6),
+       (17, 7),
+       (17, 8),
+       (17, 10),
+       (18, 6),
+       (18, 7),
+       (18, 10),
+       (18, 15),
+       (19, 6),
+       (19, 8),
+       (19, 10),
+       (19, 14),
+       (20, 1),
+       (20, 5),
+       (20, 6),
+       (20, 7),
+       (21, 2),
+       (21, 6),
+       (21, 7),
+       (21, 8),
+       (21, 10),
+       (22, 7),
+       (22, 11),
+       (22, 18),
+       (23, 9),
+       (23, 17),
+       (24, 15),
+       (25, 4),
+       (25, 6),
+       (25, 7),
+       (25, 8),
+       (26, 4),
+       (26, 6),
+       (26, 7),
+       (26, 8),
+       (26, 10),
+       (27, 6),
+       (26, 7),
+       (26, 8),
+       (26, 10),
+       (26, 15),
+       (28, 2),
+       (28, 6),
+       (28, 7),
+       (28, 8),
+       (28, 9),
+       (28, 10);
 
 INSERT INTO roles (name)
 VALUES ('ADMIN'),
@@ -194,10 +294,13 @@ VALUES ('order1', 100, now(), 1),
        ('order4', 400, now(), 4);
 
 INSERT INTO users (login, password, name, surname, email, role_id)
-VALUES ('user1', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'Admin', 'Admin', 'admin@gmail.com', 1),
+VALUES ('user1', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'Admin', 'Admin', 'admin@gmail.com',
+        1),
        ('user2', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'User', 'User', 'user@gmail.com', 2),
-       ('user3', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'User2', 'User2', 'user2@gmail.com', 3),
-       ('user4', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'User3', 'User3', 'user3@gmail.com', 2);
+       ('user3', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'User2', 'User2', 'user2@gmail.com',
+        3),
+       ('user4', '$2a$12$LlyVzVpBlXZT7aOrVClygeA/2R6Sa3QnBdMPu2cOsU62clvcXscbO', 'User3', 'User3', 'user3@gmail.com',
+        2);
 
 INSERT INTO order_certificate_m2m (order_id, certificate_id)
 VALUES (1, 1),

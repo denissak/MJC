@@ -3,6 +3,7 @@ package com.epam.esm.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 

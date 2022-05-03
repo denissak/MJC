@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--<div class="certificate-create" th:fragment="certificate-create-fragment">-->
+    <div>
+    <form method="post" enctype="multipart/form-data" action="certificates">
+<!--        <form method="post" action="certificates">-->
+        <input type="text" name="name" placeholder="Введите имя">
+        <input type="text" name="description" placeholder="Введите описание">
+        <input type="text" name="price" placeholder="Введите цену">
+        <input type="text" name="duration" placeholder="Введите срок действия">
+        <input type="file" name="image" placeholder="Введите имя">
+        <fieldset>
+            <legend>Choose tag
+            <div th:each="tag: ${tags}">
+                <input type="checkbox" th:id="${tag.getId()}" name="tagid" th:value="${tag.getId()}">
+                <label th:text = "${tag.getName()}"></label>
+            </div>
+            </legend>
+        </fieldset>
+        <input type="submit" value="Create">
+    </form>
+</div>
+</body>
+</html>

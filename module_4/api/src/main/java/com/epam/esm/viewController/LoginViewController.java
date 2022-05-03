@@ -22,9 +22,9 @@ public class LoginViewController {
 
     @RequestMapping("/mainpage")
     public String mainpage(Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                           @RequestParam(value = "size", defaultValue = "18", required = false) int size) {
+                           @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
         model.addAttribute("tags", tagService.readAll(page, size));
-        model.addAttribute("certificates", certificateService.readAll(0,28));
+        model.addAttribute("certificates", certificateService.readAll(0,100));
 //        model.addAttribute("certificatesSearch", certificateService.readCertificateWithDifferentParams(page,size));
         return "mainpage";
     }
@@ -37,5 +37,19 @@ public class LoginViewController {
     @RequestMapping("/certificate")
     public String certificate(Model model) {
         return "certificate";
+    }
+
+    @RequestMapping("/newcertificate")
+    public String addCertificate (Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                  @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
+        model.addAttribute("tags", tagService.readAll(page, size));
+        return "newcertificate";
+    }
+
+    @RequestMapping("/newtag")
+    public String addTag (Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                  @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
+//        model.addAttribute("tags", tagService.readAll(page, size));
+        return "newtag";
     }
 }
