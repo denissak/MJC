@@ -35,7 +35,8 @@ public class LoginViewController {
     }
 
     @RequestMapping("/certificate")
-    public String certificate(Model model) {
+    public String certificate(Model model, Long id) {
+        model.addAttribute("certificate", certificateService.readById(id));
         return "certificate";
     }
 
