@@ -161,7 +161,7 @@
             <a href="javascript:void(0);" class="p-name" th:text="${certificate.name}">Certificate Name</a>
             <span class="p-price" th:text="'$' + ${certificate.price}"></span>
         </div>
-        <button th:href="@{'/certificate/' + ${certificate.id}}">Подробнее</button>
+        <a th:href="@{'/certificate/' + ${certificate.id}}">Подробнее</a>
     </div>
 </div>
 

@@ -40,8 +40,12 @@ class CartItem {
 
 const cartContainer = document.body.querySelector(".cart-content");
 
-const clickHandler = ({currentTarget}) => {
-    console.log(currentTarget);
+const clickHandler = ({currentTarget, target}) => {
+    // console.log(currentTarget);
+    if (!target.classList.contains('shopping-cart')){
+        return;
+    }
+    console.log(target)
     const titleDiv = currentTarget.querySelector(".p-name");
     const priceDiv = currentTarget.querySelector(".p-price");
     const imageDiv = currentTarget.querySelector(".product-picture");
@@ -65,6 +69,8 @@ const clickHandler = ({currentTarget}) => {
     if (imageDiv) {
         imgSrc = imageDiv.src;
     }
+
+ //   fetch()
 
     const cardItem = new CartItem(title, price, imgSrc).init();
     console.log(cardItem)
