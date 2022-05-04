@@ -1,7 +1,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <body>
+<nav>
+    <!--- social link and phone number---->
+    <div class="social-call">
+        <div class="social">
+            <a href="javascript:void(0);"><span class="material-icons">groups</span></a>
+        </div>
+        <!--- phone number ---->
+        <div class="phone">
+            <span> Call 375 33 333 33 33 </span>
+        </div>
+    </div>
+
+    <!--- menu bar---->
+
+    <div class="navigation">
+        <!--- logo ---->
+        <a th:href="mainpage" class="logo">
+            <img th:src="@{/img/logo.png}" src="/static/images/logo.png"/>
+        </a>
+        <!--- menu---->
+        <ul class="menu">
+            <li>
+                <a th:href="mainpage">Home</a>
+            </li>
+            <li>
+                <a th:href="newcertificate">Certificate</a>
+                <span class="sale-lable">Sale</span>
+            </li>
+            <li>
+                <a th:href="newtag">Create tag</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">Home4</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">Home5</a>
+            </li>
+        </ul>
+        <!--- right menu---->
+        <div class="right-menu">
+            <!--- search---->
+            <a href="javascript:void(0);" class="search">
+                <div class="search-icon">
+                    <span class="material-icons">search</span>
+                </div>
+            </a>
+            <a href="javascript:void(0);" class="user">
+                <!--- user icon---->
+                <div class="user-icon">
+                    <span class="material-icons">person</span>
+                </div>
+            </a>
+            <a href="javascript:void(0);" class="cart" id="cart-icon">
+                <!--- cart icon---->
+                <div class="shopping-cart">
+                    <span class="material-icons">shopping_cart</span>
+                    <!--- number-of-product-cart---->
+                    <span class="num-cart-product">0</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</nav>
 <!--<div class="certificate-create" th:fragment="certificate-create-fragment">-->
-    <div>
+    <div class="certificate-create-form">
     <form method="post" enctype="multipart/form-data" action="certificates">
 <!--        <form method="post" action="certificates">-->
         <input type="text" name="name" placeholder="Введите имя">

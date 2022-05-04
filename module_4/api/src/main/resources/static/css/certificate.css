@@ -1,0 +1,19 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: poppins;
+    background-color: #ffffff;
+}
+
+.tag-label {
+    display: flex;
+    margin: 20px;
+}
+
+.pages {
+    padding: 0px 10px;
+}

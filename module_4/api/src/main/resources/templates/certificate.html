@@ -2,8 +2,73 @@
 <head>
     <title>Certificate details</title>
     <link th:href="@{/css/certificate.css}" href="/static/css/certificate.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+<nav>
+    <!--- social link and phone number---->
+    <div class="social-call">
+        <div class="social">
+            <a href="javascript:void(0);"><span class="material-icons">groups</span></a>
+        </div>
+        <!--- phone number ---->
+        <div class="phone">
+            <span> Call 375 33 333 33 33 </span>
+        </div>
+    </div>
+
+    <!--- menu bar---->
+
+    <div class="navigation">
+        <!--- logo ---->
+        <a th:href="mainpage" class="logo">
+            <img th:src="@{/img/logo.png}" src="/static/images/logo.png"/>
+        </a>
+        <!--- menu---->
+        <ul class="menu">
+            <li>
+                <a th:href="mainpage">Home</a>
+            </li>
+            <li>
+                <a th:href="newcertificate">Create certificate</a>
+                <span class="sale-lable">Sale</span>
+            </li>
+            <li>
+                <a th:href="newtag">Create tag</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">Home4</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">Home5</a>
+            </li>
+        </ul>
+        <!--- right menu---->
+        <div class="right-menu">
+            <!--- search---->
+            <a href="javascript:void(0);" class="search">
+                <div class="search-icon">
+                    <span class="material-icons">search</span>
+                </div>
+            </a>
+            <a href="javascript:void(0);" class="user">
+                <!--- user icon---->
+                <div class="user-icon">
+                    <span class="material-icons">person</span>
+                </div>
+            </a>
+            <a href="javascript:void(0);" class="cart" id="cart-icon">
+                <!--- cart icon---->
+                <div class="shopping-cart">
+                    <span class="material-icons">shopping_cart</span>
+                    <!--- number-of-product-cart---->
+                    <span class="num-cart-product">0</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</nav>
 <main>
     <div class="container">
         <div class="cover">
@@ -14,18 +79,20 @@
                 <span class="logo"></span>
             </div>
             <div class="content-body">
-                <div class="pages">
-                    <span class="active"><b>01</b></span>
-                    <span>02</span>
-                    <span>03</span>
-                    <span>04</span>
+                <div class="tag-label">
+                    <div class="pages" th:each="tag:${certificate.getTags()}">
+                        <span class="active" th:text="${tag.getName()}"><b>01</b></span>
+                    </div>
                 </div>
                 <div class="black-label">
-                    <span class="title"><b>Label</b></span>
-                    <p>description</p>
+                    <span class="title" th:text="${certificate.getName()}"></span>
+                    <p th:text="${certificate.getDescription()}"></p>
                 </div>
-                <div class="prox">
-                    <span><b>price</b></span>
+                <div class="price-certificate">
+                    <span th:text="'$' + ${certificate.getPrice()}"></span>
+                </div>
+                <div>
+                    <span th:text="${certificate.getDuration()} + ' day'"></span>
                 </div>
                 <span class="crt">add cart</span>
             </div>
@@ -35,13 +102,6 @@
 </main>
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
@@ -66,18 +126,12 @@
 <!--    </div>-->
 
 
-
-
-
-
-
 <!--    &lt;!&ndash;cancel-btn&ndash;&gt;-->
 <!--    <a href="#" class="certificate-cancel">-->
 <!--        <span class="material-icons">cancel</span>-->
 <!--    </a>-->
 <!--    &lt;!&ndash;heading&ndash;&gt;-->
 <!--    <strong>Certificate</strong>-->
-
 
 
 <!--    &lt;!&ndash;inputs-&ndash;&gt;-->
@@ -92,6 +146,6 @@
 <!--        <a href="#" class="forget">Forget Your Password?</a>-->
 <!--        <a href="#" class="sign-up-btn">Create Account</a>-->
 <!--    </div>-->
-</div>
-</body>
-</html>
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

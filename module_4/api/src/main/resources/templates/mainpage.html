@@ -28,16 +28,16 @@
 
     <div class="navigation">
         <!--- logo ---->
-        <a href="javascript:void(0);" class="logo">
+        <a th:href="mainpage" class="logo">
             <img th:src="@{/img/logo.png}" src="/static/images/logo.png"/>
         </a>
         <!--- menu---->
         <ul class="menu">
             <li>
-                <a href="javascript:void(0);">Home</a>
+                <a th:href="mainpage">Home</a>
             </li>
             <li>
-                <a th:href="newcertificate">Certificate</a>
+                <a th:href="newcertificate">Create certificate</a>
                 <span class="sale-lable">Sale</span>
             </li>
             <li>
@@ -161,6 +161,7 @@
             <a href="javascript:void(0);" class="p-name" th:text="${certificate.name}">Certificate Name</a>
             <span class="p-price" th:text="'$' + ${certificate.price}"></span>
         </div>
+        <button th:href="@{'/certificate/' + ${certificate.id}}">Подробнее</button>
     </div>
 </div>
 

@@ -5,12 +5,13 @@ import com.epam.esm.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-public class LoginViewController {
+public class ViewController {
 
     private final TagService tagService;
     private final CertificateService certificateService;
@@ -34,8 +35,13 @@ public class LoginViewController {
         return "cart";
     }
 
-    @RequestMapping("/certificate")
-    public String certificate(Model model, Long id) {
+//    @RequestMapping("/certificate")
+//    public String certificate(Model model, Long id) {
+////        model.addAttribute("certificate", certificateService.readById(id));
+//        return "certificate";
+//    }
+    @RequestMapping("/certificate/{id}")
+    public String certificateId(Model model, @PathVariable long id) {
         model.addAttribute("certificate", certificateService.readById(id));
         return "certificate";
     }
