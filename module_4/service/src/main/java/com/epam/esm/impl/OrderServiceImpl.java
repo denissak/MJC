@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
         orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
-        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateDto -> certificateMapper.convertToCertificate(certificateDto)).collect(Collectors.toList());
+        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateMapper::convertToCertificate).collect(Collectors.toList());
         orderEntity.setCertificateEntities(certificateEntityList);
         orderRepository.save(orderEntity);
         return orderMapper.convertToOrderDto(orderEntity);

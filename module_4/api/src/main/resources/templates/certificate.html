@@ -69,83 +69,42 @@
         </div>
     </div>
 </nav>
-<main>
-    <div class="container">
-        <div class="cover">
 
-        </div>
-        <div class="content">
-            <div class="nav">
-                <span class="logo"></span>
-            </div>
-            <div class="content-body">
-                <div class="tag-label">
-                    <div class="pages" th:each="tag:${certificate.getTags()}">
-                        <span class="active" th:text="${tag.getName()}"><b>01</b></span>
-                    </div>
-                </div>
-                <div class="black-label">
-                    <span class="title" th:text="${certificate.getName()}"></span>
-                    <p th:text="${certificate.getDescription()}"></p>
-                </div>
-                <div class="price-certificate">
-                    <span th:text="'$' + ${certificate.getPrice()}"></span>
-                </div>
-                <div>
-                    <span th:text="${certificate.getDuration()} + ' day'"></span>
-                </div>
-                <span class="crt">add cart</span>
-            </div>
-        </div>
+<section id="header"></section>
 
+<section id="prodetails" class="section-p1">
+    <div class="single-pro-image">
+        <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" height="570px" id="MainImg" alt="">
+<!--        <div class="small-img-group">-->
+<!--            <div class="small-img-col">-->
+<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
+<!--            </div>-->
+<!--            <div class="small-img-col">-->
+<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
+<!--            </div>-->
+<!--            <div class="small-img-col">-->
+<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
+<!--            </div>-->
+<!--            <div class="small-img-col">-->
+<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
-</main>
+
+    <div class="single-pro-details">
+        <h1 th:text="${certificate.getName()}"></h1>
+        <div class="certificate-group">
+            <div class="certificate-tags" th:each="tag:${certificate.getTags()}">
+                <h6 th:text="${tag.getName()}"></h6>
+            </div>
+        </div>
+        <h2 th:text="${certificate.getPrice()} + '$'"></h2>
+        <h4 th:text="'Duration is ' + ${certificate.getDuration()} + ' days'"></h4>
+        <!--        <input type="number" value="1">-->
+        <!--        <button>Add To Cart</button>-->
+        <h3>Product details</h3>
+        <span th:text="${certificate.getDescription()}"></span>
+    </div>
+</section>
 </body>
 </html>
-
-
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<body>-->
-<!--<div class="certificate-form" th:fragment="certificate-fragment">-->
-<!--    <div card>-->
-<!--        <div class="certificate-img">-->
-<!--            <img src="">-->
-<!--        </div>-->
-<!--        <div class="certificate-description">-->
-<!--            <h1>-->
-<!--                Certificate-->
-<!--            </h1>-->
-<!--            <div>$20</div>-->
-<!--            <div class="description-field">-->
-<!--                <p>Some text with certificate's description</p>-->
-<!--            </div>-->
-<!--&lt;!&ndash;            <div class="certificate-button">&ndash;&gt;-->
-<!--&lt;!&ndash;                <button></button>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash;cancel-btn&ndash;&gt;-->
-<!--    <a href="#" class="certificate-cancel">-->
-<!--        <span class="material-icons">cancel</span>-->
-<!--    </a>-->
-<!--    &lt;!&ndash;heading&ndash;&gt;-->
-<!--    <strong>Certificate</strong>-->
-
-
-<!--    &lt;!&ndash;inputs-&ndash;&gt;-->
-<!--    <form action="signin" method="post">-->
-<!--        <input type="text" name="username" placeholder="Enter your login" required>-->
-<!--        <input type="password" name="password" placeholder="Enter your password" required>-->
-<!--        &lt;!&ndash;submit btn&ndash;&gt;-->
-<!--        <input type="submit" value="Log In">-->
-<!--    </form>-->
-<!--    &lt;!&ndash;forget and signup-btn&ndash;&gt;-->
-<!--    <div class="form-btns">-->
-<!--        <a href="#" class="forget">Forget Your Password?</a>-->
-<!--        <a href="#" class="sign-up-btn">Create Account</a>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
