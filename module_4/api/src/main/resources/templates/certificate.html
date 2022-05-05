@@ -70,25 +70,9 @@
     </div>
 </nav>
 
-<section id="header"></section>
-
 <section id="prodetails" class="section-p1">
     <div class="single-pro-image">
         <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" height="570px" id="MainImg" alt="">
-<!--        <div class="small-img-group">-->
-<!--            <div class="small-img-col">-->
-<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
-<!--            </div>-->
-<!--            <div class="small-img-col">-->
-<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
-<!--            </div>-->
-<!--            <div class="small-img-col">-->
-<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
-<!--            </div>-->
-<!--            <div class="small-img-col">-->
-<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" width="100%" class="small-img" alt="">-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 
     <div class="single-pro-details">
@@ -98,8 +82,8 @@
                 <h6 th:text="${tag.getName()}"></h6>
             </div>
         </div>
-        <h2 th:text="${certificate.getPrice()} + '$'"></h2>
-        <h4 th:text="'Duration is ' + ${certificate.getDuration()} + ' days'"></h4>
+        <h2 th:text="'Price: ' + ${certificate.getPrice()} + '$'"></h2>
+        <h4 th:text="'Duration: ' + ${certificate.getDuration()} + ' days'"></h4>
         <!--        <input type="number" value="1">-->
         <!--        <button>Add To Cart</button>-->
         <h3>Product details</h3>
