@@ -1,6 +1,7 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.OrderService;
+import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.OrderDto;
@@ -52,6 +53,7 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+    CertificateRepository certificateRepository;
 
     @Mock
     private DateTimeWrapper dateTimeWrapper;
@@ -76,7 +78,8 @@ class OrderServiceImplTest {
     @BeforeEach
     public void setUp() {
 
-        orderServiceImpl = new OrderServiceImpl(orderRepository, orderMapper, dateTimeWrapper, readOrderMapper, certificateMapper, userMapper);
+
+        orderServiceImpl = new OrderServiceImpl(orderRepository, certificateRepository, orderMapper, dateTimeWrapper, readOrderMapper, certificateMapper, userMapper);
 
         userEntity = UserEntity.builder()
                 .id(USER_ID)
