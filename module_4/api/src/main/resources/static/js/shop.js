@@ -1,8 +1,9 @@
 class CartItem {
-    constructor(title, price, imgSrc) {
+    constructor(title, price, imgSrc, id) {
         this.title = title;
         this.price = price;
         this.imgSrc = imgSrc;
+        this.id = id;
     }
 
     init() {
@@ -10,12 +11,11 @@ class CartItem {
         cartItemTitle.classList.add("cart-product-title");
         const cartItemPrice = document.createElement('div');
         cartItemPrice.classList.add("cart-price");
-        // const cartItemsTotal = document.createElement('input');
-        // cartItemsTotal.classList.add("cart-quantity");
+        const cartItemId = document.createElement('div');
+        cartItemId.classList.add("cart-product-id")
         const cartDetail = document.createElement('div');
         cartDetail.classList.add("detail-box");
-        cartDetail.append(cartItemTitle, cartItemPrice/*, cartItemsTotal*/);
-
+        cartDetail.append(cartItemTitle, cartItemPrice, cartItemId);
         const cartItemImage = document.createElement('img');
         cartItemImage.classList.add("cart-image");
         const removeCartItem = document.createElement('span');
@@ -23,16 +23,10 @@ class CartItem {
         const cartItem = document.createElement('div');
         cartItem.classList.add("cart-box");
         cartItem.append(cartItemImage, cartDetail, removeCartItem);
-
-
-        // const cartItem = document.createElement('div');
-        // cartItem.classList.add("cart-content");
-        // cartItem.append(cartBox);
-
         cartItemTitle.textContent = this.title;
         cartItemImage.src = this.imgSrc;
         cartItemPrice.textContent = this.price;
-
+        cartItemId.textContent = this.id
         return cartItem;
     }
 
@@ -41,7 +35,6 @@ class CartItem {
 const cartContainer = document.body.querySelector(".cart-content");
 
 const clickHandler = ({currentTarget, target}) => {
-    // console.log(currentTarget);
     if (!target.classList.contains('shopping-cart')){
         return;
     }
@@ -50,15 +43,13 @@ const clickHandler = ({currentTarget, target}) => {
     const priceDiv = currentTarget.querySelector(".p-price");
     const imageDiv = currentTarget.querySelector(".product-picture");
 
+    const idDiv = currentTarget.querySelector(".certificate-id")
+
     let title;
     let price;
     let imgSrc;
 
-    // [titleDiv, priceDiv, imageDiv].forEach((elem) => {
-    //     if (elem){
-    //
-    //     }
-    // });
+    let id;
 
     if (titleDiv) {
         title = titleDiv.textContent;
@@ -70,16 +61,17 @@ const clickHandler = ({currentTarget, target}) => {
         imgSrc = imageDiv.src;
     }
 
- //   fetch()
+    if (idDiv) {
+        id = idDiv.textContent;
+    }
 
-    const cardItem = new CartItem(title, price, imgSrc).init();
+    const cardItem = new CartItem(title, price, imgSrc, id).init();
     console.log(cardItem)
     cartContainer.append(cardItem);
     updateTotal();
 }
 
 const cards = document.body.querySelectorAll(".product-box");
-// const cards = document.body.querySelectorAll(".add-cart"); //TODO
 
 if (cards) {
     for (var i = 0; i < cards.length; i++) {
@@ -115,8 +107,8 @@ function removeCartItem(event) {
 function remove() {
     var removeCartButtons = document.querySelectorAll(".cart-remove-icon");
     console.log(removeCartButtons);
-    for (var i = 0; i < removeCartButtons.length; i++) {
-        var button = removeCartButtons[i];
+    for (let i = 0; i < removeCartButtons.length; i++) {
+        let button = removeCartButtons[i];
         button.addEventListener("click", removeCartItem);
     }
 }
@@ -152,4 +144,32 @@ function remove() {
 //         input.addEventListener("change", quantityChanged);
 //     }
 // }
+
+
+const clickHandlerSend = () => {
+
+    const certificates = document.body.querySelectorAll(".cart-box")
+    let certificateIds = [];
+
+    for (let i = 0; i < certificates.length; i++){
+        const certificate = certificates[i].querySelector(".cart-product-id");
+        if (certificate){
+            certificateIds.push(certificate.textContent);
+        }
+    }
+    fetch(
+        '/orders',
+        {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify(certificateIds)
+        }
+    ).catch(console.error);
+}
+
+const sendOrder = document.body.querySelector(".btn-buy")
+
+if (sendOrder) {
+    sendOrder.addEventListener('click', clickHandlerSend);
+}
 

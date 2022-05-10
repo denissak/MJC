@@ -3,6 +3,7 @@ package com.epam.esm.impl;
 import com.epam.esm.OrderService;
 import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
+import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
 import com.epam.esm.entity.CertificateEntity;
@@ -35,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final CertificateRepository certificateRepository;
+    private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final ReadOrderMapper readOrderMapper;
     private final DateTimeWrapper dateTimeWrapper;
@@ -42,10 +44,11 @@ public class OrderServiceImpl implements OrderService {
     private final UserMapper userMapper;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CertificateRepository certificateRepository, OrderMapper orderMapper,
+    public OrderServiceImpl(OrderRepository orderRepository, CertificateRepository certificateRepository, UserRepository userRepository, OrderMapper orderMapper,
                             DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper, CertificateMapper certificateMapper, UserMapper userMapper) {
         this.orderRepository = orderRepository;
         this.certificateRepository = certificateRepository;
+        this.userRepository = userRepository;
         this.orderMapper = orderMapper;
         this.dateTimeWrapper = dateTimeWrapper;
         this.readOrderMapper = readOrderMapper;
@@ -76,31 +79,57 @@ public class OrderServiceImpl implements OrderService {
 //        orderRepository.save(orderEntity);
 //        return orderMapper.convertToOrderDto(orderEntity);
 //    }
+//    @Override
+//    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+//    public OrderDto create(OrderDto orderDto) {
+////        OrderEntity order = orderRepository.findByName(orderDto.getName());
+////        if (order != null) {
+////            throw DuplicateException.orderExists().get();
+////        }
+////        OrderValidator.validate(orderDto);
+//        LocalDateTime now = dateTimeWrapper.wrapDateTime();
+//        orderDto.setDate(now);
+//        OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
+//        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
+//
+//        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateMapper::convertToCertificate).collect(Collectors.toList());
+//        List<CertificateEntity> certificateEntities = new ArrayList<>();
+//        Double totalCost = 0.0;
+//
+//        for (int i = 0; i < certificateEntityList.size() - 1; i++) {
+//            Long id = certificateEntityList.get(i).getId();
+//            CertificateEntity certificate = certificateRepository.findById(id).get();
+//            totalCost += certificate.getPrice();
+//            certificateEntities.add(certificate);
+//        }
+//
+//        orderEntity.setCost(totalCost);
+//        orderEntity.setCertificateEntities(certificateEntities);
+//
+//        orderRepository.save(orderEntity);
+//        return orderMapper.convertToOrderDto(orderEntity);
+//    }
+
+
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-    public OrderDto create(OrderDto orderDto) {
-//        OrderEntity order = orderRepository.findByName(orderDto.getName());
-//        if (order != null) {
-//            throw DuplicateException.orderExists().get();
-//        }
-//        OrderValidator.validate(orderDto);
+    public OrderDto create(List<Long> certificateIds, long userId) {
+        OrderDto orderDto = new OrderDto();
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
-        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
-
-        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateMapper::convertToCertificate).collect(Collectors.toList());
+        orderEntity.setUserEntity(userRepository.findById(userId).get());
         List<CertificateEntity> certificateEntities = new ArrayList<>();
         Double totalCost = 0.0;
 
-        for (int i = 0; i < certificateEntityList.size() - 1; i++) {
-            Long id = certificateEntityList.get(i).getId();
-            CertificateEntity certificate = certificateRepository.findById(id).get();
+        for (int i = 0; i < certificateIds.size(); i++) {
+            CertificateEntity certificate = certificateRepository.findById(certificateIds.get(i)).get();
             totalCost += certificate.getPrice();
             certificateEntities.add(certificate);
         }
 
         orderEntity.setCost(totalCost);
+        orderEntity.setName("userId:" + orderEntity.getUserEntity().getId() + "_" + orderEntity.getDate() + orderEntity.getUserEntity().getId());
         orderEntity.setCertificateEntities(certificateEntities);
 
         orderRepository.save(orderEntity);

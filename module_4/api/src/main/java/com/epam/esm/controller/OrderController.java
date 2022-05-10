@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.OrderService;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -114,13 +117,17 @@ public class OrderController {
     /**
      * Create and save the passed order.
      *
-     * @param orderDto the order to be saved
+     * @param certificateStringId certificates in order
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public OrderDto createOrder(@RequestBody String[] certificateStringId)
+/*                                @RequestParam("userid") String userStringId)*/ {
         try {
-            return orderService.create(orderDto);
+
+            List<Long> certificateId = Arrays.stream(certificateStringId).map(Long::parseLong).collect(Collectors.toList());
+            long userId = 1L;
+            return orderService.create(certificateId, userId);
         } catch (RuntimeException e){
             throw DuplicateException.orderExists().get();
         }

@@ -580,6 +580,10 @@ nav {
     font-weight: 500;
 }
 
+.cart-product-id {
+    display: none;
+}
+
 .cart-quantity {
     border: 1px solid #727272;
     outline-color: #0b9d8a;

@@ -118,7 +118,7 @@
 <ul id="autoWidth" class="cs-hidden">
     <div th:each="tag : ${tags}">
         <!--1------>
-        <li class="item">
+        <li class="item" th:data-filter="${tag.name}">
             <!--category-box-->
             <div class="category-box">
                 <a href="javascript:void(0);">
@@ -160,6 +160,7 @@
         <div class="product-details">
             <a href="javascript:void(0);" class="p-name" th:text="${certificate.name}">Certificate Name</a>
             <span class="p-price" th:text="'$' + ${certificate.price}"></span>
+            <span class="certificate-id" th:text="${certificate.id}" hidden></span>
         </div>
         <a th:href="@{'/certificate/' + ${certificate.id}}" th:target="_blank">Подробнее</a>
     </div>
@@ -218,15 +219,14 @@
         });
     });
 
-// for-fix-menu-when-scrolling
+    // for-fix-menu-when-scrolling
 
-    $(window).scroll(function (){
-       if ($(document).scrollTop() > 50) {
-           $('.navigation').addClass('fix-nav');
-       }
-       else {
-           $('.navigation').removeClass('fix-nav');
-       }
+    $(window).scroll(function () {
+        if ($(document).scrollTop() > 50) {
+            $('.navigation').addClass('fix-nav');
+        } else {
+            $('.navigation').removeClass('fix-nav');
+        }
     });
 
 

@@ -1,6 +1,62 @@
-let cartIcon = document.querySelector(".cart");
-let cart = document.querySelector(".cart-form");
-let closeCart = document.querySelector(".cart-cancel");
+//
+// // FILTER
+// $('cs-hidden .item').click(function (){
+//     let filter = $(this).attr('data-filter')
+//     if (filter == 'man'){
+//         $('cs-hidden .item').not('.' + filter).hide(200);
+//         $('cs-hidden .item').filter('.' + filter).show(400);
+//     }
+// })
+//
+// // SCROLL
+//
+// let size = 8;
+//
+// window.addEventListener('scroll', () => {
+//     const documentRect = document.documentElement.getBoundingClientRect();
+//     // console.log('top', documentRect.top);
+//     console.log('bottom', documentRect.bottom);
+//     if (documentRect.bottom < document.documentElement.clientHeight + 150) {
+//         console.log('OK');
+//         size += 8;
+//
+//         const params = new URLSearchParams({
+//             size: size
+//         })
+//         // window.open('/mainpage?page=' + page,"self")
+//         fetch(
+//             '/mainpage?page=' + size,
+//             '/mainpage?' + params ,
+//             // '/mainpage?${ params.toString() }',
+//             {
+//                 // headers: {'Content-Type': 'application/json'},
+//
+//                 method: 'GET',
+//             }
+//         ).catch(console.error);
+//
+//     }
+// })
+
+
+
+
+
+
+
+
+
+
+// let cartIcon = document.querySelector(".cart");
+// let cart = document.querySelector(".cart-form");
+// let closeCart = document.querySelector(".cart-cancel");
+
+
+
+
+
+
+
 
 // cartIcon.onclick = () => {
 //     cart.classList.add("active");
