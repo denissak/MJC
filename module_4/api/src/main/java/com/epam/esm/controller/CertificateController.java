@@ -56,7 +56,7 @@ public class CertificateController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<CertificateDto> readAllCertificates(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                               @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+                                                               @RequestParam(value = "size", defaultValue = "12", required = false) int size) {
         List<CertificateDto> certificateDtoList = certificateService.readAll(page, size);
         return addLinksToCertificate(certificateDtoList);
     }
