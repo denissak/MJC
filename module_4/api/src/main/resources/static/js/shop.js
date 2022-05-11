@@ -34,51 +34,51 @@ class CartItem {
 
 const cartContainer = document.body.querySelector(".cart-content");
 
-const clickHandler = ({currentTarget, target}) => {
-    if (!target.classList.contains('shopping-cart')) {
-        return;
-    }
-    console.log(target)
-    const titleDiv = currentTarget.querySelector(".p-name");
-    const priceDiv = currentTarget.querySelector(".p-price");
-    const imageDiv = currentTarget.querySelector(".product-picture");
-
-    const idDiv = currentTarget.querySelector(".certificate-id")
-
-    let title;
-    let price;
-    let imgSrc;
-
-    let id;
-
-    if (titleDiv) {
-        title = titleDiv.textContent;
-    }
-    if (priceDiv) {
-        price = priceDiv.textContent;
-    }
-    if (imageDiv) {
-        imgSrc = imageDiv.src;
-    }
-
-    if (idDiv) {
-        id = idDiv.textContent;
-    }
-
-    const cardItem = new CartItem(title, price, imgSrc, id).init();
-    console.log(cardItem)
-    cartContainer.append(cardItem);
-    updateTotal();
-}
-
-const cards = document.body.querySelectorAll(".product-box");
-
-if (cards) {
-    for (var i = 0; i < cards.length; i++) {
-        var card = cards[i];
-        card.addEventListener('click', clickHandler);
-    }
-}
+// const clickHandler = ({currentTarget, target}) => {
+//     if (!target.classList.contains('shopping-cart')) {
+//         return;
+//     }
+//     console.log(target)
+//     const titleDiv = currentTarget.querySelector(".p-name");
+//     const priceDiv = currentTarget.querySelector(".p-price");
+//     const imageDiv = currentTarget.querySelector(".product-picture");
+//
+//     const idDiv = currentTarget.querySelector(".certificate-id")
+//
+//     let title;
+//     let price;
+//     let imgSrc;
+//
+//     let id;
+//
+//     if (titleDiv) {
+//         title = titleDiv.textContent;
+//     }
+//     if (priceDiv) {
+//         price = priceDiv.textContent;
+//     }
+//     if (imageDiv) {
+//         imgSrc = imageDiv.src;
+//     }
+//
+//     if (idDiv) {
+//         id = idDiv.textContent;
+//     }
+//
+//     const cardItem = new CartItem(title, price, imgSrc, id).init();
+//     console.log(cardItem)
+//     cartContainer.append(cardItem);
+//     updateTotal();
+// }
+//
+// const cards = document.body.querySelectorAll(".product-box");
+//
+// if (cards) {
+//     for (var i = 0; i < cards.length; i++) {
+//         var card = cards[i];
+//         card.addEventListener('click', clickHandler);
+//     }
+// }
 
 function updateTotal() {
     var cartContent = document.querySelector(".cart-content");
