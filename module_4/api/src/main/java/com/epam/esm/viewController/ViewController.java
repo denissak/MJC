@@ -43,6 +43,7 @@ public class ViewController {
     @RequestMapping("/newcertificate")
     public String addCertificate (Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                   @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
+        model.addAttribute("certificates", certificateService.readAll(page, size));
         model.addAttribute("tags", tagService.readAll(page, size));
         return "newcertificate";
     }
