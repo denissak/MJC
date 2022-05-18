@@ -79,7 +79,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
-    min-height: 100vh;
+    min-height: 80vh;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -169,7 +169,7 @@
 
 .certificate-create-form form {
 
-    flex: 1 1 45rem;
+    /*flex: 1 1 45rem;*/
     background: #ffffff;
     border: .2rem solid #727272;
     box-shadow: .5rem .5rem 0 rgba(22, 160, 133, .2);

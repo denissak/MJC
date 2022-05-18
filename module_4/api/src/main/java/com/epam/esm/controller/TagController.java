@@ -66,7 +66,7 @@ public class TagController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+                                                @RequestParam(value = "size", defaultValue = "30", required = false) int size) {
         List<TagDto> tagDtoList = tagService.readAll(page, size);
         return addLinksToTag(tagDtoList);
     }
@@ -93,9 +93,9 @@ public class TagController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTag/*(@RequestBody TagDto tagDto*/(HttpServletResponse response,
-                                                           @RequestParam("name") String tagName,
-                                                           @RequestParam("image") MultipartFile file) throws IOException {
+    public void createTag(HttpServletResponse response,
+                          @RequestParam("name") String tagName,
+                          @RequestParam("image") MultipartFile file) throws IOException {
         try {
             String uuidFile = UUID.randomUUID().toString();
             String resultFilename = uuidFile + "." + file.getOriginalFilename();

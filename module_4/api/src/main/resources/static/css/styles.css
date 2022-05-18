@@ -588,6 +588,10 @@ nav {
     display: none;
 }
 
+.tag-id {
+    display: none;
+}
+
 .cart-quantity {
     border: 1px solid #727272;
     outline-color: #0b9d8a;

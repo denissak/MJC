@@ -124,9 +124,11 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(/*@RequestBody*/ UserDto userDto) {
+    public void register(HttpServletResponse response, UserDto userDto) throws IOException {
         try {
-            return userService.create(userDto);
+            userService.create(userDto);
+            response.sendRedirect("mainpage");
+//            return userService.create(userDto);
         } catch (RuntimeException e){
             throw DuplicateException.userExists().get();
         }

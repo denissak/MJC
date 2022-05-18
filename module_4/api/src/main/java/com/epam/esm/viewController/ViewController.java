@@ -17,14 +17,14 @@ public class ViewController {
     private final CertificateService certificateService;
 
     @RequestMapping("/login")
-    public String register() {
+    public String login() {
         return "login";
     }
 
     @RequestMapping("/mainpage")
     public String mainpage(Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                            @RequestParam(value = "size", defaultValue = "8", required = false) int size) {
-        model.addAttribute("tags", tagService.readAll(0, 100));
+//        model.addAttribute("tags", tagService.readAll(0, 100));
         model.addAttribute("certificates", certificateService.readAll(page,size));
         return "mainpage";
     }
@@ -51,5 +51,10 @@ public class ViewController {
     @RequestMapping("/newtag")
     public String addTag () {
         return "newtag";
+    }
+
+    @RequestMapping("/registration")
+    public String register() {
+        return "registration";
     }
 }

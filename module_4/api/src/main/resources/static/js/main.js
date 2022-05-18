@@ -1,7 +1,10 @@
+let cards = [];
+
 const cardsContainer = document.querySelector('.product-container');
 
 fetch('/certificates').then((response) => response.json()).then((response) => {
     const {_embedded: {certificateDtoList}} = response;
+    cards = certificateDtoList;
     certificateDtoList.forEach((card) => {
         const cardElement = new Card(card).init();
         cardsContainer.append(cardElement);
@@ -20,7 +23,6 @@ class Card {
         if (!target.classList.contains('shopping-cart')) {
             return;
         }
-        console.log(target)
         const titleDiv = currentTarget.querySelector(".p-name");
         const priceDiv = currentTarget.querySelector(".p-price");
         const imageDiv = currentTarget.querySelector(".product-picture");
@@ -47,10 +49,18 @@ class Card {
             id = idDiv.textContent;
         }
 
-        const cardItem = new CartItem(title, price, imgSrc, id).init();
-        console.log(cardItem)
-        cartContainer.append(cardItem);
+        const cartData = {
+            title,
+            price,
+            image: imgSrc,
+            id
+        };
+
+        const cards = JSON.parse(localStorage.getItem('cards')) || [];
+        cards.push(cartData);
+        localStorage.setItem('cards', JSON.stringify([...cards]));
         updateTotal();
+        filCart(cart);
     }
 
     init() {
@@ -88,6 +98,7 @@ class Card {
 
         const certificateLink = document.createElement('a');
         certificateLink.classList.add("certificate-id-page");
+        certificateLink.textContent = "View";
 
         const cardBox = document.createElement('div');
         cardBox.classList.add("product-box");
@@ -96,11 +107,93 @@ class Card {
 
         certificateName.textContent = this.name;
         cartItemImage.src = "/img/certificates/" + this.image;
-        certificatePrice.textContent = this.price;
+        certificatePrice.textContent = this.price + "$";
         certificateId.textContent = this.id
+        certificateLink.href = "/certificate/" + this.id
+
 
         cardBox.addEventListener('click', this.onClick)
         return cardBox;
+    }
+}
+
+//TAG
+
+const tagsContainer = document.querySelector('.cs-hidden');
+
+fetch('/tags').then((response) => response.json()).then((response) => {
+    const {_embedded: {tagDtoList}} = response;
+    tagDtoList.forEach((tag) => {
+        const tagElement = new Tag(tag).init();
+        tagsContainer.append(tagElement);
+    })
+}).catch(console.error);
+
+class Tag {
+    constructor({name, image, id}) {
+        this.name = name;
+        this.image = image;
+        this.id = id;
+    }
+
+    onClick({currentTarget, target}) {
+        if (!target.classList.contains('tag-img')) {
+            return;
+        }
+        const tagName = currentTarget.querySelector(".tag-name")
+        const params = new URLSearchParams({
+            tagValue: tagName.textContent
+        })
+
+        window.removeEventListener('scroll', debounceScrollHandler)
+        fetch(
+            '/certificates/search?' + params,
+            {
+                method: 'GET',
+            }
+        ).then((response) => response.json()).then(
+            (response) => {
+                const {_embedded: {certificateDtoList}} = response;
+                cardsContainer.innerHTML = "";
+                certificateDtoList.forEach((card) => {
+                    const cardElement = new Card(card).init();
+                    cardsContainer.append(cardElement);
+                })
+            }
+        ).catch(console.error);
+    }
+
+    init() {
+        const tagImage = document.createElement('img');
+        tagImage.classList.add("tag-img");
+        const tagId = document.createElement('div');
+        tagId.classList.add("tag-id");
+
+        const tagLink = document.createElement('a');
+        tagLink.classList.add("tag-link");
+        tagLink.append(tagImage, tagId);
+
+        const categoryTagBox = document.createElement('div');
+        categoryTagBox.classList.add("category-box");
+        categoryTagBox.append(tagLink);
+
+        const tagName = document.createElement('span');
+        tagName.classList.add("tag-name");
+
+        const tagItem = document.createElement('li');
+        tagItem.classList.add("item");
+        tagItem.append(categoryTagBox, tagName);
+
+        const tag = document.createElement('div');
+        tag.classList.add("tag");
+        tag.append(tagItem);
+
+        tagName.textContent = this.name;
+        tagImage.src = "/img/tags/" + this.image;
+        tagId.textContent = this.id;
+
+        tag.addEventListener('click', this.onClick)
+        return tag;
     }
 }
 
@@ -146,35 +239,3 @@ const debounce = (func, timeout, ...args) => {
 
 const debounceScrollHandler = debounce(scrollHandler, 50)
 window.addEventListener('scroll', debounceScrollHandler);
-
-
-//
-// // FILTER
-// $('cs-hidden .item').click(function (){
-//     let filter = $(this).attr('data-filter')
-//     if (filter == 'man'){
-//         $('cs-hidden .item').not('.' + filter).hide(200);
-//         $('cs-hidden .item').filter('.' + filter).show(400);
-//     }
-// })
-//
-
-
-// let cartIcon = document.querySelector(".cart");
-// let cart = document.querySelector(".cart-form");
-// let closeCart = document.querySelector(".cart-cancel");
-
-
-// cartIcon.onclick = () => {
-//     cart.classList.add("active");
-// };
-//
-// closeCart.onclick = () => {
-//     cart.classList.remove("active");
-// };
-//
-// if (document.readyState == 'loading') {
-//     document.addEventListener("DOMContentLoaded", ready);
-// } else {
-//     ready();
-// }

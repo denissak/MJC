@@ -2,6 +2,8 @@ package com.epam.esm.dao;
 
 import org.springframework.stereotype.Component;
 
+import java.sql.Array;
+
 /**
  * Contains methods for SQL search certificate by different parameters.
  */
@@ -40,6 +42,21 @@ public class Search {
         StringBuilder query = new StringBuilder();
         query.append(SELECT);
 
+        if (tagName == null){
+            tagName = new String[0];
+        }
+        if (name == null){
+            name = "";
+        }
+        if (description == null){
+            description = "";
+        }
+        if (sortBy == null){
+            sortBy = "";
+        }
+        if (sortOrder == null){
+            sortOrder = " ";
+        }
         if (tagName.length != 0) {
             for (int i = 0; i < tagName.length; i++) {
                 query.append(String.format(TAG_CONDITION, i, i, i, i, i));
@@ -59,6 +76,12 @@ public class Search {
         } else if (!description.equals("")) {
             buildSearchByParam(query, SEARCH_BY_DESCRIPTION, description);
         }
+//        if (sortBy == null){
+//            sortBy = "";
+//        }
+//        if (sortOrder == null){
+//            sortOrder = " ";
+//        }
         if (!(sortBy.equals("") && sortOrder.equals(" "))) {
             if (sortBy.equals("name") && sortOrder.equals("asc")) {
                 query.append(SORT_BY_NAME_ASC);

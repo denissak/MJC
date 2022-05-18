@@ -1,6 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link th:href="@{/css/styles.css}" href="/static/css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/certificate.css}" href="/static/css/certificate.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -35,12 +36,6 @@
             <li>
                 <a th:href="newtag">Create tag</a>
             </li>
-            <li>
-                <a href="javascript:void(0);">Home4</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);">Home5</a>
-            </li>
         </ul>
         <!--- right menu---->
         <div class="right-menu">
@@ -67,14 +62,28 @@
         </div>
     </div>
 </nav>
-<div class="tag-form">
-    <strong>Create tag</strong>
+
+<div class="certificate-create-form">
     <form method="post" enctype="multipart/form-data" action="tags">
-        <!--        <form method="post" action="certificates">-->
-        <input type="text" name="name" placeholder="Введите имя" required>
-        <input type="file" name="image" placeholder="Введите картинку" required>
-        <input type="submit" value="Create">
+        <div class="certificate-fields">
+            <input type="text" name="name" placeholder="Please enter certificate name" class="box" required>
+            <label for="file-input" class="file-label" >Picture</label>
+            <input type="file" name="image" id="file-input" class="file-input" placeholder="Введите имя" required>
+            <span class="file-text"></span>
+
+        </div>
+        <input type="submit" value="Create" class="cert-btn file-label">
     </form>
 </div>
+
+<!--<div class="tag-form">-->
+<!--    <strong>Create tag</strong>-->
+<!--    <form method="post" enctype="multipart/form-data" action="tags">-->
+<!--        &lt;!&ndash;        <form method="post" action="certificates">&ndash;&gt;-->
+<!--        <input type="text" name="name" placeholder="Введите имя" required>-->
+<!--        <input type="file" name="image" placeholder="Введите картинку" required>-->
+<!--        <input type="submit" value="Create" class="cert-btn">-->
+<!--    </form>-->
+<!--</div>-->
 </body>
 </html>
