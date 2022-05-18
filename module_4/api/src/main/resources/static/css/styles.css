@@ -262,7 +262,7 @@ nav {
     position: relative;
 }
 
-.login-form form,
+.login-form .form-login,
 .signup-form form {
     display: flex;
     justify-content: center;

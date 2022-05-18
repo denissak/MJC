@@ -8,6 +8,7 @@
     <!--JQuery-->
     <script th:src="@{/js/JQuery.js}"></script>
     <script th:src="@{/js/lightslider.js}"></script>
+<!--    <script th:src="@{/js/login.js}"></script>-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -198,7 +199,7 @@
         $('.form').addClass('sign-up-active').removeClass('login-active')
     });
 
-    $(document).on('click', '.form-cancel', function () {
+    $(document).on('click', '.form-cancel,.btn-login', function () {
         $('.form').removeClass('login-active').removeClass('sign-up-active')
     });
 
@@ -226,5 +227,6 @@
 </script>
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/shop.js}"></script>
+<script th:src="@{/js/login.js}"></script>
 </body>
 </html>

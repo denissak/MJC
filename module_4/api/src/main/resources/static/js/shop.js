@@ -67,13 +67,9 @@ const filCart = (cart) => {
             const cartItem = new CartItem(cartData.title, cartData.price, cartData.image, cartData.id).init();
             cart.append(cartItem);
             updateTotal();
-
         })
     }
-
 }
-
-
 const cartClickHandler = () => {
     filCart(cart);
 }
