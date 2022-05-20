@@ -2,8 +2,6 @@ package com.epam.esm.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,8 +9,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.header.Header;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,13 +16,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -59,28 +50,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-//
-//        Map<String, String> tokens = new HashMap<>();
-//        tokens.put("accessToken", accessToken);
-//        tokens.put("refreshToken", refreshToken);
-
         Cookie cookies = new Cookie("accessToken", accessToken);
-//        cookies.setMaxAge(30 * 60 * 1000);
         response.addCookie(cookies);
-
-//        Arrays.stream(request.getCookies()).collect(Collectors.toMap(cookie -> cookie.getName(), cookie-> cookie.getValue())).get("accessToken");
-//        response.setContentType(APPLICATION_JSON_VALUE);
-//        Cookie cookie = new Cookie("accessToken", accessToken);
-////        response.addCookie(new Cookie("Authorization", "Bearer "+accessToken));
-//        response.addCookie(cookie);
-//        response.addCookie(new Cookie("accessToken", accessToken));
-//        request.getSession().setAttribute("Authorization", "Bearer "+accessToken);
-//        response.setHeader("Authorization", "Bearer "+accessToken);
-//        Cookie cookie = new Cookie("Authorization", "Bearer "+accessToken);
-//        Session session = new Session();
-//        session.getCookie();
-
-            response.sendRedirect("mainpage");
-//        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        response.sendRedirect("mainpage");
     }
 }

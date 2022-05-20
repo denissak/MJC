@@ -88,8 +88,8 @@ public class TagController {
     /**
      * Create and save the passed tag.
      *
-     * @param tagDto the tag to be saved
-     * @return saved tag
+     * @param tagName the name to be saved
+     * @param file the image to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

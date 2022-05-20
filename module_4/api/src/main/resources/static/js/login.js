@@ -1,35 +1,25 @@
-// const loginBtn = document.querySelector(".btn-login")
-let login = "";
+let loginUser = "";
 
-const clickHandlerLogin = (login) => {
+const clickHandlerLogin = () => {
 
     const username = document.querySelector(".username").value
     const password = document.querySelector(".password").value
-    console.log("!!!")
-    console.log(username)
-    console.log(password)
     const params = new URLSearchParams({
         username: username,
         password: password
     })
-    let response = fetch(
+    fetch(
         '/signin?' + params,
         {
-            // headers: {'Content-Type': 'application/json'},
             method: 'POST',
-        }).then((response) => response.ok)
-        .then(login = username)
-        .catch(console.error);
-    // console.log(response)
-    // login = username;
-    console.log(login);
-
+        }).then((response) => response.ok ? Promise.resolve(response) : Promise.reject()).
+    then((() => {loginUser = username})).then(() => {
+        localStorage.setItem('userId', username)
+    }).catch(console.error);
 }
+
 const loginBtn = document.querySelector(".btn-login")
 
 if (loginBtn) {
     loginBtn.addEventListener('click', clickHandlerLogin);
 }
-// const login = "";
-console.log("//////////////////")
-console.log(login)

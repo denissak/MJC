@@ -33,7 +33,9 @@ class CartItem {
     }
 
     onClick({currentTarget, target}) {
-        const cards = JSON.parse(localStorage.getItem('cards'));
+        const cardsKey = localStorage.getItem('userId');
+        const cards = JSON.parse(localStorage.getItem(cardsKey));
+        // const cards = JSON.parse(localStorage.getItem('cards'));
         if (!target.classList.contains('cart-remove-icon')) {
             return;
         }
@@ -46,7 +48,8 @@ class CartItem {
                 return cartData.id !== cartItemId;
             })
             console.log(1)
-            localStorage.setItem('cards', JSON.stringify([...filteredCards]));
+            localStorage.setItem(cardsKey, JSON.stringify([...filteredCards]));
+            // localStorage.setItem('cards', JSON.stringify([...filteredCards]));
             updateTotal();
         }
 
@@ -58,10 +61,13 @@ class CartItem {
 const cart = document.querySelector('.cart-content');
 const cartIcon = document.body.querySelector(".shopping-cart")
 const filCart = (cart) => {
+    document.querySelector(".total-price").innerText = "$" + 0;
     if (cart.hasChildNodes()) {
         [...cart.children].forEach((child) => child.remove());
     }
-    const cards = JSON.parse(localStorage.getItem('cards'));
+    const cardsKeyString = localStorage.getItem('userId');
+    const cards = JSON.parse(localStorage.getItem(cardsKeyString));
+    // const cards = JSON.parse(localStorage.getItem('cards'));
     if (cards.length) {
         cards.forEach((cartData) => {
             const cartItem = new CartItem(cartData.title, cartData.price, cartData.image, cartData.id).init();
@@ -77,82 +83,6 @@ if (cartIcon) {
     cartIcon.addEventListener('click', cartClickHandler);
 }
 
-//click handler delete card in cart
-// const deleteCard = document.body.querySelector(".cart-box");
-
-
-// const cards = JSON.parse(localStorage.getItem('cards'));
-// deleteCard.onclick =  ({currentTarget, target}, event) => {
-//     console.log(event)
-//     const cards = JSON.parse(localStorage.getItem('cards'));
-//     if (!target.classList.contains('cart-remove-icon')) {
-//         return;
-//     }
-//
-//     const cartItemId = currentTarget.querySelector(".cart-product-id").textContent;
-//     console.log(currentTarget)
-//     console.log(cartItemId)
-//     if (cards.length) {
-//         const filteredCards = cards.filter((cartData) => {
-//             return cartData.id !== cartItemId;
-//         })
-//         console.log(1)
-//         localStorage.setItem('cards', JSON.stringify([...filteredCards]));
-//         updateTotal();
-//     }
-// };
-
-
-// document.body.querySelector(".cart-box").onclick = function ({currentTarget, target}, event){
-//     console.log(event)
-//     const cards = JSON.parse(localStorage.getItem('cards'));
-//     if(!target.classList.contains('cart-remove-icon')){
-//         return;
-//     }
-//
-//     const cartItemId = currentTarget.querySelector(".cart-product-id").textContent;
-//     console.log(currentTarget)
-//     console.log(cartItemId)
-//     if (cards.length){
-//         const filteredCards = cards.filter ((cartData) => {
-//             return cartData.id !== cartItemId;
-//         })
-//         console.log(1)
-//         localStorage.setItem('cards', JSON.stringify([...filteredCards]));
-//         updateTotal();
-//     }
-// };
-
-// const deleteCartClickHandler = ({currentTarget, target}, event) => {
-//     console.log(event);
-//     const cards = JSON.parse(localStorage.getItem('cards'));
-//     if(!target.classList.contains('cart-remove-icon')){
-//         return;
-//     }
-//
-//     const cartItemId = currentTarget.querySelector(".cart-product-id").textContent;
-//     console.log(currentTarget)
-//     console.log(cartItemId)
-//     if (cards.length){
-//         const filteredCards = cards.filter ((cartData) => {
-//             return cartData.id !== cartItemId;
-//         })
-// console.log(1)
-//         localStorage.setItem('cards', JSON.stringify([...filteredCards]));
-//         updateTotal();
-//     }
-// }
-//
-// if (deleteCard){
-//     deleteCard.addEventListener('click', deleteCartClickHandler);
-// }
-// if (deleteCard){
-//     deleteCard.addEventListener('click',event =>{
-//         deleteCartClickHandler({},event);
-//     } );
-// }
-
-
 function updateTotal() {
     var cartContent = document.querySelector(".cart-content");
     var cartBoxes = cartContent.querySelectorAll(".cart-box");
@@ -167,23 +97,6 @@ function updateTotal() {
         document.querySelector(".total-price").innerText = "$" + total;
     }
 }
-
-// //Remove Items From Cart
-// function removeCartItem(event) {
-//     var buttonClicked = event.target;
-//     buttonClicked.parentElement.remove();
-//     updateTotal();
-// }
-//
-// //Remove Items From Cart
-// function remove() {
-//     var removeCartButtons = document.querySelectorAll(".cart-remove-icon");
-//     console.log(removeCartButtons);
-//     for (let i = 0; i < removeCartButtons.length; i++) {
-//         let button = removeCartButtons[i];
-//         button.addEventListener("click", removeCartItem);
-//     }
-// }
 
 const clickHandlerSend = () => {
 
@@ -203,7 +116,9 @@ const clickHandlerSend = () => {
             body: JSON.stringify(certificateIds)
         }
     ).catch(console.error);
-    localStorage.clear();
+    const cardsKeys = localStorage.getItem('userId');
+    localStorage.removeItem(cardsKeys);
+    document.querySelector('.cart-content').innerText = "";
     document.querySelector(".total-price").innerText = "$" + 0;
 }
 

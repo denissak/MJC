@@ -136,30 +136,15 @@
 </section>
 
 <!--product-container-->
-<div class="product-container">
-<!--    &lt;!&ndash;product-box-1&ndash;&gt;-->
-<!--    <div class="product-box" th:each="certificate:${certificates}">-->
-<!--        &lt;!&ndash;img&ndash;&gt;-->
-<!--        <div class="product-wrapper">-->
-<!--            <div class="product-img">-->
-<!--                <a href="javascript:void(0);" class="add-cart">-->
-<!--                    &lt;!&ndash;add-cart&ndash;&gt;-->
-<!--                    <span class="material-icons shopping-cart">shopping_cart</span>-->
-<!--                    &lt;!&ndash;- number-of-product-cart&#45;&#45;&ndash;&gt;-->
-<!--                </a>-->
-<!--                <img th:src="@{'/img/certificates/' + ${certificate.image}}" class="product-picture"/>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;details&ndash;&gt;-->
-<!--        <div class="product-details">-->
-<!--            <a href="javascript:void(0);" class="p-name" th:text="${certificate.name}">Certificate Name</a>-->
-<!--            <span class="p-price" th:text="'$' + ${certificate.price}"></span>-->
-<!--            <span class="certificate-id" th:text="${certificate.id}" hidden></span>-->
-<!--        </div>-->
-<!--        <a th:href="@{'/certificate/' + ${certificate.id}}" class="certificate-id-page" th:target="_blank">Подробнее</a>-->
-<!--    </div>-->
-</div>
+<div class="product-container"></div>
 
+<button onclick="topFunction()" id="myBtn" title="Go to top">
+    <span class="material-icons">arrow_upward</span>
+</button>
+
+<button onclick="bottomFunction()" id="myBtn-bottom" title="Go to top">
+    <span class="material-icons">arrow_downward</span>
+</button>
 
 <!--script-->
 <script type="text/javascript">

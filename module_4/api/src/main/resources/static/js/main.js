@@ -55,10 +55,10 @@ class Card {
             image: imgSrc,
             id
         };
-
-        const cards = JSON.parse(localStorage.getItem('cards')) || [];
+        const cardsKeyJsonString = localStorage.getItem('userId');
+        const cards = JSON.parse(localStorage.getItem(cardsKeyJsonString)) || [];
         cards.push(cartData);
-        localStorage.setItem('cards', JSON.stringify([...cards]));
+        localStorage.setItem(cardsKeyJsonString, JSON.stringify([...cards]));
         updateTotal();
         filCart(cart);
     }
@@ -118,7 +118,6 @@ class Card {
 }
 
 //TAG
-
 const tagsContainer = document.querySelector('.cs-hidden');
 
 fetch('/tags').then((response) => response.json()).then((response) => {
@@ -197,12 +196,16 @@ class Tag {
     }
 }
 
-
 // SCROLL
 let page = 0;
 
 const scrollHandler = () => {
     const documentRect = document.documentElement.getBoundingClientRect();
+    if (document.body.scrollTop > 15 || document.documentElement.scrollTop > 15) {
+        buttonTop.style.display = "block";
+    } else if (document.body.scrollTop === 0 || document.documentElement.scrollTop === 0) {
+        buttonTop.style.display = "none";
+    }
     if (documentRect.bottom < document.documentElement.clientHeight + 150) {
         page += 1;
         const params = new URLSearchParams({
@@ -223,10 +226,9 @@ const scrollHandler = () => {
             }
         ).catch(console.error);
     }
-};
+}
 
 //Add timeout to scroll
-
 const debounce = (func, timeout, ...args) => {
     let timer;
     return (...funcArgs) => {
@@ -239,3 +241,23 @@ const debounce = (func, timeout, ...args) => {
 
 const debounceScrollHandler = debounce(scrollHandler, 50)
 window.addEventListener('scroll', debounceScrollHandler);
+
+const buttonTop = document.querySelector("#myBtn");
+const buttonBottom = document.querySelector("#myBtn-bottom");
+
+let savePosition = 0;
+
+function topFunction() {
+    savePosition = window.scrollY;
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    buttonBottom.style.display = "block";
+    console.log(savePosition);
+}
+
+function bottomFunction() {
+    console.log(savePosition);
+    window.scrollTo(0,savePosition);
+    buttonBottom.style.display = "none";
+    buttonTop.style.display = "block";
+}

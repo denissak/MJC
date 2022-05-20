@@ -59,58 +59,10 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Create and save the passed order.
      *
-     * @param orderDto the order to be saved
+     * @param certificateIds the order certificates ids to be saved
+     * @param userId the user id that create order to be saved
      * @return saved order
      */
-//    @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-//    public OrderDto create(OrderDto orderDto) {
-//        OrderEntity order = orderRepository.findByName(orderDto.getName());
-//        if (order != null) {
-//            throw DuplicateException.orderExists().get();
-//        }
-//        OrderValidator.validate(orderDto);
-//        LocalDateTime now = dateTimeWrapper.wrapDateTime();
-//        orderDto.setDate(now);
-//        OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
-//        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
-//        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateMapper::convertToCertificate).collect(Collectors.toList());
-//        orderEntity.setCertificateEntities(certificateEntityList);
-//        orderRepository.save(orderEntity);
-//        return orderMapper.convertToOrderDto(orderEntity);
-//    }
-//    @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-//    public OrderDto create(OrderDto orderDto) {
-////        OrderEntity order = orderRepository.findByName(orderDto.getName());
-////        if (order != null) {
-////            throw DuplicateException.orderExists().get();
-////        }
-////        OrderValidator.validate(orderDto);
-//        LocalDateTime now = dateTimeWrapper.wrapDateTime();
-//        orderDto.setDate(now);
-//        OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
-//        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
-//
-//        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateMapper::convertToCertificate).collect(Collectors.toList());
-//        List<CertificateEntity> certificateEntities = new ArrayList<>();
-//        Double totalCost = 0.0;
-//
-//        for (int i = 0; i < certificateEntityList.size() - 1; i++) {
-//            Long id = certificateEntityList.get(i).getId();
-//            CertificateEntity certificate = certificateRepository.findById(id).get();
-//            totalCost += certificate.getPrice();
-//            certificateEntities.add(certificate);
-//        }
-//
-//        orderEntity.setCost(totalCost);
-//        orderEntity.setCertificateEntities(certificateEntities);
-//
-//        orderRepository.save(orderEntity);
-//        return orderMapper.convertToOrderDto(orderEntity);
-//    }
-
-
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public OrderDto create(List<Long> certificateIds, long userId) {
@@ -122,8 +74,8 @@ public class OrderServiceImpl implements OrderService {
         List<CertificateEntity> certificateEntities = new ArrayList<>();
         Double totalCost = 0.0;
 
-        for (int i = 0; i < certificateIds.size(); i++) {
-            CertificateEntity certificate = certificateRepository.findById(certificateIds.get(i)).get();
+        for (Long certificateId : certificateIds) {
+            CertificateEntity certificate = certificateRepository.findById(certificateId).get();
             totalCost += certificate.getPrice();
             certificateEntities.add(certificate);
         }

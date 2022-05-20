@@ -13,12 +13,10 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -109,7 +107,12 @@ public class CertificateController {
     /**
      * Create and save the passed certificate.
      *
-     * @param certificateDto the certificate to be saved
+     * @param name the name certificate to be saved
+     * @param description the description certificate to be saved
+     * @param price the price certificate to be saved
+     * @param duration the duration certificate to be saved
+     * @param tagId the tagId certificate to be saved
+     * @param file the file certificate to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
