@@ -41,11 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setFilterProcessesUrl("/signin");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/img/**", "/js/**", "/mainpage/**", "/certificate/**", "/newcertificate/**", "/certificates/**", "/newtag/**", "/tags/**", "/orders/**","/certificates&size=16/**" ).permitAll();
-        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**", "/certificates/**", "/certificate/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/login", "token/refresh", "/registration", "/register", "/signin", "/css/**", "/img/**", "/js/**", "/mainpage/**", "/certificate/**"/*, "/certificates/**", "/tags/**"*/).permitAll();
+        http.authorizeRequests().antMatchers(GET, "/mainpage", "/user/**", "/role/**", "/cart/**", "/certificates/**", "/certificate/**", "/newtag/**", "/newcertificate/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(GET, "/tag/**", "/certificate/**", "/certificates/**", "/cart/**", "/orders/**").hasAnyAuthority("ADMIN", "USER");
-        http.authorizeRequests().antMatchers(POST,   "/orders/**").hasAuthority("USER");
-        http.authorizeRequests().antMatchers(POST, "/user/**", "/tag/**", "/certificates/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/orders/**").hasAuthority("USER");
+        http.authorizeRequests().antMatchers(POST, "/user/**", "/tags/**", "/certificates/**", "/orders/**", "/role/**", "/auto/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(DELETE, "/user/**", "/tag/**", "/certificates/**", "/orders/**", "/role/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers(PUT, "/certificates/**").hasAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();

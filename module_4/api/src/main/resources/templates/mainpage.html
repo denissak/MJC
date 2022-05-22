@@ -7,8 +7,6 @@
     <link th:href="@{/css/lightslider.css}" href="/static/css/lightslider.css" rel="stylesheet"/>
     <!--JQuery-->
     <script th:src="@{/js/JQuery.js}"></script>
-    <script th:src="@{/js/lightslider.js}"></script>
-<!--    <script th:src="@{/js/login.js}"></script>-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -110,21 +108,7 @@
 <div class="category-heading">
     <h2>Categories</h2>
 </div>
-<ul id="autoWidth" class="cs-hidden">
-<!--    <div th:each="tag : ${tags}" class="tag">-->
-<!--        &lt;!&ndash;1&#45;&#45;&#45;&#45;&ndash;&gt;-->
-<!--        <li class="item" th:data-filter="${tag.name}">-->
-<!--            &lt;!&ndash;category-box&ndash;&gt;-->
-<!--            <div class="category-box">-->
-<!--                <a href="javascript:void(0);" class="tag-link">-->
-<!--                    <img th:src="@{'/img/tags/' + ${tag.image}}" class="tag-img">-->
-<!--                </a>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;text&ndash;&gt;-->
-<!--            <span th:text="${tag.name}" class="tag-name"></span>-->
-<!--        </li>-->
-<!--    </div>-->
-</ul>
+<ul id="autoWidth" class="cs-hidden"></ul>
 
 <!--Certificates-->
 <section class="certificates">
@@ -199,7 +183,6 @@
     });
 
     // for-fix-menu-when-scrolling
-
     $(window).scroll(function () {
         if ($(document).scrollTop() > 50) {
             $('.navigation').addClass('fix-nav');
@@ -211,6 +194,7 @@
 
 </script>
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/lightslider.js}"></script>
 <script th:src="@{/js/shop.js}"></script>
 <script th:src="@{/js/login.js}"></script>
 </body>

@@ -24,8 +24,8 @@ public class ViewController {
     @RequestMapping("/mainpage")
     public String mainpage(Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                            @RequestParam(value = "size", defaultValue = "8", required = false) int size) {
-//        model.addAttribute("tags", tagService.readAll(0, 100));
-        model.addAttribute("certificates", certificateService.readAll(page,size));
+        model.addAttribute("tags", tagService.readAll(0, 100));
+        model.addAttribute("certificates", certificateService.readAll(page, size));
         return "mainpage";
     }
 
@@ -41,15 +41,15 @@ public class ViewController {
     }
 
     @RequestMapping("/newcertificate")
-    public String addCertificate (Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                  @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
+    public String addCertificate(Model model, @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                 @RequestParam(value = "size", defaultValue = "100", required = false) int size) {
         model.addAttribute("certificates", certificateService.readAll(page, size));
         model.addAttribute("tags", tagService.readAll(page, size));
         return "newcertificate";
     }
 
     @RequestMapping("/newtag")
-    public String addTag () {
+    public String addTag() {
         return "newtag";
     }
 

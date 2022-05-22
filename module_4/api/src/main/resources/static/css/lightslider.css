@@ -122,6 +122,7 @@
     -ms-user-select: none;
     user-select: none;
 }
+
 .lSSlideOuter .lSPager.lSGallery li {
     overflow: hidden;
     -webkit-transition: border-radius 0.12s linear 0s 0.35s linear 0s;
