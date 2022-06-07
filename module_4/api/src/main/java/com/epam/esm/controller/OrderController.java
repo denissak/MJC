@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.OrderService;
+import com.epam.esm.UserService;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
 import com.epam.esm.exception.DuplicateException;
@@ -9,9 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -20,14 +26,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with orders.
  */
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, UserService userService) {
         this.orderService = orderService;
+        this.userService = userService;
     }
 
     /**
@@ -59,7 +67,7 @@ public class OrderController {
             OrderDto orderDto = orderService.readById(id);
             orderDto.add(link);
             return orderDto;
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw NotFoundException.notFoundWithOrderId(id).get();
         }
     }
@@ -67,7 +75,7 @@ public class OrderController {
     /**
      * Read orders with passed user id.
      *
-     * @param id the id of order to be read
+     * @param id   the id of order to be read
      * @param page numbers of page
      * @param size number of elements per page
      * @return order with passed id
@@ -80,7 +88,7 @@ public class OrderController {
         try {
             List<OrderDto> orderDtoList = orderService.readAllOrdersByUserId(id, page, size);
             return addLinksToOrder(orderDtoList);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw NotFoundException.notFoundOrderWithUserId(id).get();
         }
     }
@@ -88,7 +96,7 @@ public class OrderController {
     /**
      * Read cost and date orders with passed user id.
      *
-     * @param id the id of order to be read
+     * @param id   the id of order to be read
      * @param page numbers of page
      * @param size number of elements per page
      * @return order with passed id
@@ -106,7 +114,7 @@ public class OrderController {
             }
             Link link = linkTo(OrderController.class).withSelfRel();
             return CollectionModel.of(readOrderDtoList, link);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw NotFoundException.notFoundOrderWithUserId(id).get();
         }
     }
@@ -114,14 +122,18 @@ public class OrderController {
     /**
      * Create and save the passed order.
      *
-     * @param orderDto the order to be saved
+     * @param certificateStringId certificates in order
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public OrderDto createOrder(@RequestBody String[] certificateStringId) {
         try {
-            return orderService.create(orderDto);
-        } catch (RuntimeException e){
+            Optional<Object> currentUser = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).map(Authentication::getPrincipal);
+            List<Long> certificateId = Arrays.stream(certificateStringId).map(Long::parseLong).collect(Collectors.toList());
+            String username = currentUser.get().toString();
+            long userId = userService.readByName(username).getId();
+            return orderService.create(certificateId, userId);
+        } catch (RuntimeException e) {
             throw DuplicateException.orderExists().get();
         }
     }
@@ -136,7 +148,7 @@ public class OrderController {
     public void deleteOrder(@PathVariable long id) {
         try {
             orderService.delete(id);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw NotFoundException.notFoundWithOrderId(id).get();
         }
     }

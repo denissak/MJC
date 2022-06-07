@@ -1,18 +1,18 @@
 package com.epam.esm.impl;
 
 import com.epam.esm.OrderService;
+import com.epam.esm.dao.CertificateRepository;
 import com.epam.esm.dao.OrderRepository;
+import com.epam.esm.dao.UserRepository;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.ReadOrderDto;
 import com.epam.esm.entity.CertificateEntity;
 import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.mapper.ReadOrderMapper;
 import com.epam.esm.mapper.UserMapper;
 import com.epam.esm.util.DateTimeWrapper;
-import com.epam.esm.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,8 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final CertificateRepository certificateRepository;
+    private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final ReadOrderMapper readOrderMapper;
     private final DateTimeWrapper dateTimeWrapper;
@@ -41,9 +44,11 @@ public class OrderServiceImpl implements OrderService {
     private final UserMapper userMapper;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper,
+    public OrderServiceImpl(OrderRepository orderRepository, CertificateRepository certificateRepository, UserRepository userRepository, OrderMapper orderMapper,
                             DateTimeWrapper dateTimeWrapper, ReadOrderMapper readOrderMapper, CertificateMapper certificateMapper, UserMapper userMapper) {
         this.orderRepository = orderRepository;
+        this.certificateRepository = certificateRepository;
+        this.userRepository = userRepository;
         this.orderMapper = orderMapper;
         this.dateTimeWrapper = dateTimeWrapper;
         this.readOrderMapper = readOrderMapper;
@@ -54,23 +59,31 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Create and save the passed order.
      *
-     * @param orderDto the order to be saved
+     * @param certificateIds the order certificates ids to be saved
+     * @param userId the user id that create order to be saved
      * @return saved order
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-    public OrderDto create(OrderDto orderDto) {
-        OrderEntity order = orderRepository.findByName(orderDto.getName());
-        if (order != null) {
-            throw DuplicateException.orderExists().get();
-        }
-        OrderValidator.validate(orderDto);
+    public OrderDto create(List<Long> certificateIds, long userId) {
+        OrderDto orderDto = new OrderDto();
         LocalDateTime now = dateTimeWrapper.wrapDateTime();
         orderDto.setDate(now);
         OrderEntity orderEntity = orderMapper.convertToOrder(orderDto);
-        orderEntity.setUserEntity(userMapper.convertToUser(orderDto.getUserDto()));
-        List<CertificateEntity> certificateEntityList = orderDto.getCertificateDto().stream().map(certificateDto -> certificateMapper.convertToCertificate(certificateDto)).collect(Collectors.toList());
-        orderEntity.setCertificateEntities(certificateEntityList);
+        orderEntity.setUserEntity(userRepository.findById(userId).get());
+        List<CertificateEntity> certificateEntities = new ArrayList<>();
+        Double totalCost = 0.0;
+
+        for (Long certificateId : certificateIds) {
+            CertificateEntity certificate = certificateRepository.findById(certificateId).get();
+            totalCost += certificate.getPrice();
+            certificateEntities.add(certificate);
+        }
+
+        orderEntity.setCost(totalCost);
+        orderEntity.setName("userId:" + orderEntity.getUserEntity().getId() + "_" + orderEntity.getDate() + orderEntity.getUserEntity().getId());
+        orderEntity.setCertificateEntities(certificateEntities);
+
         orderRepository.save(orderEntity);
         return orderMapper.convertToOrderDto(orderEntity);
     }
@@ -116,8 +129,8 @@ public class OrderServiceImpl implements OrderService {
      * Read all orders by user.
      *
      * @param userId the id of user to be sorted
-     * @param page numbers of page
-     * @param size number of elements per page
+     * @param page   numbers of page
+     * @param size   number of elements per page
      * @return orderDto which meet passed parameters
      */
     @Override
@@ -130,8 +143,8 @@ public class OrderServiceImpl implements OrderService {
      * Reads cost and date orders by user.
      *
      * @param userId the id of user to be sorted
-     * @param page numbers of page
-     * @param size number of elements per page
+     * @param page   numbers of page
+     * @param size   number of elements per page
      * @return readOrderDto which meet passed parameters
      */
     @Override

@@ -1,4 +1,4 @@
-rootProject.name = 'module_4'
+rootProject.name = 'module_7'
 include 'repository'
 include 'service'
 include 'api'

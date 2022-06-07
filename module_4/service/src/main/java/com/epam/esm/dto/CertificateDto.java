@@ -3,7 +3,9 @@ package com.epam.esm.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,5 +26,6 @@ public class CertificateDto extends RepresentationModel<CertificateDto> {
     private LocalDateTime lastUpdateDate;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]")
     private LocalDateTime createDate;
+    private String image;
     private List<TagDto> tags;
 }

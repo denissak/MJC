@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/js/JQuery.js}"></script>
+</head>
+<body>
+<div class="login-form" th:fragment="login-fragment">
+    <!--cancel-btn-->
+    <a href="javascript:void(0);" class="form-cancel">
+        <span class="material-icons">cancel</span>
+    </a>
+    <!--heading-->
+    <strong>Log In</strong>
+    <!--inputs--->
+    <div class="form-login">
+        <input type="text" name="username" class="username" placeholder="Enter your login" required>
+        <input type="password" name="password" class="password" placeholder="Enter your password" required>
+        <!--submit btn-->
+        <input type="submit" class="btn-login" value="Log In">
+    </div>
+    <!--    </form>-->
+    <div class="form-btns">
+        <a href="javascript:void(0);" class="forget">Forget Your Password?</a>
+        <a href="javascript:void(0);" class="sign-up-btn">Create Account</a>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="//connect-cdn.atl-paas.net/all.js"></script>
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/@atlassian/aui@8.0.1/dist/aui/aui-prototyping.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.15.4/sinon.js"></script>
+    <script src="//unpkg.com/@atlassian/aui@8.0.1/dist/aui/aui-prototyping.js"></script>
+    <meta name="token" th:content="${atlassianConnectToken}"/>
+    <title>License Error</title>
+</head>
+<body>
+<div class="aui-message aui-message-warning">
+    <p class="title">
+        <strong>License Error</strong>
+    </p>
+    <p>Organizations Automation License is not installed or invalid. Please update your license through the <a href="https://marketplace.atlassian.com/plugins/com.polontech.jira.plugin.add-customer/cloud/overview" target="_blank">Marketplace</a>.</p>
+</div>
+</body>
+</html>

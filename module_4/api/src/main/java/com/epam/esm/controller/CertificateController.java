@@ -1,16 +1,26 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.CertificateService;
+import com.epam.esm.TagService;
 import com.epam.esm.dto.CertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,14 +29,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with certificates.
  */
 @RestController
-@RequestMapping("/certificate")
+@RequestMapping("/certificates")
 public class CertificateController {
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     private final CertificateService certificateService;
+    private final TagService tagService;
 
     @Autowired
-    public CertificateController(CertificateService certificateService) {
+    public CertificateController(CertificateService certificateService, TagService tagService) {
         this.certificateService = certificateService;
+        this.tagService = tagService;
     }
 
     /**
@@ -39,7 +54,7 @@ public class CertificateController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<CertificateDto> readAllCertificates(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                               @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+                                                               @RequestParam(value = "size", defaultValue = "12", required = false) int size) {
         List<CertificateDto> certificateDtoList = certificateService.readAll(page, size);
         return addLinksToCertificate(certificateDtoList);
     }
@@ -71,8 +86,8 @@ public class CertificateController {
      * @param description whole or partial certificate description
      * @param sortBy      Sort target field (name or date)
      * @param sortOrder   Sort type (asc or desc)
-     * @param page numbers of page
-     * @param size number of elements per page
+     * @param page        numbers of page
+     * @param size        number of elements per page
      * @return all certificates from search terms
      */
     @GetMapping("/search")
@@ -92,13 +107,38 @@ public class CertificateController {
     /**
      * Create and save the passed certificate.
      *
-     * @param certificateDto the certificate to be saved
+     * @param name the name certificate to be saved
+     * @param description the description certificate to be saved
+     * @param price the price certificate to be saved
+     * @param duration the duration certificate to be saved
+     * @param tagId the tagId certificate to be saved
+     * @param file the file certificate to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CertificateDto createCertificate(@RequestBody CertificateDto certificateDto) {
+    public void createCertificate(HttpServletResponse response,
+                                  @RequestParam("name") String name,
+                                  @RequestParam("description") String description,
+                                  @RequestParam("price") String price,
+                                  @RequestParam("duration") String duration,
+                                  @RequestParam("tagid") String[] tagId,
+                                  @RequestParam("image") MultipartFile file) throws IOException {
         try {
-            return certificateService.create(certificateDto);
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+            List<TagDto> tagDtoList = Arrays.stream(tagId).map(tag -> tagService.readById(Long.parseLong(tag))).collect(Collectors.toList());
+            CertificateDto certificateDto = CertificateDto.builder()
+                    .name(name)
+                    .description(description)
+                    .price(Double.parseDouble(price))
+                    .duration(Integer.parseInt(duration))
+                    .image(resultFilename)
+                    .tags(tagDtoList)
+                    .build();
+            certificateService.create(certificateDto);
+            response.sendRedirect("mainpage");
         } catch (RuntimeException e) {
             throw DuplicateException.certificateExists().get();
         }
@@ -130,7 +170,7 @@ public class CertificateController {
     public void deleteCertificate(@PathVariable long id) {
         try {
             certificateService.delete(id);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw NotFoundException.notFoundWithCertificateId(id).get();
         }
     }

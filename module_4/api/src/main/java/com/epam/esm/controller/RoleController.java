@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with roles.
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
 public class RoleController {
 
     private final RoleService roleService;

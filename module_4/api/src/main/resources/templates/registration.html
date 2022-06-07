@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/js/registration.js}"></script>
+</head>
+<body>
+<div class="signup-form" th:fragment="registration-fragment">
+    <!--cancel-btn-->
+    <a href="javascript:void(0);" class="form-cancel">
+        <span class="material-icons">cancel</span>
+    </a>
+    <!--heading-->
+    <strong>Registration</strong>
+    <!--inputs--->
+    <form action="register" method="post">
+        <div id="error-registration"></div>
+        <input type="text" id="login-registration" name="login" placeholder="Enter your login"
+               required pattern="[A-Za-z0-9]{5,15}" title="Can't be null and must be longer than 4 characters">
+        <input type="password" id="password-registration" name="password" placeholder="Enter your password"
+               required pattern="[0-9a-zA-Z]{5,25}" title="Can't be null and must be longer than 4 characters">
+        <input type="text" id="name-registration" name="name" placeholder="Enter your name"
+               required pattern="[A-Za-z0-9]{5,15}" title="Can't be null and must be longer than 4 characters">
+        <input type="text" id="surname-registration" name="surname" placeholder="Enter your surname"
+               required pattern="[A-Za-z0-9]{5,15}" title="Can't be null and must be longer than 4 characters">
+        <input type="text" id="email-registration" name="email" placeholder="Enter your email"
+               required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" title="Incorrect email" >
+        <!--submit btn-->
+        <input type="submit" value="Sign Up">
+    </form>
+    <!--    </div>-->
+    <!--forget and signup-btn-->
+    <div class="form-btns">
+        <a href="javascript:void(0);" class="already-account">Already have account?</a>
+    </div>
+</div>
+</body>
+</html>

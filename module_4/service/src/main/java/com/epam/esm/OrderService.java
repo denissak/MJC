@@ -16,7 +16,9 @@ public interface OrderService {
      * @param orderDto the order to be saved
      * @return saved order
      */
-    OrderDto create(OrderDto orderDto);
+//    OrderDto create(OrderDto orderDto);
+
+    OrderDto create(List<Long> certificateIds, long userId);
 
     /**
      * Read order with passed id.

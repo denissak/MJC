@@ -5,12 +5,18 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.DuplicateException;
 import com.epam.esm.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,10 +25,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Controller for working with tags.
  */
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;
+    @Value("${upload.pathtag}")
+    private String uploadPath;
 
     @Autowired
     public TagController(TagService tagService) {
@@ -58,7 +66,7 @@ public class TagController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<TagDto> readsAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
+                                                @RequestParam(value = "size", defaultValue = "30", required = false) int size) {
         List<TagDto> tagDtoList = tagService.readAll(page, size);
         return addLinksToTag(tagDtoList);
     }
@@ -80,14 +88,26 @@ public class TagController {
     /**
      * Create and save the passed tag.
      *
-     * @param tagDto the tag to be saved
-     * @return saved tag
+     * @param tagName the name to be saved
+     * @param file the image to be saved
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TagDto createTag(@RequestBody TagDto tagDto) {
+    public void createTag(HttpServletResponse response,
+                          @RequestParam("name") String tagName,
+                          @RequestParam("image") MultipartFile file) throws IOException {
         try {
-            return tagService.create(tagDto);
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            TagDto tagDto = TagDto.builder()
+                    .name(tagName)
+                    .image(resultFilename)
+                    .build();
+
+            tagService.create(tagDto);
+            response.sendRedirect("mainpage");
         } catch (RuntimeException e) {
             throw DuplicateException.tagExists().get();
         }
